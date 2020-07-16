@@ -1,0 +1,26 @@
+--- cdc_fifo_gray_tb.llhd	2020-02-29 12:15:47.432105021 +0100
++++ cdc_fifo_gray_tb_fix.llhd	2020-02-29 12:28:42.674688384 +0100
+@@ -843,9 +843,9 @@
+     %dst_rptr_gray_q1 = prb i4$ %dst_rptr_gray_q
+     %18 = const time 0s 1d
+     drv i4$ %src_rptr_gray_q1, %dst_rptr_gray_q1, %18
+-    %src_rptr_gray_q2 = ld i4* %src_rptr_gray_q.shadow
++    %src_rptr_gray_q3 = ld i4* %src_rptr_gray_q.shadow
+     %19 = const time 0s 1d
+-    drv i4$ %src_rptr_gray_q2, %src_rptr_gray_q2, %19
++    drv i4$ %src_rptr_gray_q2, %src_rptr_gray_q3, %19
+     br %if_exit
+ if_exit:
+     br %0
+@@ -895,9 +895,9 @@
+     %src_wptr_gray_q1 = prb i4$ %src_wptr_gray_q
+     %18 = const time 0s 1d
+     drv i4$ %dst_wptr_gray_q1, %src_wptr_gray_q1, %18
+-    %dst_wptr_gray_q2 = ld i4* %dst_wptr_gray_q.shadow
++    %dst_wptr_gray_q3 = ld i4* %dst_wptr_gray_q.shadow
+     %19 = const time 0s 1d
+-    drv i4$ %dst_wptr_gray_q2, %dst_wptr_gray_q2, %19
++    drv i4$ %dst_wptr_gray_q2, %dst_wptr_gray_q3, %19
+     br %if_exit
+ if_exit:
+     br %0

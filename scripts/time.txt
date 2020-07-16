@@ -1,0 +1,2 @@
+
+$bin $dut -o $flags  92.14s user 0.86s system 98% cpu 1:34.29 total

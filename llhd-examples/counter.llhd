@@ -1,0 +1,125 @@
+proc %delta_counter.param1.always_comb.496.1 (i5$ %counter_q, i1$ %clear_i, i1$ %en_i, i1$ %load_i, i1$ %down_i, i4$ %delta_i, i4$ %d_i) -> (i5$ %counter_d) {
+body:
+    %counter_q1 = prb i5$ %counter_q
+    %0 = const time 0s 1e
+    drv i5$ %counter_d, %counter_q1, %0
+    %clear_i1 = prb i1$ %clear_i
+    %1 = const i1 0
+    %2 = neq i1 %clear_i1, %1
+    %3 = const i5 0
+    br %2, %if_false, %if_true
+check:
+    wait %body, %counter_q, %clear_i, %en_i, %load_i, %down_i, %delta_i, %d_i
+if_true:
+    drv i5$ %counter_d, %3, %0
+    br %check
+if_false:
+    %load_i1 = prb i1$ %load_i
+    %4 = neq i1 %load_i1, %1
+    br %4, %if_false1, %if_true1
+if_true1:
+    %d_i1 = prb i4$ %d_i
+    %5 = inss i5 %3, i4 %d_i1, 0, 4
+    %6 = inss i5 %5, i1 %1, 4, 1
+    drv i5$ %counter_d, %6, %0
+    br %check
+if_false1:
+    %en_i1 = prb i1$ %en_i
+    %7 = neq i1 %en_i1, %1
+    br %7, %check, %if_true2
+if_true2:
+    %down_i1 = prb i1$ %down_i
+    %8 = neq i1 %down_i1, %1
+    %delta_i1 = prb i4$ %delta_i
+    br %8, %if_false2, %if_true3
+if_true3:
+    %9 = inss i5 %3, i4 %delta_i1, 0, 4
+    %10 = sub i5 %counter_q1, %9
+    drv i5$ %counter_d, %10, %0
+    br %check
+if_false2:
+    %11 = inss i5 %3, i4 %delta_i1, 0, 4
+    %12 = add i5 %counter_q1, %11
+    drv i5$ %counter_d, %12, %0
+    br %check
+}
+
+proc %delta_counter.param1.always_ff.535.1 (i5$ %counter_d, i1$ %clk_i, i1$ %rst_ni) -> (i5$ %counter_q) {
+init:
+    %clk_i1 = prb i1$ %clk_i
+    %rst_ni1 = prb i1$ %rst_ni
+    wait %check, %clk_i, %rst_ni
+check:
+    %clk_i2 = prb i1$ %clk_i
+    %0 = const i1 0
+    %1 = eq i1 %clk_i1, %0
+    %2 = neq i1 %clk_i2, %0
+    %posedge = and i1 %1, %2
+    %rst_ni2 = prb i1$ %rst_ni
+    %3 = neq i1 %rst_ni1, %0
+    %4 = eq i1 %rst_ni2, %0
+    %negedge = and i1 %4, %3
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %5 = neq i1 %rst_ni2, %0
+    %6 = not i1 %5
+    %7 = neq i1 %6, %0
+    %8 = const time 0s 1d
+    br %7, %if_false, %if_true
+if_true:
+    %9 = const i5 0
+    drv i5$ %counter_q, %9, %8
+    br %init
+if_false:
+    %counter_d1 = prb i5$ %counter_d
+    drv i5$ %counter_q, %counter_d1, %8
+    br %init
+}
+
+entity @delta_counter.param1 (i1$ %clk_i, i1$ %rst_ni, i1$ %clear_i, i1$ %en_i, i1$ %load_i, i1$ %down_i, i4$ %delta_i, i4$ %d_i) -> (i4$ %q_o, i1$ %overflow_o) {
+    %0 = const i5 0
+    %counter_q = sig i5 %0
+    %counter_d = sig i5 %0
+    %counter_q1 = prb i5$ %counter_q
+    %1 = exts i4, i5 %counter_q1, 0, 4
+    %2 = const time 0s 1e
+    drv i4$ %q_o, %1, %2
+    %3 = exts i1, i5 %counter_q1, 4, 1
+    %4 = inss i5 %0, i1 %3, 0, 1
+    %5 = exts i1, i5 %4, 0, 1
+    drv i1$ %overflow_o, %5, %2
+    inst %delta_counter.param1.always_comb.496.1 (i5$ %counter_q, i1$ %clear_i, i1$ %en_i, i1$ %load_i, i1$ %down_i, i4$ %delta_i, i4$ %d_i) -> (i5$ %counter_d)
+    inst %delta_counter.param1.always_ff.535.1 (i5$ %counter_d, i1$ %clk_i, i1$ %rst_ni) -> (i5$ %counter_q)
+}
+
+entity @counter (i1$ %clk_i, i1$ %rst_ni, i1$ %clear_i, i1$ %en_i, i1$ %load_i, i1$ %down_i, i4$ %d_i) -> (i4$ %q_o, i1$ %overflow_o) {
+    %clk_i1 = prb i1$ %clk_i
+    %0 = const i1 0
+    %1 = sig i1 %0
+    %2 = const time 0s 1e
+    drv i1$ %1, %clk_i1, %2
+    %rst_ni1 = prb i1$ %rst_ni
+    %3 = sig i1 %0
+    drv i1$ %3, %rst_ni1, %2
+    %clear_i1 = prb i1$ %clear_i
+    %4 = sig i1 %0
+    drv i1$ %4, %clear_i1, %2
+    %en_i1 = prb i1$ %en_i
+    %5 = sig i1 %0
+    drv i1$ %5, %en_i1, %2
+    %load_i1 = prb i1$ %load_i
+    %6 = sig i1 %0
+    drv i1$ %6, %load_i1, %2
+    %down_i1 = prb i1$ %down_i
+    %7 = sig i1 %0
+    drv i1$ %7, %down_i1, %2
+    %8 = const i4 1
+    %9 = const i4 0
+    %10 = sig i4 %9
+    drv i4$ %10, %8, %2
+    %d_i1 = prb i4$ %d_i
+    %11 = sig i4 %9
+    drv i4$ %11, %d_i1, %2
+    inst @delta_counter.param1 (i1$ %1, i1$ %3, i1$ %4, i1$ %5, i1$ %6, i1$ %7, i4$ %10, i4$ %11) -> (i4$ %q_o, i1$ %overflow_o)
+}
