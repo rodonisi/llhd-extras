@@ -1,9 +1,15 @@
-llhd.proc @proc (%a : !llhd.sig<i1>) -> () {
+llhd.entity @root () -> () {
+    %0 = llhd.const 0 : i1
+    %1 = llhd.sig "toggle" %0 : i1
+    llhd.inst "proc" @proc (%1, %1) -> (%1) : (!llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i1>)
+}
+
+llhd.proc @proc (%a : !llhd.sig<i1>, %b : !llhd.sig<i1>) -> (%d : !llhd.sig<i1>) {
     br ^entry
 ^entry:
     %c = constant 0 : i1
-    br ^args(%c: i1)
-^args(%i : i1):
+    br ^args
+^args:
     %0 = llhd.const 1 : i1
     %1 = llhd.var %0 : i1
     %l = llhd.load %1 : !llhd.ptr<i1>
@@ -11,8 +17,8 @@ llhd.proc @proc (%a : !llhd.sig<i1>) -> () {
     llhd.wait for %t, ^end
     // br ^end
 ^end:
-    %b = addi %i, %i : i1
-    %d = addi %b, %i : i1
+    //%b = addi %i, %i : i1
+    //%d = addi %b, %i : i1
     llhd.wait for %t, ^next
 // ^end2:
 //     llhd.wait for %t, ^end3

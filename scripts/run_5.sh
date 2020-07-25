@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 bin=~/workspaces/thesis/circt-martin/build/bin/llhd-sim
-dut=~/workspaces/thesis/examples/graycode_canon.mlir
+dut=~/workspaces/thesis/llhd-extras/examples/graycode.mlir
 
 echo "" > time.txt
 

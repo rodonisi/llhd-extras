@@ -47,7 +47,7 @@ llhd.proc @acc_tb.initial.90.0 () -> (%clk : !llhd.sig<i1>, %en : !llhd.sig<i1>,
     br ^0
 ^0:
     %1 = llhd.const 0 : i32 
-    %2 = llhd.exts %1, 0 : i32 -> i1
+    %2 = llhd.extract_slice %1, 0 : i32 -> i1
     %3 = llhd.const #llhd.time<2ns, 0d, 0e> : !llhd.time
     llhd.drv %en, %2 after %3 : !llhd.sig<i1>
     br ^loop_body(%1 : i32)
