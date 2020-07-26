@@ -24,8 +24,8 @@ llhd.proc @delta_counter.param3.always_comb.1233.3(%counter_q: !llhd.sig<i5>, %c
     cond_br %5, ^if_true2, ^check
 ^if_true1:
     %d_i1 = llhd.prb %d_i : !llhd.sig<i4>
-    %6 = llhd.inss %3, %d_i1, 0 : i5, i4
-    %7 = llhd.inss %6, %1, 4 : i5, i1
+    %6 = llhd.insert_slice %3, %d_i1, 0 : i5, i4
+    %7 = llhd.insert_slice %6, %1, 4 : i5, i1
     llhd.drv %counter_d, %7 after %0 : !llhd.sig<i5>
     br ^check
 ^if_true2:
@@ -34,12 +34,12 @@ llhd.proc @delta_counter.param3.always_comb.1233.3(%counter_q: !llhd.sig<i5>, %c
     %delta_i1 = llhd.prb %delta_i : !llhd.sig<i4>
     cond_br %8, ^if_true3, ^if_false2
 ^if_false2:
-    %9 = llhd.inss %3, %delta_i1, 0 : i5, i4
+    %9 = llhd.insert_slice %3, %delta_i1, 0 : i5, i4
     %10 = addi %counter_q1, %9 : i5
     llhd.drv %counter_d, %10 after %0 : !llhd.sig<i5>
     br ^check
 ^if_true3:
-    %11 = llhd.inss %3, %delta_i1, 0 : i5, i4
+    %11 = llhd.insert_slice %3, %delta_i1, 0 : i5, i4
     %12 = subi %counter_q1, %11 : i5
     llhd.drv %counter_d, %12 after %0 : !llhd.sig<i5>
     br ^check
@@ -84,15 +84,15 @@ llhd.entity @delta_counter.param3(%clk_i: !llhd.sig<i1>, %rst_ni: !llhd.sig<i1>,
     %counter_q = llhd.sig "sig" %0 : i5
     %counter_d = llhd.sig "sig1" %0 : i5
     %counter_q1 = llhd.prb %counter_q : !llhd.sig<i5>
-    %1 = llhd.exts %counter_q1, 0 : i5 -> i4
+    %1 = llhd.extract_slice %counter_q1, 0 : i5 -> i4
     %2 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %q_o, %1 after %2 : !llhd.sig<i4>
-    %3 = llhd.exts %counter_q1, 4 : i5 -> i1
-    %4 = llhd.inss %0, %3, 0 : i5, i1
-    %5 = llhd.exts %4, 0 : i5 -> i1
+    %3 = llhd.extract_slice %counter_q1, 4 : i5 -> i1
+    %4 = llhd.insert_slice %0, %3, 0 : i5, i1
+    %5 = llhd.extract_slice %4, 0 : i5 -> i1
     llhd.drv %overflow_o, %5 after %2 : !llhd.sig<i1>
-    llhd.inst "inst" @delta_counter.param3.always_comb.1233.3(%counter_q, %clear_i, %en_i, %load_i, %down_i, %delta_i, %d_i) -> (%counter_d) : (!llhd.sig<i5>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i4>, !llhd.sig<i4>) -> (!llhd.sig<i5>)
-    llhd.inst "inst1" @delta_counter.param3.always_ff.1272.3(%counter_d, %clk_i, %rst_ni) -> (%counter_q) : (!llhd.sig<i5>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i5>)
+    llhd.inst "delta_counter.param3.always_comb.1233.3" @delta_counter.param3.always_comb.1233.3(%counter_q, %clear_i, %en_i, %load_i, %down_i, %delta_i, %d_i) -> (%counter_d) : (!llhd.sig<i5>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i4>, !llhd.sig<i4>) -> (!llhd.sig<i5>)
+    llhd.inst "delta_counter.param3.always_ff.1272.3" @delta_counter.param3.always_ff.1272.3(%counter_d, %clk_i, %rst_ni) -> (%counter_q) : (!llhd.sig<i5>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i5>)
 }
 
 llhd.entity @counter.param2(%clk_i: !llhd.sig<i1>, %rst_ni: !llhd.sig<i1>, %clear_i: !llhd.sig<i1>, %en_i: !llhd.sig<i1>, %load_i: !llhd.sig<i1>, %down_i: !llhd.sig<i1>, %d_i: !llhd.sig<i4>) -> (%q_o: !llhd.sig<i4> , %overflow_o: !llhd.sig<i1> ) {
@@ -123,28 +123,28 @@ llhd.entity @counter.param2(%clk_i: !llhd.sig<i1>, %rst_ni: !llhd.sig<i1>, %clea
     %d_i1 = llhd.prb %d_i : !llhd.sig<i4>
     %11 = llhd.sig "sig7" %9 : i4
     llhd.drv %11, %d_i1 after %2 : !llhd.sig<i4>
-    llhd.inst "inst" @delta_counter.param3(%1, %3, %4, %5, %6, %7, %10, %11) -> (%q_o, %overflow_o) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i4>, !llhd.sig<i4>) -> (!llhd.sig<i4>, !llhd.sig<i1>)
+    llhd.inst "delta_counter.param3" @delta_counter.param3(%1, %3, %4, %5, %6, %7, %10, %11) -> (%q_o, %overflow_o) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i4>, !llhd.sig<i4>) -> (!llhd.sig<i4>, !llhd.sig<i1>)
 }
 
 llhd.proc @lfsr_16bit.param4.always_comb.1432.4(%shift_q: !llhd.sig<i16>, %en_i: !llhd.sig<i1>) -> (%shift_d: !llhd.sig<i16> , %out_o: !llhd.sig<i16> ) {
     br ^body
 ^body:
     %shift_q1 = llhd.prb %shift_q : !llhd.sig<i16>
-    %0 = llhd.exts %shift_q1, 15 : i16 -> i1
+    %0 = llhd.extract_slice %shift_q1, 15 : i16 -> i1
     %1 = constant 0 : i16
-    %2 = llhd.inss %1, %0, 0 : i16, i1
-    %3 = llhd.exts %2, 0 : i16 -> i1
-    %4 = llhd.exts %shift_q1, 12 : i16 -> i4
-    %5 = llhd.inss %1, %4, 0 : i16, i4
-    %6 = llhd.exts %5, 0 : i16 -> i1
+    %2 = llhd.insert_slice %1, %0, 0 : i16, i1
+    %3 = llhd.extract_slice %2, 0 : i16 -> i1
+    %4 = llhd.extract_slice %shift_q1, 12 : i16 -> i4
+    %5 = llhd.insert_slice %1, %4, 0 : i16, i4
+    %6 = llhd.extract_slice %5, 0 : i16 -> i1
     %7 = llhd.xor %3, %6 : i1
-    %8 = llhd.exts %shift_q1, 5 : i16 -> i11
-    %9 = llhd.inss %1, %8, 0 : i16, i11
-    %10 = llhd.exts %9, 0 : i16 -> i1
+    %8 = llhd.extract_slice %shift_q1, 5 : i16 -> i11
+    %9 = llhd.insert_slice %1, %8, 0 : i16, i11
+    %10 = llhd.extract_slice %9, 0 : i16 -> i1
     %11 = llhd.xor %7, %10 : i1
-    %12 = llhd.exts %shift_q1, 1 : i16 -> i15
-    %13 = llhd.inss %1, %12, 0 : i16, i15
-    %14 = llhd.exts %13, 0 : i16 -> i1
+    %12 = llhd.extract_slice %shift_q1, 1 : i16 -> i15
+    %13 = llhd.insert_slice %1, %12, 0 : i16, i15
+    %14 = llhd.extract_slice %13, 0 : i16 -> i1
     %15 = llhd.xor %11, %14 : i1
     %16 = constant 0 : i1
     %17 = cmpi "ne", %15, %16 : i1
@@ -158,9 +158,9 @@ llhd.proc @lfsr_16bit.param4.always_comb.1432.4(%shift_q: !llhd.sig<i16>, %en_i:
     llhd.drv %out_o, %shift_q1 after %19 : !llhd.sig<i16>
     llhd.wait (%shift_q, %en_i : !llhd.sig<i16>, !llhd.sig<i1>), ^body
 ^if_true:
-    %21 = llhd.inss %1, %18, 0 : i16, i1
-    %22 = llhd.exts %shift_q1, 0 : i16 -> i15
-    %23 = llhd.inss %21, %22, 1 : i16, i15
+    %21 = llhd.insert_slice %1, %18, 0 : i16, i1
+    %22 = llhd.extract_slice %shift_q1, 0 : i16 -> i15
+    %23 = llhd.insert_slice %21, %22, 1 : i16, i15
     llhd.drv %shift_d, %23 after %19 : !llhd.sig<i16>
     br ^if_exit
 }
@@ -208,9 +208,9 @@ llhd.entity @lfsr_16bit.param4(%clk_i: !llhd.sig<i1>, %rst_ni: !llhd.sig<i1>, %e
     %0 = constant 0 : i16
     %shift_d = llhd.sig "sig" %0 : i16
     %shift_q = llhd.sig "sig1" %0 : i16
-    llhd.inst "inst" @lfsr_16bit.param4.always_comb.1432.4(%shift_q, %en_i) -> (%shift_d, %out_o) : (!llhd.sig<i16>, !llhd.sig<i1>) -> (!llhd.sig<i16>, !llhd.sig<i16>)
-    llhd.inst "inst1" @lfsr_16bit.param4.always_ff.1473.4(%shift_d, %clk_i, %rst_ni) -> (%shift_q) : (!llhd.sig<i16>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i16>)
-    llhd.inst "inst2" @lfsr_16bit.param4.initial.1491.4() -> () : () -> ()
+    llhd.inst "lfsr_16bit.param4.always_comb.1432.4" @lfsr_16bit.param4.always_comb.1432.4(%shift_q, %en_i) -> (%shift_d, %out_o) : (!llhd.sig<i16>, !llhd.sig<i1>) -> (!llhd.sig<i16>, !llhd.sig<i16>)
+    llhd.inst "lfsr_16bit.param4.always_ff.1473.4" @lfsr_16bit.param4.always_ff.1473.4(%shift_d, %clk_i, %rst_ni) -> (%shift_q) : (!llhd.sig<i16>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i16>)
+    llhd.inst "lfsr_16bit.param4.initial.1491.4" @lfsr_16bit.param4.initial.1491.4() -> () : () -> ()
 }
 
 llhd.proc @stream_delay.param1.always_comb.399.1(%state_q: !llhd.sig<i2>, %count_out: !llhd.sig<i4>, %counter_load: !llhd.sig<i4>, %valid_i: !llhd.sig<i1>, %ready_i: !llhd.sig<i1>) -> (%state_d: !llhd.sig<i2> , %load: !llhd.sig<i1> , %en: !llhd.sig<i1> , %ready_o: !llhd.sig<i1> , %valid_o: !llhd.sig<i1> ) {
@@ -245,7 +245,7 @@ llhd.proc @stream_delay.param1.always_comb.399.1(%state_q: !llhd.sig<i2>, %count
     llhd.drv %load, %5 after %0 : !llhd.sig<i1>
     llhd.drv %state_d, %4 after %0 : !llhd.sig<i2>
     %counter_load1 = llhd.prb %counter_load : !llhd.sig<i4>
-    %12 = llhd.inss %6, %counter_load1, 0 : i32, i4
+    %12 = llhd.insert_slice %6, %counter_load1, 0 : i32, i4
     %13 = constant 1 : i32
     %14 = cmpi "eq", %12, %13 : i32
     %15 = cmpi "ne", %14, %1 : i1
@@ -258,7 +258,7 @@ llhd.proc @stream_delay.param1.always_comb.399.1(%state_q: !llhd.sig<i2>, %count
 ^case_body1:
     llhd.drv %en, %5 after %0 : !llhd.sig<i1>
     %count_out1 = llhd.prb %count_out : !llhd.sig<i4>
-    %19 = llhd.inss %6, %count_out1, 0 : i32, i4
+    %19 = llhd.insert_slice %6, %count_out1, 0 : i32, i4
     %20 = cmpi "eq", %19, %6 : i32
     %21 = cmpi "ne", %20, %1 : i1
     cond_br %21, ^if_true4, ^check
@@ -361,11 +361,11 @@ llhd.entity @stream_delay.param1(%clk_i: !llhd.sig<i1>, %rst_ni: !llhd.sig<i1>, 
     %11 = llhd.sig "sig12" %2 : i4
     llhd.drv %11, %counter_load1 after %3 : !llhd.sig<i4>
     %i_counter.overflow_o.default = llhd.sig "sig13" %1 : i1
-    llhd.inst "inst" @counter.param2(%4, %5, %6, %7, %8, %10, %11) -> (%count_out, %i_counter.overflow_o.default) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i4>) -> (!llhd.sig<i4>, !llhd.sig<i1>)
+    llhd.inst "counter.param2" @counter.param2(%4, %5, %6, %7, %8, %10, %11) -> (%count_out, %i_counter.overflow_o.default) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i4>) -> (!llhd.sig<i4>, !llhd.sig<i1>)
     %12 = constant 0 : i16
     %lfsr_out = llhd.sig "sig14" %12 : i16
     %lfsr_out1 = llhd.prb %lfsr_out : !llhd.sig<i16>
-    %13 = llhd.exts %lfsr_out1, 0 : i16 -> i4
+    %13 = llhd.extract_slice %lfsr_out1, 0 : i16 -> i4
     llhd.drv %counter_load, %13 after %3 : !llhd.sig<i4>
     %14 = llhd.sig "sig15" %1 : i1
     llhd.drv %14, %clk_i1 after %3 : !llhd.sig<i1>
@@ -373,9 +373,9 @@ llhd.entity @stream_delay.param1(%clk_i: !llhd.sig<i1>, %rst_ni: !llhd.sig<i1>, 
     llhd.drv %15, %rst_ni1 after %3 : !llhd.sig<i1>
     %16 = llhd.sig "sig17" %1 : i1
     llhd.drv %16, %load1 after %3 : !llhd.sig<i1>
-    llhd.inst "inst1" @lfsr_16bit.param4(%14, %15, %16) -> (%lfsr_out) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i16>)
-    llhd.inst "inst2" @stream_delay.param1.always_comb.399.1(%state_q, %count_out, %counter_load, %valid_i, %ready_i) -> (%state_d, %load, %en, %ready_o, %valid_o) : (!llhd.sig<i2>, !llhd.sig<i4>, !llhd.sig<i4>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i2>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>)
-    llhd.inst "inst3" @stream_delay.param1.always_ff.539.1(%state_d, %clk_i, %rst_ni) -> (%state_q) : (!llhd.sig<i2>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i2>)
+    llhd.inst "lfsr_16bit.param4" @lfsr_16bit.param4(%14, %15, %16) -> (%lfsr_out) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i16>)
+    llhd.inst "stream_delay.param1.always_comb.399.1" @stream_delay.param1.always_comb.399.1(%state_q, %count_out, %counter_load, %valid_i, %ready_i) -> (%state_d, %load, %en, %ready_o, %valid_o) : (!llhd.sig<i2>, !llhd.sig<i4>, !llhd.sig<i4>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i2>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>)
+    llhd.inst "stream_delay.param1.always_ff.539.1" @stream_delay.param1.always_ff.539.1(%state_d, %clk_i, %rst_ni) -> (%state_q) : (!llhd.sig<i2>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i2>)
 }
 
 llhd.proc @stream_delay_tb.initial.694.0() -> (%clk_i: !llhd.sig<i1> , %rst_ni: !llhd.sig<i1> ) {
@@ -435,7 +435,7 @@ llhd.proc @stream_delay_tb.always.724.0(%clk_i: !llhd.sig<i1>, %ready_o: !llhd.s
     br ^init
 }
 
-llhd.entity @stream_delay_tb() -> () {
+llhd.entity @root () -> () {
     %0 = constant 0 : i1
     %clk_i = llhd.sig "sig" %0 : i1
     %1 = constant 1 : i1
@@ -466,7 +466,7 @@ llhd.entity @stream_delay_tb() -> () {
     %ready_i1 = llhd.prb %ready_i : !llhd.sig<i1>
     %8 = llhd.sig "sig12" %0 : i1
     llhd.drv %8, %ready_i1 after %3 : !llhd.sig<i1>
-    llhd.inst "inst" @stream_delay.param1(%4, %5, %6, %7, %8) -> (%ready_o, %payload_o, %valid_o) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i1>)
-    llhd.inst "inst1" @stream_delay_tb.initial.694.0() -> (%clk_i, %rst_ni) : () -> (!llhd.sig<i1>, !llhd.sig<i1>)
-    llhd.inst "inst2" @stream_delay_tb.always.724.0(%clk_i, %ready_o) -> (%payload_i) : (!llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i32>)
+    llhd.inst "stream_delay.param1" @stream_delay.param1(%4, %5, %6, %7, %8) -> (%ready_o, %payload_o, %valid_o) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i1>)
+    llhd.inst "stream_delay_tb.initial.694.0" @stream_delay_tb.initial.694.0() -> (%clk_i, %rst_ni) : () -> (!llhd.sig<i1>, !llhd.sig<i1>)
+    llhd.inst "stream_delay_tb.always.724.0" @stream_delay_tb.always.724.0(%clk_i, %ready_o) -> (%payload_i) : (!llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i32>)
 }

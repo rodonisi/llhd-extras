@@ -394,7 +394,7 @@ llhd.proc @cdc_2phase_tb.initial.1048.0(%dst_data_o: !llhd.sig<i32>, %dst_valid_
     %24 = constant 0 : i32
     %dst_data_o1 = llhd.prb %dst_data_o : !llhd.sig<i32>
     %25 = cmpi "ne", %i, %dst_data_o1 : i32
-    %26 = llhd.inss %24, %25, 0 : i32, i1
+    %26 = llhd.insert_slice %24, %25, 0 : i32, i1
     %ERRORS1 = llhd.prb %ERRORS : !llhd.sig<i32>
     %27 = addi %ERRORS1, %26 : i32
     llhd.drv %ERRORS, %27 after %22 : !llhd.sig<i32>
@@ -418,7 +418,7 @@ llhd.proc @cdc_2phase_tb.initial.1048.0(%dst_data_o: !llhd.sig<i32>, %dst_valid_
     br ^loop_body1
 }
 
-llhd.entity @cdc_2phase_tb() -> () {
+llhd.entity @root () -> () {
     %0 = constant 0 : i32
     %ERRORS = llhd.sig "sig" %0 : i32
     %1 = constant 1 : i1
