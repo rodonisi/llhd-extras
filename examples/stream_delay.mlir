@@ -437,16 +437,16 @@ llhd.proc @stream_delay_tb.always.724.0(%clk_i: !llhd.sig<i1>, %ready_o: !llhd.s
 
 llhd.entity @root () -> () {
     %0 = constant 0 : i1
-    %clk_i = llhd.sig "sig" %0 : i1
+    %clk_i = llhd.sig "clk_i" %0 : i1
     %1 = constant 1 : i1
-    %rst_ni = llhd.sig "sig1" %1 : i1
+    %rst_ni = llhd.sig "rst_ni" %1 : i1
     %2 = constant 0 : i32
-    %payload_i = llhd.sig "sig2" %2 : i32
-    %ready_o = llhd.sig "sig3" %0 : i1
-    %valid_i = llhd.sig "sig4" %0 : i1
-    %payload_o = llhd.sig "sig5" %2 : i32
-    %ready_i = llhd.sig "sig6" %0 : i1
-    %valid_o = llhd.sig "sig7" %0 : i1
+    %payload_i = llhd.sig "payload_i" %2 : i32
+    %ready_o = llhd.sig "ready_o" %0 : i1
+    %valid_i = llhd.sig "valid_i" %0 : i1
+    %payload_o = llhd.sig "payload_o" %2 : i32
+    %ready_i = llhd.sig "ready_i" %0 : i1
+    %valid_o = llhd.sig "valid_o" %0 : i1
     %3 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %valid_i, %1 after %3 : !llhd.sig<i1>
     %valid_o1 = llhd.prb %valid_o : !llhd.sig<i1>

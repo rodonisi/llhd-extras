@@ -20,8 +20,8 @@ llhd.entity @acc_param1_always_comb_176_1 (%arg0 : !llhd.sig<i32>, %arg1 : !llhd
 llhd.entity @acc_param1(%clk: !llhd.sig<i1>, %x: !llhd.sig<i32>, %en: !llhd.sig<i32>) -> (%q: !llhd.sig<i32> ) {
     %0 = constant 0 : i32
     %d = llhd.sig "sig" %0 : i32
-    llhd.inst "inst" @acc_param1_always_ff_139_1(%d, %clk) -> (%q) : (!llhd.sig<i32>, !llhd.sig<i1>) -> (!llhd.sig<i32>)
-    llhd.inst "inst1" @acc_param1_always_comb_176_1(%x, %en, %q) -> (%d) : (!llhd.sig<i32>, !llhd.sig<i32>, !llhd.sig<i32>) -> (!llhd.sig<i32>)
+    llhd.inst "acc_param1_always_ff_139_1" @acc_param1_always_ff_139_1(%d, %clk) -> (%q) : (!llhd.sig<i32>, !llhd.sig<i1>) -> (!llhd.sig<i32>)
+    llhd.inst "acc_param1_always_comb_176_1" @acc_param1_always_comb_176_1(%x, %en, %q) -> (%d) : (!llhd.sig<i32>, !llhd.sig<i32>, !llhd.sig<i32>) -> (!llhd.sig<i32>)
 }
 
 llhd.proc @acc_tb_initial_90_0() -> (%clk: !llhd.sig<i1> , %en: !llhd.sig<i1> , %x: !llhd.sig<i32> ) {
@@ -52,17 +52,17 @@ llhd.proc @acc_tb_initial_90_0() -> (%clk: !llhd.sig<i1> , %en: !llhd.sig<i1> , 
     llhd.halt
 }
 
-llhd.entity @acc_tb() -> () {
+llhd.entity @root() -> () {
     %0 = constant 0 : i1
-    %clk = llhd.sig "sig" %0 : i1
-    %en = llhd.sig "sig1" %0 : i1
+    %clk = llhd.sig "clk" %0 : i1
+    %en = llhd.sig "en" %0 : i1
     %1 = constant 0 : i32
-    %x = llhd.sig "sig2" %1 : i32
-    %i_dut_clk_default = llhd.sig "sig3" %0 : i1
-    %i_dut_x_default = llhd.sig "sig4" %1 : i32
-    %i_dut_en_default = llhd.sig "sig5" %1 : i32
-    %i_dut_q_default = llhd.sig "sig6" %1 : i32
-    llhd.inst "inst" @acc_param1(%i_dut_clk_default, %i_dut_x_default, %i_dut_en_default) -> (%i_dut_q_default) : (!llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i32>) -> (!llhd.sig<i32>)
-    llhd.inst "inst1" @acc_tb_initial_90_0() -> (%clk, %en, %x) : () -> (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i32>)
+    %x = llhd.sig "x" %1 : i32
+    %i_dut_clk_default = llhd.sig "i_dut.clk.default" %0 : i1
+    %i_dut_x_default = llhd.sig "i_dut.x.default" %1 : i32
+    %i_dut_en_default = llhd.sig "i_dut.en.default" %1 : i32
+    %i_dut_q_default = llhd.sig "i_dut.q.default" %1 : i32
+    llhd.inst "acc.param1.always_ff" @acc_param1(%i_dut_clk_default, %i_dut_x_default, %i_dut_en_default) -> (%i_dut_q_default) : (!llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i32>) -> (!llhd.sig<i32>)
+    llhd.inst "acc_tb" @acc_tb_initial_90_0() -> (%clk, %en, %x) : () -> (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i32>)
 }
 

@@ -21,24 +21,28 @@ llhd.proc @proc () -> (%a : !llhd.sig<i32>, %b : !llhd.sig<i32>) {
   llhd.wait (%b : !llhd.sig<i32>), ^timed_observe
 ^timed_observe:
     // run at 0ns 3e
-  %c1 = llhd.const 2 : i32
   %p1 = llhd.prb %b : !llhd.sig<i32>
   %a1 = addi %c0, %p1 : i32
   llhd.drv %b, %a1 after %t1 : !llhd.sig<i32>   // drive 2 at 0ns 4e
-  llhd.wait for %t2, (%b : !llhd.sig<i32>), ^observe_both // time trigger at 0ns 5e
-^observe_both:
+  llhd.wait for %t2, (%b : !llhd.sig<i32>), ^overlap_invalidated // time trigger at 0ns 5e
+^overlap_invalidated:
     // run at 0ns 4e
-  %c2 = llhd.const 3 : i32
   %p2 = llhd.prb %b : !llhd.sig<i32>
   %a2 = addi %c0, %p2 : i32
-  llhd.drv %a, %a2 after %t2 : !llhd.sig<i32>   // drive 3 at 0ns 6e
-  llhd.drv %b, %a2 after %t2 : !llhd.sig<i32>   // drive 3 at 0ns 6e
-  llhd.wait (%a, %b : !llhd.sig<i32>, !llhd.sig<i32>), ^end
-^end:
+  llhd.drv %b, %a2 after %t1 : !llhd.sig<i32>   // drive 3 at 0ns 5e
+  llhd.wait for %t2, ^observe_both
+^observe_both:
     // run at 0ns 6e
   %p3 = llhd.prb %b : !llhd.sig<i32>
   %a3 = addi %c0, %p3 : i32
-  llhd.drv %b, %a3 after %t2 : !llhd.sig<i32>   // drive 4 at 0ns 8e
+  llhd.drv %a, %a3 after %t2 : !llhd.sig<i32>   // drive 3 at 0ns 8e
+  llhd.drv %b, %a3 after %t2 : !llhd.sig<i32>   // drive 3 at 0ns 8e
+  llhd.wait (%a, %b : !llhd.sig<i32>, !llhd.sig<i32>), ^end
+^end:
+    // run at 0ns 6e
+  %p4 = llhd.prb %b : !llhd.sig<i32>
+  %a4 = addi %c0, %p4 : i32
+  llhd.drv %b, %a4 after %t2 : !llhd.sig<i32>   // drive 4 at 0ns 10e
   llhd.halt
 }
 

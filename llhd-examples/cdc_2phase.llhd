@@ -364,7 +364,7 @@ proc %cdc_2phase_tb.initial.1048.0 (i32$ %dst_data_o, i1$ %dst_valid_o) -> (i32$
     %11 = const i32 0
     br %loop_body
 loop_body:
-    %i = phi i32 [%12, %13], [%11, %8]
+    %i = phi i32 [%11, %8], [%12, %13]
     %14 = const i32 500000
     %15 = slt i32 %i, %14
     br %15, %loop_exit, %loop_body1

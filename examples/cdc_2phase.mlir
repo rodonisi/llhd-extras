@@ -6,7 +6,7 @@ llhd.proc @cdc_2phase_src.param2.always_ff.287.2(%rst_ni: !llhd.sig<i1>, %clk_i:
     llhd.wait (%clk_i, %rst_ni : !llhd.sig<i1>, !llhd.sig<i1>), ^check
 ^check:
     %clk_i2 = llhd.prb %clk_i : !llhd.sig<i1>
-    %0 = constant 0 : i1
+    %0 = llhd.const 0 : i1
     %1 = cmpi "eq", %clk_i1, %0 : i1
     %2 = cmpi "ne", %clk_i2, %0 : i1
     %posedge = llhd.and %1, %2 : i1
@@ -32,7 +32,7 @@ llhd.proc @cdc_2phase_src.param2.always_ff.287.2(%rst_ni: !llhd.sig<i1>, %clk_i:
     cond_br %12, ^if_true1, ^init
 ^if_true:
     llhd.drv %req_src_q, %0 after %8 : !llhd.sig<i1>
-    %13 = constant 0 : i32
+    %13 = llhd.const 0 : i32
     llhd.drv %data_src_q, %13 after %8 : !llhd.sig<i32>
     br ^init
 ^if_true1:
@@ -52,7 +52,7 @@ llhd.proc @cdc_2phase_src.param2.always_ff.348.2(%rst_ni: !llhd.sig<i1>, %clk_i:
     llhd.wait (%clk_i, %rst_ni : !llhd.sig<i1>, !llhd.sig<i1>), ^check
 ^check:
     %clk_i2 = llhd.prb %clk_i : !llhd.sig<i1>
-    %0 = constant 0 : i1
+    %0 = llhd.const 0 : i1
     %1 = cmpi "eq", %clk_i1, %0 : i1
     %2 = cmpi "ne", %clk_i2, %0 : i1
     %posedge = llhd.and %1, %2 : i1
@@ -81,12 +81,12 @@ llhd.proc @cdc_2phase_src.param2.always_ff.348.2(%rst_ni: !llhd.sig<i1>, %clk_i:
 }
 
 llhd.entity @cdc_2phase_src.param2(%rst_ni: !llhd.sig<i1>, %clk_i: !llhd.sig<i1>, %data_i: !llhd.sig<i32>, %valid_i: !llhd.sig<i1>, %async_ack_i: !llhd.sig<i1>) -> (%ready_o: !llhd.sig<i1> , %async_req_o: !llhd.sig<i1> , %async_data_o: !llhd.sig<i32> ) {
-    %0 = constant 0 : i1
-    %req_src_q = llhd.sig "sig" %0 : i1
-    %ack_src_q = llhd.sig "sig1" %0 : i1
-    %ack_q = llhd.sig "sig2" %0 : i1
-    %1 = constant 0 : i32
-    %data_src_q = llhd.sig "sig3" %1 : i32
+    %0 = llhd.const 0 : i1
+    %req_src_q = llhd.sig "req_src_q" %0 : i1
+    %ack_src_q = llhd.sig "ack_src_q" %0 : i1
+    %ack_q = llhd.sig "ack_q" %0 : i1
+    %1 = llhd.const 0 : i32
+    %data_src_q = llhd.sig "data_src_q" %1 : i32
     %req_src_q1 = llhd.prb %req_src_q : !llhd.sig<i1>
     %ack_q1 = llhd.prb %ack_q : !llhd.sig<i1>
     %2 = cmpi "eq", %req_src_q1, %ack_q1 : i1
@@ -107,7 +107,7 @@ llhd.proc @cdc_2phase_dst.param3.always_ff.483.3(%rst_ni: !llhd.sig<i1>, %clk_i:
     llhd.wait (%clk_i, %rst_ni : !llhd.sig<i1>, !llhd.sig<i1>), ^check
 ^check:
     %clk_i2 = llhd.prb %clk_i : !llhd.sig<i1>
-    %0 = constant 0 : i1
+    %0 = llhd.const 0 : i1
     %1 = cmpi "eq", %clk_i1, %0 : i1
     %2 = cmpi "ne", %clk_i2, %0 : i1
     %posedge = llhd.and %1, %2 : i1
@@ -149,7 +149,7 @@ llhd.proc @cdc_2phase_dst.param3.always_ff.535.3(%req_q0: !llhd.sig<i1>, %req_q1
     llhd.wait (%clk_i, %rst_ni : !llhd.sig<i1>, !llhd.sig<i1>), ^check
 ^check:
     %clk_i2 = llhd.prb %clk_i : !llhd.sig<i1>
-    %0 = constant 0 : i1
+    %0 = llhd.const 0 : i1
     %1 = cmpi "eq", %clk_i1, %0 : i1
     %2 = cmpi "ne", %clk_i2, %0 : i1
     %posedge = llhd.and %1, %2 : i1
@@ -178,7 +178,7 @@ llhd.proc @cdc_2phase_dst.param3.always_ff.535.3(%req_q0: !llhd.sig<i1>, %req_q1
     %15 = cmpi "ne", %14, %0 : i1
     cond_br %15, ^if_true1, ^init
 ^if_true:
-    %16 = constant 0 : i32
+    %16 = llhd.const 0 : i32
     llhd.drv %data_dst_q, %16 after %8 : !llhd.sig<i32>
     br ^init
 ^if_true1:
@@ -195,7 +195,7 @@ llhd.proc @cdc_2phase_dst.param3.always_ff.618.3(%rst_ni: !llhd.sig<i1>, %clk_i:
     llhd.wait (%clk_i, %rst_ni : !llhd.sig<i1>, !llhd.sig<i1>), ^check
 ^check:
     %clk_i2 = llhd.prb %clk_i : !llhd.sig<i1>
-    %0 = constant 0 : i1
+    %0 = llhd.const 0 : i1
     %1 = cmpi "eq", %clk_i1, %0 : i1
     %2 = cmpi "ne", %clk_i2, %0 : i1
     %posedge = llhd.and %1, %2 : i1
@@ -227,12 +227,12 @@ llhd.proc @cdc_2phase_dst.param3.always_ff.618.3(%rst_ni: !llhd.sig<i1>, %clk_i:
 }
 
 llhd.entity @cdc_2phase_dst.param3(%rst_ni: !llhd.sig<i1>, %clk_i: !llhd.sig<i1>, %ready_i: !llhd.sig<i1>, %async_req_i: !llhd.sig<i1>, %async_data_i: !llhd.sig<i32>) -> (%data_o: !llhd.sig<i32> , %valid_o: !llhd.sig<i1> , %async_ack_o: !llhd.sig<i1> ) {
-    %0 = constant 0 : i1
+    %0 = llhd.const 0 : i1
     %req_dst_q = llhd.sig "sig" %0 : i1
     %req_q0 = llhd.sig "sig1" %0 : i1
     %req_q1 = llhd.sig "sig2" %0 : i1
     %ack_dst_q = llhd.sig "sig3" %0 : i1
-    %1 = constant 0 : i32
+    %1 = llhd.const 0 : i32
     %data_dst_q = llhd.sig "sig4" %1 : i32
     %ack_dst_q1 = llhd.prb %ack_dst_q : !llhd.sig<i1>
     %req_q11 = llhd.prb %req_q1 : !llhd.sig<i1>
@@ -248,10 +248,10 @@ llhd.entity @cdc_2phase_dst.param3(%rst_ni: !llhd.sig<i1>, %clk_i: !llhd.sig<i1>
 }
 
 llhd.entity @cdc_2phase.param1(%src_rst_ni: !llhd.sig<i1>, %src_clk_i: !llhd.sig<i1>, %src_data_i: !llhd.sig<i32>, %src_valid_i: !llhd.sig<i1>, %dst_rst_ni: !llhd.sig<i1>, %dst_clk_i: !llhd.sig<i1>, %dst_ready_i: !llhd.sig<i1>) -> (%src_ready_o: !llhd.sig<i1> , %dst_data_o: !llhd.sig<i32> , %dst_valid_o: !llhd.sig<i1> ) {
-    %0 = constant 0 : i1
+    %0 = llhd.const 0 : i1
     %async_req = llhd.sig "sig" %0 : i1
     %async_ack = llhd.sig "sig1" %0 : i1
-    %1 = constant 0 : i32
+    %1 = llhd.const 0 : i32
     %async_data = llhd.sig "sig2" %1 : i32
     %src_rst_ni1 = llhd.prb %src_rst_ni : !llhd.sig<i1>
     %2 = llhd.sig "sig3" %0 : i1
@@ -291,37 +291,37 @@ llhd.entity @cdc_2phase.param1(%src_rst_ni: !llhd.sig<i1>, %src_clk_i: !llhd.sig
 llhd.proc @cdc_2phase_tb.initial.903.0(%src_ready_o: !llhd.sig<i1>) -> (%src_rst_ni: !llhd.sig<i1> , %src_clk_i: !llhd.sig<i1> , %src_data_i: !llhd.sig<i32> , %src_valid_i: !llhd.sig<i1> ) {
     br ^0
 ^0:
-    %1 = constant 0 : i1
+    %1 = llhd.const 0 : i1
     %2 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %src_rst_ni, %1 after %2 : !llhd.sig<i1>
     %3 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
     llhd.wait  for %3, ^4
 ^4:
-    %5 = constant 1 : i1
+    %5 = llhd.const 1 : i1
     %6 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %src_rst_ni, %5 after %6 : !llhd.sig<i1>
     %7 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
     llhd.wait  for %7, ^8
 ^8:
-    %9 = constant 0 : i32
+    %9 = llhd.const 0 : i32
     br ^loop_body(%9: i32)
 ^loop_body(%i: i32):
-    %10 = constant 500000 : i32
+    %10 = llhd.const 500000 : i32
     %11 = cmpi "slt", %i, %10 : i32
     cond_br %11, ^loop_body1, ^loop_exit
 ^12:
-    %13 = constant 1 : i32
+    %13 = llhd.const 1 : i32
     %14 = addi %i, %13 : i32
     br ^loop_body(%14: i32)
 ^loop_exit:
     llhd.halt
 ^loop_body1:
     %src_ready_o1 = llhd.prb %src_ready_o : !llhd.sig<i1>
-    %15 = constant 0 : i1
+    %15 = llhd.const 0 : i1
     %16 = cmpi "ne", %src_ready_o1, %15 : i1
     %17 = llhd.not %16 : i1
     %18 = cmpi "ne", %17, %15 : i1
-    %19 = constant 1 : i1
+    %19 = llhd.const 1 : i1
     %20 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     %21 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
     cond_br %18, ^loop_continue, ^loop_exit1
@@ -334,13 +334,13 @@ llhd.proc @cdc_2phase_tb.initial.903.0(%src_ready_o: !llhd.sig<i1>) -> (%src_rst
     llhd.drv %src_clk_i, %19 after %20 : !llhd.sig<i1>
     llhd.wait  for %21, ^23
 ^22:
-    %24 = constant 0 : i1
+    %24 = llhd.const 0 : i1
     %25 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %src_clk_i, %24 after %25 : !llhd.sig<i1>
     %26 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
     llhd.wait  for %26, ^12
 ^23:
-    %27 = constant 0 : i1
+    %27 = llhd.const 0 : i1
     %28 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %src_clk_i, %27 after %28 : !llhd.sig<i1>
     %29 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
@@ -352,46 +352,46 @@ llhd.proc @cdc_2phase_tb.initial.903.0(%src_ready_o: !llhd.sig<i1>) -> (%src_rst
 llhd.proc @cdc_2phase_tb.initial.1048.0(%dst_data_o: !llhd.sig<i32>, %dst_valid_o: !llhd.sig<i1>) -> (%ERRORS: !llhd.sig<i32> , %dst_rst_ni: !llhd.sig<i1> , %dst_clk_i: !llhd.sig<i1> , %dst_ready_i: !llhd.sig<i1> ) {
     br ^0
 ^0:
-    %1 = constant 0 : i1
+    %1 = llhd.const 0 : i1
     %2 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %dst_rst_ni, %1 after %2 : !llhd.sig<i1>
     %3 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
     llhd.wait  for %3, ^4
 ^4:
-    %5 = constant 1 : i1
+    %5 = llhd.const 1 : i1
     %6 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %dst_rst_ni, %5 after %6 : !llhd.sig<i1>
     %7 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
     llhd.wait  for %7, ^8
 ^8:
-    %9 = constant 1 : i1
+    %9 = llhd.const 1 : i1
     %10 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %dst_ready_i, %9 after %10 : !llhd.sig<i1>
-    %11 = constant 0 : i32
+    %11 = llhd.const 0 : i32
     br ^loop_body(%11: i32)
 ^loop_body(%i: i32):
-    %12 = constant 500000 : i32
+    %12 = llhd.const 500000 : i32
     %13 = cmpi "slt", %i, %12 : i32
     cond_br %13, ^loop_body1, ^loop_exit
 ^14:
-    %15 = constant 1 : i32
+    %15 = llhd.const 1 : i32
     %16 = addi %i, %15 : i32
     br ^loop_body(%16: i32)
 ^loop_exit:
     llhd.halt
 ^loop_body1:
     %dst_valid_o1 = llhd.prb %dst_valid_o : !llhd.sig<i1>
-    %17 = constant 0 : i1
+    %17 = llhd.const 0 : i1
     %18 = cmpi "ne", %dst_valid_o1, %17 : i1
     %19 = llhd.not %18 : i1
     %20 = cmpi "ne", %19, %17 : i1
-    %21 = constant 1 : i1
+    %21 = llhd.const 1 : i1
     %22 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     %23 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
     cond_br %20, ^loop_continue, ^loop_exit1
 ^loop_exit1:
     llhd.drv %dst_clk_i, %21 after %22 : !llhd.sig<i1>
-    %24 = constant 0 : i32
+    %24 = llhd.const 0 : i32
     %dst_data_o1 = llhd.prb %dst_data_o : !llhd.sig<i32>
     %25 = cmpi "ne", %i, %dst_data_o1 : i32
     %26 = llhd.insert_slice %24, %25, 0 : i32, i1
@@ -403,13 +403,13 @@ llhd.proc @cdc_2phase_tb.initial.1048.0(%dst_data_o: !llhd.sig<i32>, %dst_valid_
     llhd.drv %dst_clk_i, %21 after %22 : !llhd.sig<i1>
     llhd.wait  for %23, ^29
 ^28:
-    %30 = constant 0 : i1
+    %30 = llhd.const 0 : i1
     %31 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %dst_clk_i, %30 after %31 : !llhd.sig<i1>
     %32 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
     llhd.wait  for %32, ^14
 ^29:
-    %33 = constant 0 : i1
+    %33 = llhd.const 0 : i1
     %34 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %dst_clk_i, %33 after %34 : !llhd.sig<i1>
     %35 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
@@ -418,21 +418,21 @@ llhd.proc @cdc_2phase_tb.initial.1048.0(%dst_data_o: !llhd.sig<i32>, %dst_valid_
     br ^loop_body1
 }
 
-llhd.entity @root () -> () {
-    %0 = constant 0 : i32
-    %ERRORS = llhd.sig "sig" %0 : i32
-    %1 = constant 1 : i1
-    %src_rst_ni = llhd.sig "sig1" %1 : i1
-    %2 = constant 0 : i1
-    %src_clk_i = llhd.sig "sig2" %2 : i1
-    %src_data_i = llhd.sig "sig3" %0 : i32
-    %src_valid_i = llhd.sig "sig4" %2 : i1
+llhd.entity @root() -> () {
+    %0 = llhd.const 0 : i32
+    %ERRORS = llhd.sig "ERRORS" %0 : i32
+    %1 = llhd.const 1 : i1
+    %src_rst_ni = llhd.sig "src_rst_ni" %1 : i1
+    %2 = llhd.const 0 : i1
+    %src_clk_i = llhd.sig "src_clk_i" %2 : i1
+    %src_data_i = llhd.sig "src_data_i" %0 : i32
+    %src_valid_i = llhd.sig "src_valid_i" %2 : i1
     %src_ready_o = llhd.sig "sig5" %2 : i1
-    %dst_rst_ni = llhd.sig "sig6" %1 : i1
-    %dst_clk_i = llhd.sig "sig7" %2 : i1
-    %dst_data_o = llhd.sig "sig8" %0 : i32
-    %dst_valid_o = llhd.sig "sig9" %2 : i1
-    %dst_ready_i = llhd.sig "sig10" %2 : i1
+    %dst_rst_ni = llhd.sig "dst_rst_ni" %1 : i1
+    %dst_clk_i = llhd.sig "dst_clk_i" %2 : i1
+    %dst_data_o = llhd.sig "dst_data_o" %0 : i32
+    %dst_valid_o = llhd.sig "dst_valid_o" %2 : i1
+    %dst_ready_i = llhd.sig "dst_ready_i" %2 : i1
     %src_rst_ni1 = llhd.prb %src_rst_ni : !llhd.sig<i1>
     %3 = llhd.sig "sig11" %2 : i1
     %4 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
