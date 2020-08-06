@@ -10,27 +10,28 @@ llhd.proc @fifo_v3.param1.always_comb.626.1(%read_pointer_q: !llhd.sig<i4>, %wri
     llhd.drv %status_cnt_n, %status_cnt_q1 after %0 : !llhd.sig<i5>
     %data_i1 = llhd.prb %data_i : !llhd.sig<i32>
     %mem_q1 = llhd.prb %mem_q : !llhd.sig<!llhd.array<16xi32>>
-    %1 = constant 0 : i32
-    %2 = llhd.univec %1 : i32 -> !llhd.array<16xi32>
-    %3 = llhd.shr %mem_q1, %2, %read_pointer_q1 : (!llhd.array<16xi32>, !llhd.array<16xi32>, i4) -> !llhd.array<16xi32>
-    %4 = llhd.extract_element %3, 0 : !llhd.array<16xi32> -> i32
-    %5 = llhd.vec %4, %data_i1 : !llhd.array<2xi32>
+    %1 = llhd.const 0 : i32
+    %2 = llhd.array_uniform %1 : !llhd.array<16xi32>
+    // %3 = llhd.shr %mem_q1, %2, %read_pointer_q1 : (!llhd.array<16xi32>, !llhd.array<16xi32>, i4) -> !llhd.array<16xi32>
+    // %4 = llhd.extract_element %3, 0 : !llhd.array<16xi32> -> i32
+    %4 = llhd.dyn_extract_element %mem_q1, %read_pointer_q1 : (!llhd.array<16xi32>, i4) -> i32
+    %5 = llhd.array %4, %data_i1 : !llhd.array<2xi32>
     %6 = llhd.extract_element %5, 0 : !llhd.array<2xi32> -> i32
     llhd.drv %data_o, %6 after %0 : !llhd.sig<i32>
     llhd.drv %mem_n, %mem_q1 after %0 : !llhd.sig<!llhd.array<16xi32>>
-    %7 = constant 1 : i1
+    %7 = llhd.const 1 : i1
     llhd.drv %gate_clock, %7 after %0 : !llhd.sig<i1>
     %push_i1 = llhd.prb %push_i : !llhd.sig<i1>
-    %8 = constant 0 : i1
+    %8 = llhd.const 0 : i1
     %9 = cmpi "ne", %push_i1, %8 : i1
     %full_o1 = llhd.prb %full_o : !llhd.sig<i1>
     %10 = llhd.not %full_o1 : i1
     %11 = cmpi "ne", %10, %8 : i1
     %12 = llhd.and %9, %11 : i1
     %13 = cmpi "ne", %12, %8 : i1
-    %14 = constant 0 : i4
-    %15 = constant 4294967295 : i32
-    %16 = constant 1 : i32
+    %14 = llhd.const 0 : i4
+    %15 = llhd.const 4294967295 : i32
+    %16 = llhd.const 1 : i32
     %17 = llhd.insert_slice %1, %status_cnt_q1, 0 : i32, i5
     cond_br %13, ^if_true, ^if_exit
 ^if_exit:
@@ -43,11 +44,11 @@ llhd.proc @fifo_v3.param1.always_comb.626.1(%read_pointer_q: !llhd.sig<i4>, %wri
     %22 = cmpi "ne", %21, %8 : i1
     cond_br %22, ^if_true2, ^if_exit1
 ^if_true:
-    %23 = llhd.dyn_extract_field %mem_n, %write_pointer_q1 : (!llhd.sig<!llhd.array<16xi32>>, i4) -> !llhd.sig<i32>
+    %23 = llhd.dyn_extract_element %mem_n, %write_pointer_q1 : (!llhd.sig<!llhd.array<16xi32>>, i4) -> !llhd.sig<i32>
     llhd.drv %23, %data_i1 after %0 : !llhd.sig<i32>
     llhd.drv %gate_clock, %8 after %0 : !llhd.sig<i1>
     %24 = llhd.insert_slice %1, %write_pointer_q1, 0 : i32, i4
-    %25 = llhd.vec %1, %15 : !llhd.array<2xi32>
+    %25 = llhd.array %1, %15 : !llhd.array<2xi32>
     %26 = llhd.extract_element %25, 0 : !llhd.array<2xi32> -> i32
     %27 = llhd.insert_slice %26, %14, 0 : i32, i4
     %28 = subi %27, %16 : i32
@@ -73,7 +74,7 @@ llhd.proc @fifo_v3.param1.always_comb.626.1(%read_pointer_q: !llhd.sig<i4>, %wri
 ^if_true2:
     %read_pointer_n1 = llhd.prb %read_pointer_n : !llhd.sig<i4>
     %39 = llhd.insert_slice %1, %read_pointer_n1, 0 : i32, i4
-    %40 = llhd.vec %1, %15 : !llhd.array<2xi32>
+    %40 = llhd.array %1, %15 : !llhd.array<2xi32>
     %41 = llhd.extract_element %40, 0 : !llhd.array<2xi32> -> i32
     %42 = llhd.insert_slice %41, %14, 0 : i32, i4
     %43 = subi %42, %16 : i32
@@ -114,7 +115,7 @@ llhd.proc @fifo_v3.param1.always_ff.745.1(%read_pointer_n: !llhd.sig<i4>, %write
     llhd.wait (%clk_i, %rst_ni : !llhd.sig<i1>, !llhd.sig<i1>), ^check
 ^check:
     %clk_i2 = llhd.prb %clk_i : !llhd.sig<i1>
-    %0 = constant 0 : i1
+    %0 = llhd.const 0 : i1
     %1 = cmpi "eq", %clk_i1, %0 : i1
     %2 = cmpi "ne", %clk_i2, %0 : i1
     %posedge = llhd.and %1, %2 : i1
@@ -127,9 +128,9 @@ llhd.proc @fifo_v3.param1.always_ff.745.1(%read_pointer_n: !llhd.sig<i4>, %write
 ^event:
     %5 = llhd.not %rst_ni2 : i1
     %6 = cmpi "ne", %5, %0 : i1
-    %7 = constant 0 : i4
+    %7 = llhd.const 0 : i4
     %8 = llhd.const #llhd.time<0s, 1d, 0e> : !llhd.time
-    %9 = constant 0 : i5
+    %9 = llhd.const 0 : i5
     cond_br %6, ^if_true, ^if_false
 ^if_false:
     %flush_i1 = llhd.prb %flush_i : !llhd.sig<i1>
@@ -163,7 +164,7 @@ llhd.proc @fifo_v3.param1.always_ff.789.1(%gate_clock: !llhd.sig<i1>, %mem_n: !l
     llhd.wait (%clk_i, %rst_ni : !llhd.sig<i1>, !llhd.sig<i1>), ^check
 ^check:
     %clk_i2 = llhd.prb %clk_i : !llhd.sig<i1>
-    %0 = constant 0 : i1
+    %0 = llhd.const 0 : i1
     %1 = cmpi "eq", %clk_i1, %0 : i1
     %2 = cmpi "ne", %clk_i2, %0 : i1
     %posedge = llhd.and %1, %2 : i1
@@ -185,8 +186,8 @@ llhd.proc @fifo_v3.param1.always_ff.789.1(%gate_clock: !llhd.sig<i1>, %mem_n: !l
     %10 = cmpi "ne", %9, %0 : i1
     cond_br %10, ^if_true1, ^init
 ^if_true:
-    %11 = constant 0 : i32
-    %12 = llhd.vec %11, %11, %11, %11, %11, %11, %11, %11, %11, %11, %11, %11, %11, %11, %11, %11 : !llhd.array<16xi32>
+    %11 = llhd.const 0 : i32
+    %12 = llhd.array %11, %11, %11, %11, %11, %11, %11, %11, %11, %11, %11, %11, %11, %11, %11, %11 : !llhd.array<16xi32>
     llhd.drv %mem_q, %12 after %7 : !llhd.sig<!llhd.array<16xi32>>
     br ^init
 ^if_true1:
@@ -202,25 +203,25 @@ llhd.proc @fifo_v3.param1.initial.805.1() -> () {
 }
 
 llhd.entity @fifo_v3.param1(%clk_i: !llhd.sig<i1>, %rst_ni: !llhd.sig<i1>, %flush_i: !llhd.sig<i1>, %testmode_i: !llhd.sig<i1>, %data_i: !llhd.sig<i32>, %push_i: !llhd.sig<i1>, %pop_i: !llhd.sig<i1>) -> (%full_o: !llhd.sig<i1> , %empty_o: !llhd.sig<i1> , %usage_o: !llhd.sig<i4> , %data_o: !llhd.sig<i32> ) {
-    %0 = constant 0 : i1
-    %gate_clock = llhd.sig "sig" %0 : i1
-    %1 = constant 0 : i4
-    %read_pointer_n = llhd.sig "sig1" %1 : i4
-    %read_pointer_q = llhd.sig "sig2" %1 : i4
-    %write_pointer_n = llhd.sig "sig3" %1 : i4
-    %write_pointer_q = llhd.sig "sig4" %1 : i4
-    %2 = constant 0 : i5
-    %status_cnt_n = llhd.sig "sig5" %2 : i5
-    %status_cnt_q = llhd.sig "sig6" %2 : i5
-    %3 = constant 0 : i32
-    %4 = llhd.vec %3, %3, %3, %3, %3, %3, %3, %3, %3, %3, %3, %3, %3, %3, %3, %3 : !llhd.array<16xi32>
-    %mem_n = llhd.sig "sig7" %4 : !llhd.array<16xi32>
-    %mem_q = llhd.sig "sig8" %4 : !llhd.array<16xi32>
+    %0 = llhd.const 0 : i1
+    %gate_clock = llhd.sig "gate_clock" %0 : i1
+    %1 = llhd.const 0 : i4
+    %read_pointer_n = llhd.sig "read_pointer_n" %1 : i4
+    %read_pointer_q = llhd.sig "read_pointer_q" %1 : i4
+    %write_pointer_n = llhd.sig "write_pointer_n" %1 : i4
+    %write_pointer_q = llhd.sig "write_pointer_q" %1 : i4
+    %2 = llhd.const 0 : i5
+    %status_cnt_n = llhd.sig "status_cnt_n" %2 : i5
+    %status_cnt_q = llhd.sig "status_cnt_q" %2 : i5
+    %3 = llhd.const 0 : i32
+    %4 = llhd.array %3, %3, %3, %3, %3, %3, %3, %3, %3, %3, %3, %3, %3, %3, %3, %3 : !llhd.array<16xi32>
+    %mem_n = llhd.sig "mem_n" %4 : !llhd.array<16xi32>
+    %mem_q = llhd.sig "mem_q" %4 : !llhd.array<16xi32>
     %status_cnt_q1 = llhd.prb %status_cnt_q : !llhd.sig<i5>
     %5 = llhd.extract_slice %status_cnt_q1, 0 : i5 -> i4
     %6 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %usage_o, %5 after %6 : !llhd.sig<i4>
-    %7 = constant 16 : i5
+    %7 = llhd.const 16 : i5
     %8 = cmpi "eq", %status_cnt_q1, %7 : i5
     llhd.drv %full_o, %8 after %6 : !llhd.sig<i1>
     %9 = llhd.insert_slice %3, %status_cnt_q1, 0 : i32, i5
@@ -235,32 +236,32 @@ llhd.entity @fifo_v3.param1(%clk_i: !llhd.sig<i1>, %rst_ni: !llhd.sig<i1>, %flus
 llhd.proc @fifo_v3_tb.initial.979.0() -> (%clk_i: !llhd.sig<i1> , %rst_ni: !llhd.sig<i1> ) {
     br ^0
 ^0:
-    %1 = constant 0 : i1
+    %1 = llhd.const 0 : i1
     %2 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
     llhd.drv %rst_ni, %1 after %2 : !llhd.sig<i1>
-    %3 = constant 1 : i1
+    %3 = llhd.const 1 : i1
     %4 = llhd.const #llhd.time<2ns, 0d, 0e> : !llhd.time
     llhd.drv %rst_ni, %3 after %4 : !llhd.sig<i1>
     %5 = llhd.const #llhd.time<4ns, 0d, 0e> : !llhd.time
     llhd.wait  for %5, ^6
 ^6:
-    %7 = constant 1000000 : i32
+    %7 = llhd.const 1000000 : i32
     br ^loop_body(%7: i32)
 ^loop_body(%8: i32):
-    %9 = constant 0 : i32
+    %9 = llhd.const 0 : i32
     %10 = cmpi "ne", %8, %9 : i32
     cond_br %10, ^loop_continue, ^loop_exit
 ^11:
-    %12 = constant 1 : i32
+    %12 = llhd.const 1 : i32
     %13 = subi %8, %12 : i32
     br ^loop_body(%13: i32)
 ^loop_exit:
     llhd.halt
 ^loop_continue:
-    %14 = constant 1 : i1
+    %14 = llhd.const 1 : i1
     %15 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
     llhd.drv %clk_i, %14 after %15 : !llhd.sig<i1>
-    %16 = constant 0 : i1
+    %16 = llhd.const 0 : i1
     %17 = llhd.const #llhd.time<2ns, 0d, 0e> : !llhd.time
     llhd.drv %clk_i, %16 after %17 : !llhd.sig<i1>
     llhd.wait  for %17, ^11
@@ -270,7 +271,7 @@ llhd.proc @fifo_v3_tb.always_comb.995.0(%full_o: !llhd.sig<i1>) -> (%push_i: !ll
     br ^body
 ^body:
     %full_o1 = llhd.prb %full_o : !llhd.sig<i1>
-    %0 = constant 0 : i1
+    %0 = llhd.const 0 : i1
     %1 = cmpi "ne", %full_o1, %0 : i1
     %2 = llhd.not %1 : i1
     %3 = llhd.const #llhd.time<250ps, 0d, 0e> : !llhd.time
@@ -285,7 +286,7 @@ llhd.proc @fifo_v3_tb.always.1020.0(%clk_i: !llhd.sig<i1>, %full_o: !llhd.sig<i1
     llhd.wait (%clk_i : !llhd.sig<i1>), ^check
 ^check:
     %clk_i2 = llhd.prb %clk_i : !llhd.sig<i1>
-    %0 = constant 0 : i1
+    %0 = llhd.const 0 : i1
     %1 = cmpi "eq", %clk_i1, %0 : i1
     %2 = cmpi "ne", %clk_i2, %0 : i1
     %posedge = llhd.and %1, %2 : i1
@@ -296,7 +297,7 @@ llhd.proc @fifo_v3_tb.always.1020.0(%clk_i: !llhd.sig<i1>, %full_o: !llhd.sig<i1
     cond_br %iff, ^event, ^init
 ^event:
     %data_i1 = llhd.prb %data_i : !llhd.sig<i32>
-    %5 = constant 1 : i32
+    %5 = llhd.const 1 : i32
     %6 = addi %data_i1, %5 : i32
     %7 = llhd.const #llhd.time<250ps, 0d, 0e> : !llhd.time
     llhd.drv %data_i, %6 after %7 : !llhd.sig<i32>
@@ -307,7 +308,7 @@ llhd.proc @fifo_v3_tb.always_comb.1036.0(%empty_o: !llhd.sig<i1>) -> (%pop_i: !l
     br ^body
 ^body:
     %empty_o1 = llhd.prb %empty_o : !llhd.sig<i1>
-    %0 = constant 0 : i1
+    %0 = llhd.const 0 : i1
     %1 = cmpi "ne", %empty_o1, %0 : i1
     %2 = llhd.not %1 : i1
     %3 = llhd.const #llhd.time<250ps, 0d, 0e> : !llhd.time
@@ -315,18 +316,18 @@ llhd.proc @fifo_v3_tb.always_comb.1036.0(%empty_o: !llhd.sig<i1>) -> (%pop_i: !l
     llhd.wait (%empty_o : !llhd.sig<i1>), ^body
 }
 
-llhd.entity @fifo_v3_tb() -> () {
-    %0 = constant 0 : i1
-    %clk_i = llhd.sig "sig" %0 : i1
-    %1 = constant 1 : i1
-    %rst_ni = llhd.sig "sig1" %1 : i1
-    %full_o = llhd.sig "sig2" %0 : i1
-    %empty_o = llhd.sig "sig3" %0 : i1
-    %2 = constant 0 : i32
-    %data_i = llhd.sig "sig4" %2 : i32
-    %push_i = llhd.sig "sig5" %0 : i1
-    %data_o = llhd.sig "sig6" %2 : i32
-    %pop_i = llhd.sig "sig7" %0 : i1
+llhd.entity @root () -> () {
+    %0 = llhd.const 0 : i1
+    %clk_i = llhd.sig "clk_i" %0 : i1
+    %1 = llhd.const 1 : i1
+    %rst_ni = llhd.sig "rst_ni" %1 : i1
+    %full_o = llhd.sig "full_o" %0 : i1
+    %empty_o = llhd.sig "empty_o" %0 : i1
+    %2 = llhd.const 0 : i32
+    %data_i = llhd.sig "data_i" %2 : i32
+    %push_i = llhd.sig "push_i" %0 : i1
+    %data_o = llhd.sig "data_o" %2 : i32
+    %pop_i = llhd.sig "pop_i" %0 : i1
     %clk_i1 = llhd.prb %clk_i : !llhd.sig<i1>
     %3 = llhd.sig "sig8" %0 : i1
     %4 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
@@ -347,8 +348,8 @@ llhd.entity @fifo_v3_tb() -> () {
     %pop_i1 = llhd.prb %pop_i : !llhd.sig<i1>
     %10 = llhd.sig "sig14" %0 : i1
     llhd.drv %10, %pop_i1 after %4 : !llhd.sig<i1>
-    %11 = constant 0 : i4
-    %dut.usage_o.default = llhd.sig "sig15" %11 : i4
+    %11 = llhd.const 0 : i4
+    %dut.usage_o.default = llhd.sig "dut.usage_o.default" %11 : i4
     llhd.inst "inst" @fifo_v3.param1(%3, %5, %6, %7, %8, %9, %10) -> (%full_o, %empty_o, %dut.usage_o.default, %data_o) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i4>, !llhd.sig<i32>)
     llhd.inst "inst1" @fifo_v3_tb.initial.979.0() -> (%clk_i, %rst_ni) : () -> (!llhd.sig<i1>, !llhd.sig<i1>)
     llhd.inst "inst2" @fifo_v3_tb.always_comb.995.0(%full_o) -> (%push_i) : (!llhd.sig<i1>) -> (!llhd.sig<i1>)
