@@ -246,13 +246,13 @@ llhd.proc @fir_tb.always.501.0(%CLK: !llhd.sig<i1>) -> (%X: !llhd.sig<i8> ) {
 
 llhd.entity @root() -> () {
     %0 = llhd.const 0 : i1
-    %CLK = llhd.sig "sig" %0 : i1
+    %CLK = llhd.sig "CLK" %0 : i1
     %1 = llhd.const 0 : i8
-    %X = llhd.sig "sig1" %1 : i8
+    %X = llhd.sig "X" %1 : i8
     %2 = llhd.array %1, %1, %1, %1 : !llhd.array<4xi8>
-    %W = llhd.sig "sig2" %2 : !llhd.array<4xi8>
+    %W = llhd.sig "W" %2 : !llhd.array<4xi8>
     %3 = llhd.const 0 : i16
-    %Y = llhd.sig "sig3" %3 : i16
+    %Y = llhd.sig "Y" %3 : i16
     %4 = llhd.extract_element %W, 0 : !llhd.sig<!llhd.array<4xi8>> -> !llhd.sig<i8>
     %5 = llhd.const 254 : i8
     %6 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time

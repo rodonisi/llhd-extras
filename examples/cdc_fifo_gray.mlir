@@ -62,8 +62,6 @@ llhd.entity @gray_to_binary.param4(%A: !llhd.sig<i4>) -> (%Z: !llhd.sig<i4> ) {
     %36 = llhd.insert_slice %10, %6, 0 : i4, i1
     %37 = llhd.extract_slice %36, 0 : i4 -> i1
     llhd.drv %35, %37 after %8 : !llhd.sig<i1>
-    %38 = llhd.const #llhd.time<0s, 0d, 0e> : !llhd.time
-    llhd.drv %Z, %10 after %38 : !llhd.sig<i4>
 }
 
 llhd.entity @gray_to_binary.param9(%A: !llhd.sig<i4>) -> (%Z: !llhd.sig<i4> ) {
@@ -110,8 +108,6 @@ llhd.entity @gray_to_binary.param9(%A: !llhd.sig<i4>) -> (%Z: !llhd.sig<i4> ) {
     %36 = llhd.insert_slice %10, %6, 0 : i4, i1
     %37 = llhd.extract_slice %36, 0 : i4 -> i1
     llhd.drv %35, %37 after %8 : !llhd.sig<i1>
-    %38 = llhd.const #llhd.time<0s, 0d, 0e> : !llhd.time
-    llhd.drv %Z, %10 after %38 : !llhd.sig<i4>
 }
 
 llhd.proc @cdc_fifo_gray.param1.always_ff.265.1(%fifo_widx: !llhd.sig<i3>, %fifo_write: !llhd.sig<i1>, %fifo_wdata: !llhd.sig<i32>, %src_rst_ni: !llhd.sig<i1>, %src_clk_i: !llhd.sig<i1>) -> (%fifo_data_q: !llhd.sig<!llhd.array<8xi32>> ) {
@@ -907,19 +903,19 @@ llhd.proc @cdc_fifo_gray_tb.initial.1154.0(%dst_data_o: !llhd.sig<i32>, %dst_val
 
 llhd.entity @root() -> () {
     %0 = llhd.const 0 : i32
-    %ERRORS = llhd.sig "sig" %0 : i32
+    %ERRORS = llhd.sig "ERRORS" %0 : i32
     %1 = llhd.const 1 : i1
-    %src_rst_ni = llhd.sig "sig1" %1 : i1
+    %src_rst_ni = llhd.sig "src_rst_ni" %1 : i1
     %2 = llhd.const 0 : i1
-    %src_clk_i = llhd.sig "sig2" %2 : i1
-    %src_data_i = llhd.sig "sig3" %0 : i32
-    %src_valid_i = llhd.sig "sig4" %2 : i1
-    %src_ready_o = llhd.sig "sig5" %2 : i1
-    %dst_rst_ni = llhd.sig "sig6" %1 : i1
-    %dst_clk_i = llhd.sig "sig7" %2 : i1
-    %dst_data_o = llhd.sig "sig8" %0 : i32
-    %dst_valid_o = llhd.sig "sig9" %2 : i1
-    %dst_ready_i = llhd.sig "sig10" %2 : i1
+    %src_clk_i = llhd.sig "src_clk_i" %2 : i1
+    %src_data_i = llhd.sig "src_data_i" %0 : i32
+    %src_valid_i = llhd.sig "src_valid_i" %2 : i1
+    %src_ready_o = llhd.sig "src_ready_o" %2 : i1
+    %dst_rst_ni = llhd.sig "dst_rst_ni" %1 : i1
+    %dst_clk_i = llhd.sig "dst_clk_i" %2 : i1
+    %dst_data_o = llhd.sig "dst_data_o" %0 : i32
+    %dst_valid_o = llhd.sig "dst_valid_o" %2 : i1
+    %dst_ready_i = llhd.sig "dst_ready_i" %2 : i1
     %src_rst_ni1 = llhd.prb %src_rst_ni : !llhd.sig<i1>
     %3 = llhd.sig "sig11" %2 : i1
     %4 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time

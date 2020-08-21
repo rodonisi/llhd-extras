@@ -37,11 +37,11 @@ llhd.proc @lzc.param1.always_comb.217.1(%in_i: !llhd.sig<i16>) -> (%in_tmp: !llh
 llhd.entity @lzc.param1(%in_i: !llhd.sig<i16>) -> (%cnt_o: !llhd.sig<i4> , %empty_o: !llhd.sig<i1> ) {
     %0 = llhd.const 0 : i4
     %1 = llhd.array %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0 : !llhd.array<16xi4>
-    %index_lut = llhd.sig "sig" %1 : !llhd.array<16xi4>
+    %index_lut = llhd.sig "index_lut" %1 : !llhd.array<16xi4>
     %2 = llhd.const 0 : i16
-    %sel_nodes = llhd.sig "sig1" %2 : i16
-    %index_nodes = llhd.sig "sig2" %1 : !llhd.array<16xi4>
-    %in_tmp = llhd.sig "sig3" %2 : i16
+    %sel_nodes = llhd.sig "sel_nodes" %2 : i16
+    %index_nodes = llhd.sig "index_nodes" %1 : !llhd.array<16xi4>
+    %in_tmp = llhd.sig "in_tmp" %2 : i16
     %index_nodes1 = llhd.prb %index_nodes : !llhd.sig<!llhd.array<16xi4>>
     %3 = llhd.extract_element %index_nodes1, 0 : !llhd.array<16xi4> -> i4
     %4 = llhd.array %0, %3 : !llhd.array<2xi4>
@@ -665,8 +665,8 @@ llhd.proc @lfsr_16bit.param37.initial.1302.37() -> () {
 
 llhd.entity @lfsr_16bit.param37(%clk_i: !llhd.sig<i1>, %rst_ni: !llhd.sig<i1>, %en_i: !llhd.sig<i1>) -> (%out_o: !llhd.sig<i16> ) {
     %0 = llhd.const 0 : i16
-    %shift_d = llhd.sig "sig" %0 : i16
-    %shift_q = llhd.sig "sig1" %0 : i16
+    %shift_d = llhd.sig "shift_d" %0 : i16
+    %shift_q = llhd.sig "shift_q" %0 : i16
     llhd.inst "inst" @lfsr_16bit.param37.always_comb.1243.37(%shift_q, %en_i) -> (%shift_d, %out_o) : (!llhd.sig<i16>, !llhd.sig<i1>) -> (!llhd.sig<i16>, !llhd.sig<i16>)
     llhd.inst "inst1" @lfsr_16bit.param37.always_ff.1284.37(%shift_d, %clk_i, %rst_ni) -> (%shift_q) : (!llhd.sig<i16>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i16>)
     llhd.inst "inst2" @lfsr_16bit.param37.initial.1302.37() -> () : () -> ()
@@ -708,14 +708,14 @@ llhd.proc @lzc_tb.initial.1083.0() -> (%clk_i: !llhd.sig<i1> , %rst_ni: !llhd.si
 
 llhd.entity @root() -> () {
     %0 = llhd.const 0 : i16
-    %in_i = llhd.sig "sig" %0 : i16
+    %in_i = llhd.sig "in_i" %0 : i16
     %1 = llhd.const 0 : i4
-    %cnt_o = llhd.sig "sig1" %1 : i4
+    %cnt_o = llhd.sig "cnt_o" %1 : i4
     %2 = llhd.const 0 : i1
-    %empty_o = llhd.sig "sig2" %2 : i1
-    %clk_i = llhd.sig "sig3" %2 : i1
+    %empty_o = llhd.sig "empty_o" %2 : i1
+    %clk_i = llhd.sig "clk_i" %2 : i1
     %3 = llhd.const 1 : i1
-    %rst_ni = llhd.sig "sig4" %3 : i1
+    %rst_ni = llhd.sig "rst_ni" %3 : i1
     %in_i1 = llhd.prb %in_i : !llhd.sig<i16>
     %4 = llhd.sig "sig5" %0 : i16
     %5 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
