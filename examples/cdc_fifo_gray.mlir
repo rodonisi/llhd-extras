@@ -901,7 +901,7 @@ llhd.proc @cdc_fifo_gray_tb.initial.1154.0(%dst_data_o: !llhd.sig<i32>, %dst_val
     br ^loop_body1
 }
 
-llhd.entity @root() -> () {
+llhd.entity @cdc_fifo_gray_tb() -> () {
     %0 = llhd.const 0 : i32
     %ERRORS = llhd.sig "ERRORS" %0 : i32
     %1 = llhd.const 1 : i1
