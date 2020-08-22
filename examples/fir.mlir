@@ -244,7 +244,7 @@ llhd.proc @fir_tb.always.501.0(%CLK: !llhd.sig<i1>) -> (%X: !llhd.sig<i8> ) {
     br ^init
 }
 
-llhd.entity @root() -> () {
+llhd.entity @fir_tb() -> () {
     %0 = llhd.const 0 : i1
     %CLK = llhd.sig "CLK" %0 : i1
     %1 = llhd.const 0 : i8

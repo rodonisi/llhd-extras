@@ -316,7 +316,7 @@ llhd.proc @fifo_v3_tb.always_comb.1036.0(%empty_o: !llhd.sig<i1>) -> (%pop_i: !l
     llhd.wait (%empty_o : !llhd.sig<i1>), ^body
 }
 
-llhd.entity @root () -> () {
+llhd.entity @fifo_v3_tb () -> () {
     %0 = llhd.const 0 : i1
     %clk_i = llhd.sig "clk_i" %0 : i1
     %1 = llhd.const 1 : i1

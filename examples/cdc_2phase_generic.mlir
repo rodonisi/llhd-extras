@@ -418,7 +418,7 @@ llhd.proc @cdc_2phase_tb.initial.1048.0(%dst_data_o: !llhd.sig<i32>, %dst_valid_
     br ^loop_body1
 }
 
-llhd.entity @root() -> () {
+llhd.entity @cdc_2phase_tb() -> () {
     %0 = llhd.const 0 : i32
     %ERRORS = llhd.sig "sig" %0 : i32
     %1 = llhd.const 1 : i1

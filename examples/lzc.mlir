@@ -706,7 +706,7 @@ llhd.proc @lzc_tb.initial.1083.0() -> (%clk_i: !llhd.sig<i1> , %rst_ni: !llhd.si
     llhd.wait  for %17, ^11
 }
 
-llhd.entity @root() -> () {
+llhd.entity @lzc_tb() -> () {
     %0 = llhd.const 0 : i16
     %in_i = llhd.sig "in_i" %0 : i16
     %1 = llhd.const 0 : i4

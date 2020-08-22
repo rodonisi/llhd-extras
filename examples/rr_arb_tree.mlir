@@ -569,7 +569,7 @@ llhd.proc @rr_arb_tree_tb.initial.1815.0() -> (%clk_i: !llhd.sig<i1> , %rst_ni: 
     llhd.wait  for %17, ^11
 }
 
-llhd.entity @root() -> () {
+llhd.entity @rr_arb_tree_tb() -> () {
     %0 = llhd.const 0 : i1
     %clk_i = llhd.sig "clk_i" %0 : i1
     %1 = llhd.const 1 : i1

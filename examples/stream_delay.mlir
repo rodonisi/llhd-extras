@@ -435,7 +435,7 @@ llhd.proc @stream_delay_tb.always.724.0(%clk_i: !llhd.sig<i1>, %ready_o: !llhd.s
     br ^init
 }
 
-llhd.entity @root () -> () {
+llhd.entity @stream_delay_tb () -> () {
     %0 = constant 0 : i1
     %clk_i = llhd.sig "clk_i" %0 : i1
     %1 = constant 1 : i1

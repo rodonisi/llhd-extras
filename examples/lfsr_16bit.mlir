@@ -121,7 +121,7 @@ llhd.proc @lfsr_16bit_tb.initial.113.0() -> (%clk_i: !llhd.sig<i1> , %rst_ni: !l
     llhd.wait  for %18, ^13
 }
 
-llhd.entity @root () -> () {
+llhd.entity @lfsr_16bit_tb () -> () {
     %0 = llhd.const 0 : i1
     %clk_i = llhd.sig "clk_i" %0 : i1
     %1 = llhd.const 1 : i1
