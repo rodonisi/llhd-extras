@@ -1,4 +1,4 @@
-timeunit 1ns/1ps;
+timeunit 1ps/1ps;
 
 module fir_tb;
 
