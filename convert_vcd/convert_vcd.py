@@ -14,7 +14,10 @@ ap = argparse.ArgumentParser()
 # Add the arguments to the parser
 ap.add_argument('input', metavar='<input-file>', type=str,
                     help='The input VCD file')
-ap.add_argument("-o", dest="output", default='-', metavar='<output-file>', help="Define the ouptut file")
+ap.add_argument("-o", dest="output", default='-', metavar='<output-file>',
+                    help="Define the ouptut file")
+ap.add_argument("-T", dest="time", default=0, type=int, metavar='<max-time>',
+                    help="Define a time at which to stop converting")
 args = ap.parse_args()
 
 # Get output stream
@@ -74,6 +77,8 @@ for i in data:
     name_format = re.sub('\[\d+:\d+\]', '', sig['references'][0])
     name_format = re.sub('\.', '/', name_format)
     for change in sig['tv']:
+        if args.time > 0 and change[0] > args.time:
+            break
         val_formats = format_value_dump(change[1], int(sig['size']), elem_size)
         name_formats = []
         if len(val_formats) > 1:
