@@ -26,8 +26,10 @@ if args.output != '-' :
     out = open(args.output, "w")
 
 # Construct VCD parser
+print('Parsing input vcd.', file=sys.stderr)
 vcd = VCDVCD(args.input)
 data = vcd.get_data()
+print('Done.', file=sys.stderr)
 
 def format_value_dump(val, size, n_elems):
     """ Formats the value string to a hexadecimal representation, 0-padded to the next byte.
@@ -67,6 +69,10 @@ lastValue = {}
 
 for i in data:
     sig = data[i]
+    if sig['var_type'] == 'param':
+        p.pprint('SKIPPING\n\n')
+        continue
+    sys.stderr.write('\rProcessing ' + sig['references'][0] + '\x1b[0K')
 
     elem_size = -1
     s = re.split(r'(\[\d+:\d+\])', sig['references'][0])
@@ -92,6 +98,8 @@ for i in data:
                 dump_format = '  ' + n + '  ' + v
                 changes.setdefault(change[0], []).append(dump_format)
             lastValue[n] = v
+
+# sys.stderr.write('\n')
 
 # Dump the trace in a diff-able format.
 for time in sorted(changes.keys()):
