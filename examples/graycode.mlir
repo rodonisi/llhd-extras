@@ -775,7 +775,7 @@ llhd.proc @graycode_tb.initial.232.0 (%b : !llhd.sig<i20>) -> (%a : !llhd.sig<i2
     br ^loop_body1
 }
 
-llhd.entity @root () -> () {
+llhd.entity @graycode_tb () -> () {
     %0 = llhd.const 0 : i20
     %a = llhd.sig "a" %0 : i20
     %1 = llhd.const 0 : i20
@@ -786,9 +786,9 @@ llhd.entity @root () -> () {
     %bp = llhd.sig "bp" %3 : i20
     %a1 = llhd.prb %a : !llhd.sig<i20>
     %4 = llhd.const 0 : i20
-    %5 = llhd.sig "5" %4 : i20
+    %5 = llhd.sig "sig1" %4 : i20
     %6 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %5, %a1 after %6 : !llhd.sig<i20>
-    llhd.inst "graycode" @graycode.param1 (%5) -> (%b, %c) : (!llhd.sig<i20>) -> (!llhd.sig<i20>, !llhd.sig<i20>)
-    llhd.inst "graycode_tb" @graycode_tb.initial.232.0 (%b) -> (%a, %bp) : (!llhd.sig<i20>) -> (!llhd.sig<i20>, !llhd.sig<i20>)
+    llhd.inst "inst" @graycode.param1 (%5) -> (%b, %c) : (!llhd.sig<i20>) -> (!llhd.sig<i20>, !llhd.sig<i20>)
+    llhd.inst "inst1" @graycode_tb.initial.232.0 (%b) -> (%a, %bp) : (!llhd.sig<i20>) -> (!llhd.sig<i20>, !llhd.sig<i20>)
 }
