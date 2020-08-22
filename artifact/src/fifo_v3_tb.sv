@@ -9,7 +9,7 @@ module fifo_v3_tb;
     int   data_o;
     logic pop_i;
 
-    fifo_v3 #(.dtype(int), .DEPTH(16)) dut (
+    fifo_v3 #(.dtype(bit[31:0]), .DEPTH(16)) dut (
         .clk_i(clk_i),
         .rst_ni(rst_ni),
         .flush_i(1'b0),
