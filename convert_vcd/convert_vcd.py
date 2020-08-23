@@ -69,8 +69,7 @@ lastValue = {}
 
 for i in data:
     sig = data[i]
-    if sig['var_type'] == 'param':
-        p.pprint('SKIPPING\n\n')
+    if sig['var_type'] == 'parameter':
         continue
     sys.stderr.write('\rProcessing ' + sig['references'][0] + '\x1b[0K')
 
@@ -99,7 +98,7 @@ for i in data:
                 changes.setdefault(change[0], []).append(dump_format)
             lastValue[n] = v
 
-# sys.stderr.write('\n')
+sys.stderr.write('\n')
 
 # Dump the trace in a diff-able format.
 for time in sorted(changes.keys()):

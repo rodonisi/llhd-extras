@@ -15,6 +15,7 @@ lzc_tb=~/workspaces/thesis/llhd-extras/examples/lzc.mlir
 rr_arb_tree_tb=~/workspaces/thesis/llhd-extras/examples/rr_arb_tree.mlir
 fir_tb=~/workspaces/thesis/llhd-extras/examples/fir.mlir
 cdc_fifo_gray_tb=~/workspaces/thesis/llhd-extras/examples/cdc_fifo_gray.mlir
+snitch_tb=~/workspaces/thesis/llhd-extras/examples/snitch.mlir
 
 graycode_v=~/workspaces/thesis/llhd-extras/vivado-vcd/graycode.vcd
 lfsr_16bit_v=~/workspaces/thesis/llhd-extras/vivado-vcd/lfsr.vcd
@@ -25,6 +26,7 @@ lzc_v=~/workspaces/thesis/llhd-extras/vivado-vcd/lzc.vcd
 rr_arb_tree_v=~/workspaces/thesis/llhd-extras/vivado-vcd/rr_arb_tree.vcd
 fir_v=~/workspaces/thesis/llhd-extras/vivado-vcd/fir.vcd
 cdc_fifo_gray_v=~/workspaces/thesis/llhd-extras/vivado-vcd/cdc_fifo.vcd
+snitch_v=~/workspaces/thesis/llhd-extras/vivado-vcd/snitch.vcd
 
 examples=(
     graycode_tb
@@ -36,6 +38,7 @@ examples=(
     rr_arb_tree_tb
     fir_tb
     cdc_fifo_gray_tb
+    snitch_tb
 )
 
 END=$1
@@ -53,7 +56,7 @@ for example in "${examples[@]}"; do
     for i in {1..$END}
     do
         echo "iteration "$i"..."
-        t='-T=1000000'
+        t='-T=100000'
         trace='--trace-format=named-only'
         root='--root='$example
 
@@ -62,7 +65,7 @@ for example in "${examples[@]}"; do
         # { time $bin $example_path --trace-format=merged -n 1000 -o trace_${example}.txt ; } 2>> time.txt
         #echo "\n" >> time.txt
         tmp=tmp.txt
-        python $py $vcd_path -o $tmp
+        python $py $vcd_path -o $tmp $t
 
         diff $tmp <($bin $example_path $t $trace $root) >> diff.txt
     done

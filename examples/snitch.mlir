@@ -10829,41 +10829,41 @@ llhd.proc @snitch_tb.initial.277.0() -> (%clk_i: !llhd.sig<i1> , %rst_i: !llhd.s
     br ^loop_body
 }
 
-llhd.entity @root() -> () {
+llhd.entity @snitch_tb() -> () {
     %0 = llhd.const 0 : i1
-    %clk_i = llhd.sig "sig" %0 : i1
+    %clk_i = llhd.sig "clk_i" %0 : i1
     %1 = llhd.const 0 : i1
-    %rst_i = llhd.sig "sig1" %1 : i1
+    %rst_i = llhd.sig"rst_i" %1 : i1
     %2 = llhd.const 0 : i32
-    %inst_addr_o = llhd.sig "sig2" %2 : i32
+    %inst_addr_o = llhd.sig "inst_addr_o" %2 : i32
     %3 = llhd.const 0 : i32
-    %inst_data_i = llhd.sig "sig3" %3 : i32
+    %inst_data_i = llhd.sig "inst_data_i" %3 : i32
     %4 = llhd.const 0 : i1
-    %inst_valid_o = llhd.sig "sig4" %4 : i1
+    %inst_valid_o = llhd.sig "inst_valid_o" %4 : i1
     %5 = llhd.const 0 : i1
-    %inst_ready_i = llhd.sig "sig5" %5 : i1
+    %inst_ready_i = llhd.sig "inst_ready_i" %5 : i1
     %6 = llhd.const 0 : i32
-    %data_qaddr_o = llhd.sig "sig6" %6 : i32
+    %data_qaddr_o = llhd.sig "data_qaddr_o" %6 : i32
     %7 = llhd.const 0 : i1
-    %data_qwrite_o = llhd.sig "sig7" %7 : i1
+    %data_qwrite_o = llhd.sig "data_qwrite_o" %7 : i1
     %8 = llhd.const 0 : i4
-    %data_qamo_o = llhd.sig "sig8" %8 : i4
+    %data_qamo_o = llhd.sig "data_qamo_o" %8 : i4
     %9 = llhd.const 0 : i64
-    %data_qdata_o = llhd.sig "sig9" %9 : i64
+    %data_qdata_o = llhd.sig "data_qdata_o" %9 : i64
     %10 = llhd.const 0 : i8
-    %data_qstrb_o = llhd.sig "sig10" %10 : i8
+    %data_qstrb_o = llhd.sig "data_qstrb_o" %10 : i8
     %11 = llhd.const 0 : i1
-    %data_qvalid_o = llhd.sig "sig11" %11 : i1
+    %data_qvalid_o = llhd.sig "data_qvalid_o" %11 : i1
     %12 = llhd.const 0 : i1
-    %data_qready_i = llhd.sig "sig12" %12 : i1
+    %data_qready_i = llhd.sig "data_qready_i" %12 : i1
     %13 = llhd.const 0 : i64
-    %data_pdata_i = llhd.sig "sig13" %13 : i64
+    %data_pdata_i = llhd.sig "data_pdata_i" %13 : i64
     %14 = llhd.const 0 : i1
-    %data_perror_i = llhd.sig "sig14" %14 : i1
+    %data_perror_i = llhd.sig "data_perror_i" %14 : i1
     %15 = llhd.const 0 : i1
-    %data_pvalid_i = llhd.sig "sig15" %15 : i1
+    %data_pvalid_i = llhd.sig "data_pvalid_i" %15 : i1
     %16 = llhd.const 0 : i1
-    %data_pready_o = llhd.sig "sig16" %16 : i1
+    %data_pready_o = llhd.sig "data_pready_o" %16 : i1
     %17 = llhd.const 0 : i32
     %18 = llhd.const 0 : i32
     %19 = llhd.const 0 : i32
@@ -10881,9 +10881,9 @@ llhd.entity @root() -> () {
     %31 = llhd.const 0 : i32
     %32 = llhd.const 0 : i32
     %33 = llhd.array %17, %18, %19, %20, %21, %22, %23, %24, %25, %26, %27, %28, %29, %30, %31, %32 : !llhd.array<16xi32>
-    %PROGRAM = llhd.sig "sig17" %33 : !llhd.array<16xi32>
+    %PROGRAM = llhd.sig "PROGRAM" %33 : !llhd.array<16xi32>
     %34 = llhd.const 0 : i32
-    %data_resp_pending = llhd.sig "sig18" %34 : i32
+    %data_resp_pending = llhd.sig "data_resp_pending" %34 : i32
     %35 = llhd.const 1048577811 : i32
     %36 = llhd.const 1050515 : i32
     %37 = llhd.const 1555 : i32

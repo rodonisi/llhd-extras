@@ -427,7 +427,7 @@ llhd.entity @cdc_2phase_tb() -> () {
     %src_clk_i = llhd.sig "src_clk_i" %2 : i1
     %src_data_i = llhd.sig "src_data_i" %0 : i32
     %src_valid_i = llhd.sig "src_valid_i" %2 : i1
-    %src_ready_o = llhd.sig "sig5" %2 : i1
+    %src_ready_o = llhd.sig "src_ready_o" %2 : i1
     %dst_rst_ni = llhd.sig "dst_rst_ni" %1 : i1
     %dst_clk_i = llhd.sig "dst_clk_i" %2 : i1
     %dst_data_o = llhd.sig "dst_data_o" %0 : i32
