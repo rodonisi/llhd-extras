@@ -349,7 +349,7 @@ llhd.entity @fifo_v3_tb () -> () {
     %10 = llhd.sig "sig14" %0 : i1
     llhd.drv %10, %pop_i1 after %4 : !llhd.sig<i1>
     %11 = llhd.const 0 : i4
-    %dut.usage_o.default = llhd.sig "dut.usage_o.default" %11 : i4
+    %dut.usage_o.default = llhd.sig "sig15" %11 : i4
     llhd.inst "inst" @fifo_v3.param1(%3, %5, %6, %7, %8, %9, %10) -> (%full_o, %empty_o, %dut.usage_o.default, %data_o) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i4>, !llhd.sig<i32>)
     llhd.inst "inst1" @fifo_v3_tb.initial.979.0() -> (%clk_i, %rst_ni) : () -> (!llhd.sig<i1>, !llhd.sig<i1>)
     llhd.inst "inst2" @fifo_v3_tb.always_comb.995.0(%full_o) -> (%push_i) : (!llhd.sig<i1>) -> (!llhd.sig<i1>)

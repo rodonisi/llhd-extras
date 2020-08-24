@@ -56,7 +56,8 @@ for example in "${examples[@]}"; do
     for i in {1..$END}
     do
         echo "iteration "$i"..."
-        t='-T=100000'
+        echo "===--------------------------------------------------------------" >> diff.txt
+        t='-T=1000000'
         trace='--trace-format=named-only'
         root='--root='$example
 
@@ -67,110 +68,7 @@ for example in "${examples[@]}"; do
         tmp=tmp.txt
         python $py $vcd_path -o $tmp $t
 
-        diff $tmp <($bin $example_path $t $trace $root) >> diff.txt
+        diff <($bin $example_path $t $trace $root) $tmp >> diff.txt
     done
 
 done
-
-# echo "graycode_tb" > time.txt
-# echo "running graycode_tb"
-
-# for i in $( seq 1 $END )
-# do
-#     flags='-o=trace_graycode.txt'
-#     #time $bin $dut -o $flags
-#     echo "file loop "$i"..."
-#     { time $bin $graycode_tb $flags ; } 2>> time.txt
-# done
-# echo "lfsr_16bit_tb" >> time.txt
-# echo "running lfsr_16bit_tb"
-
-# for i in $( seq 1 $END )
-# do
-#     flags='trace_lfsr.txt'
-#     #time $bin $dut -o $flags
-#     echo "file loop "$i"..."
-#     { time $bin $lfsr_16bit_tb -o $flags ; } 2>> time.txt
-# done
-
-# echo "cdc_2phase_tb" >> time.txt
-# echo "running cdc_2phase"
-
-# for i in $( seq 1 $END )
-# do
-#     flags='trace_cdc2.txt'
-#     #time $bin $dut -o $flags
-#     echo "file loop "$i"..."
-#     { time $bin $cdc_2phase_tb -o $flags ; } 2>> time.txt
-# done
-
-# echo "stream_delay_tb" >> time.txt
-# echo "running stream_delay_tb"
-
-# for i in $( seq 1 $END )
-# do
-#     flags='trace_stream_delay.txt'
-#     #time $bin $dut -o $flags
-#     echo "file loop "$i"..."
-#     { time $bin $stream_delay_tb -o $flags ; } 2>> time.txt
-# done
-
-# echo "fifo" >> time.txt
-# echo "running fifo"
-
-# for i in $( seq 1 $END )
-# do
-#     flags='trace_fifo.txt'
-#     #time $bin $dut -o $flags
-#     echo "file loop "$i"..."
-#     { time $bin $fifo_v3_tb -o $flags ; } 2>> time.txt
-# done
-
-# echo "lzc_tb" >> time.txt
-# echo "running lzc_tb"
-
-# for i in $( seq 1 $END )
-# do
-#     flags='trace_lzc.txt'
-#     #time $bin $dut -o $flags
-#     echo "file loop "$i"..."
-#     { time $bin $lzc_tb -o $flags ; } 2>> time.txt
-# done
-
-# echo "rr_arb_tree_tb" >> time.txt
-# echo "running rr_arb_tree_tb"
-
-# for i in $( seq 1 $END )
-# do
-#     flags='trace_rr.txt'
-#     #time $bin $dut -o $flags
-#     echo "file loop "$i"..."
-#     { time $bin $rr_arb_tree_tb -o $flags ; } 2>> time.txt
-# done
-
-# echo "fir_tb" >> time.txt
-# echo "running fir_tb"
-
-# for i in $( seq 1 $END )
-# do
-#     flags='trace_fir.txt'
-#     #time $bin $dut -o $flags
-#     echo "file loop "$i"..."
-#     { time $bin $fir_tb -o $flags ; } 2>> time.txt
-# done
-
-# echo "cdc_fifo_gray_tb" >> time.txt
-# echo "running cdc_fifo_gray_tb"
-
-# for i in $( seq 1 $END )
-# do
-#     flags='trace_cdcf.txt'
-#     #time $bin $dut -o $flags
-#     echo "file loop "$i"..."
-#     { time $bin $cdc_fifo_gray_tb -o $flags ; } 2>> time.txt
-# done
-# #for i in 1 2 3 4 5
-# #do
-#     #echo "stdout loop "$i"..."
-#     #{ time $bin $dut ; } 2>> time.txt
-# #done
