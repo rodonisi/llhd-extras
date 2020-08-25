@@ -41,8 +41,7 @@ for example in "${examples[@]}"; do
     do
         echo "iteration "$i"..."
         echo "===--------------------------------------------------------------" >> diff.txt
-        echo "iteration "$i"..."
-        { time $bin $path -root=$example --trace-format=no-trace ; } 2>> time.txt
+	{ time $bin $example_path --root=$example --trace-format=no-trace --report-timing ; } 2>> time.txt
         echo "\n" >> time.txt
     done
 

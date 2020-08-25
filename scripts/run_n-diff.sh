@@ -47,7 +47,7 @@ for example in "${examples[@]}"; do
         # flags='--trace-format=no-trace'
         #{ time $bin $path --trace-format=merged -n 1000 -o trace_${example}.txt ; } 2>> time.txt
         #echo "\n" >> time.txt
-        /usr/bin/diff <($opt $path | $bin $time) <($bin $path $time) -q >> diff.txt
+        /usr/bin/diff <($opt $example_path | $bin $time -root=$example) <($bin $example_path $time -root=$example) -q >> diff.txt
     done
 
 done
