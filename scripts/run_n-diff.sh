@@ -1,7 +1,7 @@
 #!/bin/zsh
 
-opt=~/workspaces/thesis/circt-martin/build/bin/circt-opt
-bin=~/workspaces/thesis/circt-martin/build/bin/llhd-sim
+opt=~/workspaces/thesis/circt-m/build/bin/circt-opt
+bin=~/workspaces/thesis/circt-m/build/bin/llhd-sim
 acc=~/workspaces/thesis/llhd-extras/examples/acc.mlir
 graycode_tb=~/workspaces/thesis/llhd-extras/examples/graycode.mlir
 graycodecanon=~/workspaces/thesis/llhd-extras/examples/graycode_canon.mlir

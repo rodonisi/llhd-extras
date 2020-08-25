@@ -1,7 +1,7 @@
 #!/bin/zsh
 
-opt=~/workspaces/thesis/circt-martin/build/bin/circt-opt
-bin=~/workspaces/thesis/circt-martin/build/bin/llhd-sim
+opt=~/workspaces/thesis/circt-m/build/bin/circt-opt
+bin=~/workspaces/thesis/circt-m/build/bin/llhd-sim
 py=~/workspaces/thesis/llhd-extras/convert_vcd/convert_vcd.py
 python=/Users/simon/.pyenv/shims/python
 acc=~/workspaces/thesis/llhd-extras/examples/acc.mlir
