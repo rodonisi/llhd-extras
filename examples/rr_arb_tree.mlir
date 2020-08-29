@@ -576,7 +576,7 @@ llhd.entity @rr_arb_tree_tb() -> () {
     %rst_ni = llhd.sig "rst_ni" %1 : i1
     %flush_i = llhd.sig "flush_i" %0 : i1
     %2 = llhd.const 0 : i3
-    %rr_i = llhd.sig "sig3" %2 : i3
+    %rr_i = llhd.sig "rr_i" %2 : i3
     %3 = llhd.const 0 : i8
     %req_i = llhd.sig "req_i" %3 : i8
     %gnt_o = llhd.sig "gnt_o" %3 : i8
