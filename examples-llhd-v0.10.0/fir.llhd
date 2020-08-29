@@ -1,0 +1,292 @@
+proc %fir.param1.always_ff.260.1 (i1$ %CLK, [4 x i16]$ %add_out) -> ([4 x i16]$ %q) {
+init:
+    %CLK.prb = prb i1$ %CLK
+    wait %check, %CLK
+check:
+    %CLK.prb1 = prb i1$ %CLK
+    %0 = const i1 0
+    %1 = eq i1 %CLK.prb, %0
+    %2 = neq i1 %CLK.prb1, %0
+    %posedge = and i1 %1, %2
+    br %posedge, %init, %event
+event:
+    %3 = const i32 1
+    %4 = const i16 0
+    %5 = [4 x i16 %4]
+    %6 = sig [4 x i16] %5
+    %7 = shr [4 x i16]$ %q, [4 x i16]$ %6, i32 %3
+    %8 = extf i16$, [4 x i16]$ %7, 0
+    %add_out.prb = prb [4 x i16]$ %add_out
+    %9 = extf i16, [4 x i16] %add_out.prb, 0
+    %10 = const time 0s 1d
+    drv i16$ %8, %9, %10
+    br %init
+}
+
+proc %fir.param1.always_ff.260.11 (i1$ %CLK, [4 x i16]$ %add_out) -> ([4 x i16]$ %q) {
+init:
+    %CLK.prb = prb i1$ %CLK
+    wait %check, %CLK
+check:
+    %CLK.prb1 = prb i1$ %CLK
+    %0 = const i1 0
+    %1 = eq i1 %CLK.prb, %0
+    %2 = neq i1 %CLK.prb1, %0
+    %posedge = and i1 %1, %2
+    br %posedge, %init, %event
+event:
+    %3 = const i32 2
+    %4 = const i16 0
+    %5 = [4 x i16 %4]
+    %6 = sig [4 x i16] %5
+    %7 = shr [4 x i16]$ %q, [4 x i16]$ %6, i32 %3
+    %8 = extf i16$, [4 x i16]$ %7, 0
+    %add_out.prb = prb [4 x i16]$ %add_out
+    %9 = exts [1 x i16], [4 x i16] %5, 0, 1
+    %10 = exts [3 x i16], [4 x i16] %add_out.prb, 1, 3
+    %11 = inss [4 x i16] %5, [1 x i16] %9, 3, 1
+    %12 = inss [4 x i16] %11, [3 x i16] %10, 0, 3
+    %13 = extf i16, [4 x i16] %12, 0
+    %14 = const time 0s 1d
+    drv i16$ %8, %13, %14
+    br %init
+}
+
+proc %fir.param1.always_ff.260.12 (i1$ %CLK, [4 x i16]$ %add_out) -> ([4 x i16]$ %q) {
+init:
+    %CLK.prb = prb i1$ %CLK
+    wait %check, %CLK
+check:
+    %CLK.prb1 = prb i1$ %CLK
+    %0 = const i1 0
+    %1 = eq i1 %CLK.prb, %0
+    %2 = neq i1 %CLK.prb1, %0
+    %posedge = and i1 %1, %2
+    br %posedge, %init, %event
+event:
+    %3 = const i32 3
+    %4 = const i16 0
+    %5 = [4 x i16 %4]
+    %6 = sig [4 x i16] %5
+    %7 = shr [4 x i16]$ %q, [4 x i16]$ %6, i32 %3
+    %8 = extf i16$, [4 x i16]$ %7, 0
+    %add_out.prb = prb [4 x i16]$ %add_out
+    %9 = exts [2 x i16], [4 x i16] %5, 0, 2
+    %10 = exts [2 x i16], [4 x i16] %add_out.prb, 2, 2
+    %11 = inss [4 x i16] %5, [2 x i16] %9, 2, 2
+    %12 = inss [4 x i16] %11, [2 x i16] %10, 0, 2
+    %13 = extf i16, [4 x i16] %12, 0
+    %14 = const time 0s 1d
+    drv i16$ %8, %13, %14
+    br %init
+}
+
+entity @fir.param1 (i1$ %CLK, i8$ %X, [4 x i8]$ %W) -> (i16$ %Y) {
+    %0 = const i16 0
+    %1 = [i16 %0, %0, %0, %0]
+    %mul_out = sig [4 x i16] %1
+    %add_out = sig [4 x i16] %1
+    %q = sig [4 x i16] %1
+    %2 = extf i16$, [4 x i16]$ %q, 0
+    %3 = const time 0s 1e
+    drv i16$ %2, %0, %3
+    %add_out.prb = prb [4 x i16]$ %add_out
+    %4 = [4 x i16 %0]
+    %5 = exts [3 x i16], [4 x i16] %4, 0, 3
+    %6 = exts [1 x i16], [4 x i16] %add_out.prb, 3, 1
+    %7 = inss [4 x i16] %4, [3 x i16] %5, 1, 3
+    %8 = inss [4 x i16] %7, [1 x i16] %6, 0, 1
+    %9 = extf i16, [4 x i16] %8, 0
+    drv i16$ %Y, %9, %3
+    %10 = extf i16$, [4 x i16]$ %mul_out, 0
+    %W.prb = prb [4 x i8]$ %W
+    %11 = extf i8, [4 x i8] %W.prb, 0
+    %zext = inss i16 %0, i8 %11, 0, 8
+    %X.prb = prb i8$ %X
+    %zext1 = inss i16 %0, i8 %X.prb, 0, 8
+    %12 = umul i16 %zext, %zext1
+    drv i16$ %10, %12, %3
+    %13 = const i32 1
+    %14 = sig [4 x i16] %4
+    %15 = shr [4 x i16]$ %mul_out, [4 x i16]$ %14, i32 %13
+    %16 = extf i16$, [4 x i16]$ %15, 0
+    %17 = const i8 0
+    %18 = [4 x i8 %17]
+    %19 = exts [1 x i8], [4 x i8] %18, 0, 1
+    %20 = exts [3 x i8], [4 x i8] %W.prb, 1, 3
+    %21 = inss [4 x i8] %18, [1 x i8] %19, 3, 1
+    %22 = inss [4 x i8] %21, [3 x i8] %20, 0, 3
+    %23 = extf i8, [4 x i8] %22, 0
+    %zext2 = inss i16 %0, i8 %23, 0, 8
+    %24 = umul i16 %zext2, %zext1
+    drv i16$ %16, %24, %3
+    %25 = const i32 2
+    %26 = sig [4 x i16] %4
+    %27 = shr [4 x i16]$ %mul_out, [4 x i16]$ %26, i32 %25
+    %28 = extf i16$, [4 x i16]$ %27, 0
+    %29 = exts [2 x i8], [4 x i8] %18, 0, 2
+    %30 = exts [2 x i8], [4 x i8] %W.prb, 2, 2
+    %31 = inss [4 x i8] %18, [2 x i8] %29, 2, 2
+    %32 = inss [4 x i8] %31, [2 x i8] %30, 0, 2
+    %33 = extf i8, [4 x i8] %32, 0
+    %zext3 = inss i16 %0, i8 %33, 0, 8
+    %34 = umul i16 %zext3, %zext1
+    drv i16$ %28, %34, %3
+    %35 = const i32 3
+    %36 = sig [4 x i16] %4
+    %37 = shr [4 x i16]$ %mul_out, [4 x i16]$ %36, i32 %35
+    %38 = extf i16$, [4 x i16]$ %37, 0
+    %39 = exts [3 x i8], [4 x i8] %18, 0, 3
+    %40 = exts [1 x i8], [4 x i8] %W.prb, 3, 1
+    %41 = inss [4 x i8] %18, [3 x i8] %39, 1, 3
+    %42 = inss [4 x i8] %41, [1 x i8] %40, 0, 1
+    %43 = extf i8, [4 x i8] %42, 0
+    %zext4 = inss i16 %0, i8 %43, 0, 8
+    %44 = umul i16 %zext4, %zext1
+    drv i16$ %38, %44, %3
+    %45 = extf i16$, [4 x i16]$ %add_out, 0
+    %q.prb = prb [4 x i16]$ %q
+    %46 = extf i16, [4 x i16] %q.prb, 0
+    %mul_out.prb = prb [4 x i16]$ %mul_out
+    %47 = exts [1 x i16], [4 x i16] %mul_out.prb, 3, 1
+    %48 = inss [4 x i16] %7, [1 x i16] %47, 0, 1
+    %49 = extf i16, [4 x i16] %48, 0
+    %50 = add i16 %46, %49
+    drv i16$ %45, %50, %3
+    %51 = sig [4 x i16] %4
+    %52 = shr [4 x i16]$ %add_out, [4 x i16]$ %51, i32 %13
+    %53 = extf i16$, [4 x i16]$ %52, 0
+    %54 = exts [1 x i16], [4 x i16] %4, 0, 1
+    %55 = exts [3 x i16], [4 x i16] %q.prb, 1, 3
+    %56 = inss [4 x i16] %4, [1 x i16] %54, 3, 1
+    %57 = inss [4 x i16] %56, [3 x i16] %55, 0, 3
+    %58 = extf i16, [4 x i16] %57, 0
+    %59 = exts [2 x i16], [4 x i16] %4, 0, 2
+    %60 = exts [2 x i16], [4 x i16] %mul_out.prb, 2, 2
+    %61 = inss [4 x i16] %4, [2 x i16] %59, 2, 2
+    %62 = inss [4 x i16] %61, [2 x i16] %60, 0, 2
+    %63 = extf i16, [4 x i16] %62, 0
+    %64 = add i16 %58, %63
+    drv i16$ %53, %64, %3
+    %65 = sig [4 x i16] %4
+    %66 = shr [4 x i16]$ %add_out, [4 x i16]$ %65, i32 %25
+    %67 = extf i16$, [4 x i16]$ %66, 0
+    %68 = exts [2 x i16], [4 x i16] %q.prb, 2, 2
+    %69 = inss [4 x i16] %61, [2 x i16] %68, 0, 2
+    %70 = extf i16, [4 x i16] %69, 0
+    %71 = exts [3 x i16], [4 x i16] %mul_out.prb, 1, 3
+    %72 = inss [4 x i16] %56, [3 x i16] %71, 0, 3
+    %73 = extf i16, [4 x i16] %72, 0
+    %74 = add i16 %70, %73
+    drv i16$ %67, %74, %3
+    %75 = sig [4 x i16] %4
+    %76 = shr [4 x i16]$ %add_out, [4 x i16]$ %75, i32 %35
+    %77 = extf i16$, [4 x i16]$ %76, 0
+    %78 = exts [1 x i16], [4 x i16] %q.prb, 3, 1
+    %79 = inss [4 x i16] %7, [1 x i16] %78, 0, 1
+    %80 = extf i16, [4 x i16] %79, 0
+    %81 = extf i16, [4 x i16] %mul_out.prb, 0
+    %82 = add i16 %80, %81
+    drv i16$ %77, %82, %3
+    inst %fir.param1.always_ff.260.1 (i1$ %CLK, [4 x i16]$ %add_out) -> ([4 x i16]$ %q)
+    inst %fir.param1.always_ff.260.11 (i1$ %CLK, [4 x i16]$ %add_out) -> ([4 x i16]$ %q)
+    inst %fir.param1.always_ff.260.12 (i1$ %CLK, [4 x i16]$ %add_out) -> ([4 x i16]$ %q)
+}
+
+proc %fir_tb.initial.478.0 () -> (i1$ %CLK, i8$ %X) {
+0:
+    %1 = const i8 0
+    %2 = const time 0s 1d
+    drv i8$ %X, %1, %2
+    %3 = const i32 5000000
+    br %loop_body
+loop_body:
+    %4 = phi i32 [%3, %0], [%4, %5]
+    %6 = phi i32 [%3, %0], [%6, %5]
+    %7 = const i32 0
+    %8 = neq i32 %4, %7
+    br %8, %loop_exit, %loop_continue
+loop_exit:
+    halt
+loop_continue:
+    %9 = const i1 1
+    %10 = const time 1ns
+    drv i1$ %CLK, %9, %10
+    %11 = const i1 0
+    %12 = const time 2ns
+    drv i1$ %CLK, %11, %12
+    wait %5 for %12
+5:
+    br %loop_body
+}
+
+proc %fir_tb.always.501.0 (i1$ %CLK) -> (i8$ %X) {
+init:
+    %CLK.prb = prb i1$ %CLK
+    wait %check, %CLK
+check:
+    %CLK.prb1 = prb i1$ %CLK
+    %0 = const i1 0
+    %1 = eq i1 %CLK.prb, %0
+    %2 = neq i1 %CLK.prb1, %0
+    %posedge = and i1 %1, %2
+    br %posedge, %init, %event
+event:
+    %3 = const i32 0
+    %X.prb = prb i8$ %X
+    %zext = inss i32 %3, i8 %X.prb, 0, 8
+    %4 = const i32 9
+    %5 = add i32 %zext, %4
+    %6 = const i32 19
+    %7 = umod i32 %5, %6
+    %8 = exts i8, i32 %7, 0, 8
+    %9 = const time 500ps
+    drv i8$ %X, %8, %9
+    br %init
+}
+
+entity @fir_tb () -> () {
+    %0 = const i1 0
+    %CLK = sig i1 %0
+    %1 = const i8 0
+    %X = sig i8 %1
+    %2 = [i8 %1, %1, %1, %1]
+    %W = sig [4 x i8] %2
+    %3 = const i16 0
+    %Y = sig i16 %3
+    %4 = extf i8$, [4 x i8]$ %W, 0
+    %5 = const i8 254
+    %6 = const time 0s 1e
+    drv i8$ %4, %5, %6
+    %7 = const i32 1
+    %8 = [4 x i8 %1]
+    %9 = sig [4 x i8] %8
+    %10 = shr [4 x i8]$ %W, [4 x i8]$ %9, i32 %7
+    %11 = extf i8$, [4 x i8]$ %10, 0
+    %12 = const i8 255
+    drv i8$ %11, %12, %6
+    %13 = const i32 2
+    %14 = sig [4 x i8] %8
+    %15 = shr [4 x i8]$ %W, [4 x i8]$ %14, i32 %13
+    %16 = extf i8$, [4 x i8]$ %15, 0
+    %17 = const i8 3
+    drv i8$ %16, %17, %6
+    %18 = const i32 3
+    %19 = sig [4 x i8] %8
+    %20 = shr [4 x i8]$ %W, [4 x i8]$ %19, i32 %18
+    %21 = extf i8$, [4 x i8]$ %20, 0
+    %22 = const i8 4
+    drv i8$ %21, %22, %6
+    %CLK.prb = prb i1$ %CLK
+    %23 = sig i1 %0
+    drv i1$ %23, %CLK.prb, %6
+    %X.prb = prb i8$ %X
+    %24 = sig i8 %1
+    drv i8$ %24, %X.prb, %6
+    %W.prb = prb [4 x i8]$ %W
+    %25 = sig [4 x i8] %8
+    drv [4 x i8]$ %25, %W.prb, %6
+    inst @fir.param1 (i1$ %23, i8$ %24, [4 x i8]$ %25) -> (i16$ %Y)
+    inst %fir_tb.initial.478.0 () -> (i1$ %CLK, i8$ %X)
+    inst %fir_tb.always.501.0 (i1$ %CLK) -> (i8$ %X)
+}

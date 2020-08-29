@@ -1,8 +1,0 @@
-entity @Foo () -> () {
-    %0 = const i1 0
-    %toggle = sig i1 %0
-    %1 = prb i1$ %toggle
-    %2 = not i1 %1
-    %dt = const time 1ns
-    drv i1$ %toggle, %2, %dt
-}

@@ -1,0 +1,1288 @@
+entity @binary_to_gray.param2 (i4$ %A) -> (i4$ %Z) {
+    %A1 = prb i4$ %A
+    %A2 = prb i4$ %A
+    %0 = const i32 1
+    %1 = const i4 0
+    %2 = shr i4 %A2, i4 %1, i32 %0
+    %3 = xor i4 %A1, %2
+    %4 = const time 0s 1e
+    drv i4$ %Z, %3, %4
+}
+
+entity @binary_to_gray.param3 (i4$ %A) -> (i4$ %Z) {
+    %A1 = prb i4$ %A
+    %A2 = prb i4$ %A
+    %0 = const i32 1
+    %1 = const i4 0
+    %2 = shr i4 %A2, i4 %1, i32 %0
+    %3 = xor i4 %A1, %2
+    %4 = const time 0s 1e
+    drv i4$ %Z, %3, %4
+}
+
+entity @gray_to_binary.param4 (i4$ %A) -> (i4$ %Z) {
+    %0 = const i32 0
+    %1 = const i4 0
+    %2 = sig i4 %1
+    %3 = shr i4$ %Z, i4$ %2, i32 %0
+    %4 = exts i1$, i4$ %3, 0, 1
+    %A1 = prb i4$ %A
+    %5 = const i1 0
+    %6 = const i4 0
+    %7 = shr i4 %A1, i4 %6, i1 %5
+    %8 = exts i4, i4 %7, 0, 4
+    %9 = exts i1, i4 %8, 0, 1
+    %10 = exts i1, i4 %8, 1, 1
+    %11 = xor i1 %9, %10
+    %12 = exts i1, i4 %8, 2, 1
+    %13 = xor i1 %11, %12
+    %14 = exts i1, i4 %8, 3, 1
+    %15 = xor i1 %13, %14
+    %16 = const time 0s 1e
+    drv i1$ %4, %15, %16
+    %17 = const i32 1
+    %18 = const i4 0
+    %19 = sig i4 %18
+    %20 = shr i4$ %Z, i4$ %19, i32 %17
+    %21 = exts i1$, i4$ %20, 0, 1
+    %A2 = prb i4$ %A
+    %22 = const i1 1
+    %23 = const i4 0
+    %24 = shr i4 %A2, i4 %23, i1 %22
+    %25 = exts i3, i4 %24, 0, 3
+    %26 = exts i1, i3 %25, 0, 1
+    %27 = exts i1, i3 %25, 1, 1
+    %28 = xor i1 %26, %27
+    %29 = exts i1, i3 %25, 2, 1
+    %30 = xor i1 %28, %29
+    %31 = const time 0s 1e
+    drv i1$ %21, %30, %31
+    %32 = const i32 2
+    %33 = const i4 0
+    %34 = sig i4 %33
+    %35 = shr i4$ %Z, i4$ %34, i32 %32
+    %36 = exts i1$, i4$ %35, 0, 1
+    %A3 = prb i4$ %A
+    %37 = const i2 2
+    %38 = const i4 0
+    %39 = shr i4 %A3, i4 %38, i2 %37
+    %40 = exts i2, i4 %39, 0, 2
+    %41 = exts i1, i2 %40, 0, 1
+    %42 = exts i1, i2 %40, 1, 1
+    %43 = xor i1 %41, %42
+    %44 = const time 0s 1e
+    drv i1$ %36, %43, %44
+    %45 = const i32 3
+    %46 = const i4 0
+    %47 = sig i4 %46
+    %48 = shr i4$ %Z, i4$ %47, i32 %45
+    %49 = exts i1$, i4$ %48, 0, 1
+    %A4 = prb i4$ %A
+    %50 = const i2 3
+    %51 = const i4 0
+    %52 = shr i4 %A4, i4 %51, i2 %50
+    %53 = exts i1, i4 %52, 0, 1
+    %54 = exts i1, i1 %53, 0, 1
+    %55 = const time 0s 1e
+    drv i1$ %49, %54, %55
+    %56 = const i4 0
+    %57 = const time 0s
+    drv i4$ %Z, %56, %57
+}
+
+entity @gray_to_binary.param9 (i4$ %A) -> (i4$ %Z) {
+    %0 = const i32 0
+    %1 = const i4 0
+    %2 = sig i4 %1
+    %3 = shr i4$ %Z, i4$ %2, i32 %0
+    %4 = exts i1$, i4$ %3, 0, 1
+    %A1 = prb i4$ %A
+    %5 = const i1 0
+    %6 = const i4 0
+    %7 = shr i4 %A1, i4 %6, i1 %5
+    %8 = exts i4, i4 %7, 0, 4
+    %9 = exts i1, i4 %8, 0, 1
+    %10 = exts i1, i4 %8, 1, 1
+    %11 = xor i1 %9, %10
+    %12 = exts i1, i4 %8, 2, 1
+    %13 = xor i1 %11, %12
+    %14 = exts i1, i4 %8, 3, 1
+    %15 = xor i1 %13, %14
+    %16 = const time 0s 1e
+    drv i1$ %4, %15, %16
+    %17 = const i32 1
+    %18 = const i4 0
+    %19 = sig i4 %18
+    %20 = shr i4$ %Z, i4$ %19, i32 %17
+    %21 = exts i1$, i4$ %20, 0, 1
+    %A2 = prb i4$ %A
+    %22 = const i1 1
+    %23 = const i4 0
+    %24 = shr i4 %A2, i4 %23, i1 %22
+    %25 = exts i3, i4 %24, 0, 3
+    %26 = exts i1, i3 %25, 0, 1
+    %27 = exts i1, i3 %25, 1, 1
+    %28 = xor i1 %26, %27
+    %29 = exts i1, i3 %25, 2, 1
+    %30 = xor i1 %28, %29
+    %31 = const time 0s 1e
+    drv i1$ %21, %30, %31
+    %32 = const i32 2
+    %33 = const i4 0
+    %34 = sig i4 %33
+    %35 = shr i4$ %Z, i4$ %34, i32 %32
+    %36 = exts i1$, i4$ %35, 0, 1
+    %A3 = prb i4$ %A
+    %37 = const i2 2
+    %38 = const i4 0
+    %39 = shr i4 %A3, i4 %38, i2 %37
+    %40 = exts i2, i4 %39, 0, 2
+    %41 = exts i1, i2 %40, 0, 1
+    %42 = exts i1, i2 %40, 1, 1
+    %43 = xor i1 %41, %42
+    %44 = const time 0s 1e
+    drv i1$ %36, %43, %44
+    %45 = const i32 3
+    %46 = const i4 0
+    %47 = sig i4 %46
+    %48 = shr i4$ %Z, i4$ %47, i32 %45
+    %49 = exts i1$, i4$ %48, 0, 1
+    %A4 = prb i4$ %A
+    %50 = const i2 3
+    %51 = const i4 0
+    %52 = shr i4 %A4, i4 %51, i2 %50
+    %53 = exts i1, i4 %52, 0, 1
+    %54 = exts i1, i1 %53, 0, 1
+    %55 = const time 0s 1e
+    drv i1$ %49, %54, %55
+    %56 = const i4 0
+    %57 = const time 0s
+    drv i4$ %Z, %56, %57
+}
+
+proc %cdc_fifo_gray.param1.always_ff.384.1 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q) {
+0:
+    br %init
+init:
+    %src_clk_i1 = prb i1$ %src_clk_i
+    %src_rst_ni1 = prb i1$ %src_rst_ni
+    wait %check, %src_clk_i, %src_rst_ni
+check:
+    %src_clk_i2 = prb i1$ %src_clk_i
+    %1 = const i1 0
+    %2 = eq i1 %src_clk_i1, %1
+    %3 = neq i1 %src_clk_i2, %1
+    %posedge = and i1 %2, %3
+    %src_rst_ni2 = prb i1$ %src_rst_ni
+    %4 = const i1 0
+    %5 = neq i1 %src_rst_ni1, %4
+    %6 = eq i1 %src_rst_ni2, %4
+    %negedge = and i1 %6, %5
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %src_rst_ni3 = prb i1$ %src_rst_ni
+    %7 = not i1 %src_rst_ni3
+    br %7, %if_false, %if_true
+if_true:
+    %8 = const i32 0
+    %9 = const i32 0
+    %10 = [8 x i32 %9]
+    %11 = sig [8 x i32] %10
+    %12 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %11, i32 %8
+    %13 = extf i32$, [8 x i32]$ %12, 0
+    %14 = const i32 0
+    %15 = const i1 0
+    %16 = inss i32 %14, i1 %15, 0, 1
+    %17 = const time 0s 1d
+    drv i32$ %13, %16, %17
+    br %if_exit
+if_false:
+    %fifo_write1 = prb i1$ %fifo_write
+    %18 = const i32 0
+    %fifo_widx1 = prb i3$ %fifo_widx
+    %19 = inss i32 %18, i3 %fifo_widx1, 0, 3
+    %20 = const i32 0
+    %21 = eq i32 %19, %20
+    %22 = and i1 %fifo_write1, %21
+    br %22, %if_false1, %if_true1
+if_exit:
+    br %0
+if_true1:
+    %23 = const i32 0
+    %24 = const i32 0
+    %25 = [8 x i32 %24]
+    %26 = sig [8 x i32] %25
+    %27 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %26, i32 %23
+    %28 = extf i32$, [8 x i32]$ %27, 0
+    %fifo_wdata1 = prb i32$ %fifo_wdata
+    %29 = const time 0s 1d
+    drv i32$ %28, %fifo_wdata1, %29
+    br %if_exit1
+if_false1:
+    br %if_exit1
+if_exit1:
+    br %if_exit
+}
+
+proc %cdc_fifo_gray.param1.always_ff.384.14 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q) {
+0:
+    br %init
+init:
+    %src_clk_i1 = prb i1$ %src_clk_i
+    %src_rst_ni1 = prb i1$ %src_rst_ni
+    wait %check, %src_clk_i, %src_rst_ni
+check:
+    %src_clk_i2 = prb i1$ %src_clk_i
+    %1 = const i1 0
+    %2 = eq i1 %src_clk_i1, %1
+    %3 = neq i1 %src_clk_i2, %1
+    %posedge = and i1 %2, %3
+    %src_rst_ni2 = prb i1$ %src_rst_ni
+    %4 = const i1 0
+    %5 = neq i1 %src_rst_ni1, %4
+    %6 = eq i1 %src_rst_ni2, %4
+    %negedge = and i1 %6, %5
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %src_rst_ni3 = prb i1$ %src_rst_ni
+    %7 = not i1 %src_rst_ni3
+    br %7, %if_false, %if_true
+if_true:
+    %8 = const i32 1
+    %9 = const i32 0
+    %10 = [8 x i32 %9]
+    %11 = sig [8 x i32] %10
+    %12 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %11, i32 %8
+    %13 = extf i32$, [8 x i32]$ %12, 0
+    %14 = const i32 0
+    %15 = const i1 0
+    %16 = inss i32 %14, i1 %15, 0, 1
+    %17 = const time 0s 1d
+    drv i32$ %13, %16, %17
+    br %if_exit
+if_false:
+    %fifo_write1 = prb i1$ %fifo_write
+    %18 = const i32 0
+    %fifo_widx1 = prb i3$ %fifo_widx
+    %19 = inss i32 %18, i3 %fifo_widx1, 0, 3
+    %20 = const i32 1
+    %21 = eq i32 %19, %20
+    %22 = and i1 %fifo_write1, %21
+    br %22, %if_false1, %if_true1
+if_exit:
+    br %0
+if_true1:
+    %23 = const i32 1
+    %24 = const i32 0
+    %25 = [8 x i32 %24]
+    %26 = sig [8 x i32] %25
+    %27 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %26, i32 %23
+    %28 = extf i32$, [8 x i32]$ %27, 0
+    %fifo_wdata1 = prb i32$ %fifo_wdata
+    %29 = const time 0s 1d
+    drv i32$ %28, %fifo_wdata1, %29
+    br %if_exit1
+if_false1:
+    br %if_exit1
+if_exit1:
+    br %if_exit
+}
+
+proc %cdc_fifo_gray.param1.always_ff.384.15 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q) {
+0:
+    br %init
+init:
+    %src_clk_i1 = prb i1$ %src_clk_i
+    %src_rst_ni1 = prb i1$ %src_rst_ni
+    wait %check, %src_clk_i, %src_rst_ni
+check:
+    %src_clk_i2 = prb i1$ %src_clk_i
+    %1 = const i1 0
+    %2 = eq i1 %src_clk_i1, %1
+    %3 = neq i1 %src_clk_i2, %1
+    %posedge = and i1 %2, %3
+    %src_rst_ni2 = prb i1$ %src_rst_ni
+    %4 = const i1 0
+    %5 = neq i1 %src_rst_ni1, %4
+    %6 = eq i1 %src_rst_ni2, %4
+    %negedge = and i1 %6, %5
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %src_rst_ni3 = prb i1$ %src_rst_ni
+    %7 = not i1 %src_rst_ni3
+    br %7, %if_false, %if_true
+if_true:
+    %8 = const i32 2
+    %9 = const i32 0
+    %10 = [8 x i32 %9]
+    %11 = sig [8 x i32] %10
+    %12 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %11, i32 %8
+    %13 = extf i32$, [8 x i32]$ %12, 0
+    %14 = const i32 0
+    %15 = const i1 0
+    %16 = inss i32 %14, i1 %15, 0, 1
+    %17 = const time 0s 1d
+    drv i32$ %13, %16, %17
+    br %if_exit
+if_false:
+    %fifo_write1 = prb i1$ %fifo_write
+    %18 = const i32 0
+    %fifo_widx1 = prb i3$ %fifo_widx
+    %19 = inss i32 %18, i3 %fifo_widx1, 0, 3
+    %20 = const i32 2
+    %21 = eq i32 %19, %20
+    %22 = and i1 %fifo_write1, %21
+    br %22, %if_false1, %if_true1
+if_exit:
+    br %0
+if_true1:
+    %23 = const i32 2
+    %24 = const i32 0
+    %25 = [8 x i32 %24]
+    %26 = sig [8 x i32] %25
+    %27 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %26, i32 %23
+    %28 = extf i32$, [8 x i32]$ %27, 0
+    %fifo_wdata1 = prb i32$ %fifo_wdata
+    %29 = const time 0s 1d
+    drv i32$ %28, %fifo_wdata1, %29
+    br %if_exit1
+if_false1:
+    br %if_exit1
+if_exit1:
+    br %if_exit
+}
+
+proc %cdc_fifo_gray.param1.always_ff.384.16 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q) {
+0:
+    br %init
+init:
+    %src_clk_i1 = prb i1$ %src_clk_i
+    %src_rst_ni1 = prb i1$ %src_rst_ni
+    wait %check, %src_clk_i, %src_rst_ni
+check:
+    %src_clk_i2 = prb i1$ %src_clk_i
+    %1 = const i1 0
+    %2 = eq i1 %src_clk_i1, %1
+    %3 = neq i1 %src_clk_i2, %1
+    %posedge = and i1 %2, %3
+    %src_rst_ni2 = prb i1$ %src_rst_ni
+    %4 = const i1 0
+    %5 = neq i1 %src_rst_ni1, %4
+    %6 = eq i1 %src_rst_ni2, %4
+    %negedge = and i1 %6, %5
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %src_rst_ni3 = prb i1$ %src_rst_ni
+    %7 = not i1 %src_rst_ni3
+    br %7, %if_false, %if_true
+if_true:
+    %8 = const i32 3
+    %9 = const i32 0
+    %10 = [8 x i32 %9]
+    %11 = sig [8 x i32] %10
+    %12 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %11, i32 %8
+    %13 = extf i32$, [8 x i32]$ %12, 0
+    %14 = const i32 0
+    %15 = const i1 0
+    %16 = inss i32 %14, i1 %15, 0, 1
+    %17 = const time 0s 1d
+    drv i32$ %13, %16, %17
+    br %if_exit
+if_false:
+    %fifo_write1 = prb i1$ %fifo_write
+    %18 = const i32 0
+    %fifo_widx1 = prb i3$ %fifo_widx
+    %19 = inss i32 %18, i3 %fifo_widx1, 0, 3
+    %20 = const i32 3
+    %21 = eq i32 %19, %20
+    %22 = and i1 %fifo_write1, %21
+    br %22, %if_false1, %if_true1
+if_exit:
+    br %0
+if_true1:
+    %23 = const i32 3
+    %24 = const i32 0
+    %25 = [8 x i32 %24]
+    %26 = sig [8 x i32] %25
+    %27 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %26, i32 %23
+    %28 = extf i32$, [8 x i32]$ %27, 0
+    %fifo_wdata1 = prb i32$ %fifo_wdata
+    %29 = const time 0s 1d
+    drv i32$ %28, %fifo_wdata1, %29
+    br %if_exit1
+if_false1:
+    br %if_exit1
+if_exit1:
+    br %if_exit
+}
+
+proc %cdc_fifo_gray.param1.always_ff.384.17 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q) {
+0:
+    br %init
+init:
+    %src_clk_i1 = prb i1$ %src_clk_i
+    %src_rst_ni1 = prb i1$ %src_rst_ni
+    wait %check, %src_clk_i, %src_rst_ni
+check:
+    %src_clk_i2 = prb i1$ %src_clk_i
+    %1 = const i1 0
+    %2 = eq i1 %src_clk_i1, %1
+    %3 = neq i1 %src_clk_i2, %1
+    %posedge = and i1 %2, %3
+    %src_rst_ni2 = prb i1$ %src_rst_ni
+    %4 = const i1 0
+    %5 = neq i1 %src_rst_ni1, %4
+    %6 = eq i1 %src_rst_ni2, %4
+    %negedge = and i1 %6, %5
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %src_rst_ni3 = prb i1$ %src_rst_ni
+    %7 = not i1 %src_rst_ni3
+    br %7, %if_false, %if_true
+if_true:
+    %8 = const i32 4
+    %9 = const i32 0
+    %10 = [8 x i32 %9]
+    %11 = sig [8 x i32] %10
+    %12 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %11, i32 %8
+    %13 = extf i32$, [8 x i32]$ %12, 0
+    %14 = const i32 0
+    %15 = const i1 0
+    %16 = inss i32 %14, i1 %15, 0, 1
+    %17 = const time 0s 1d
+    drv i32$ %13, %16, %17
+    br %if_exit
+if_false:
+    %fifo_write1 = prb i1$ %fifo_write
+    %18 = const i32 0
+    %fifo_widx1 = prb i3$ %fifo_widx
+    %19 = inss i32 %18, i3 %fifo_widx1, 0, 3
+    %20 = const i32 4
+    %21 = eq i32 %19, %20
+    %22 = and i1 %fifo_write1, %21
+    br %22, %if_false1, %if_true1
+if_exit:
+    br %0
+if_true1:
+    %23 = const i32 4
+    %24 = const i32 0
+    %25 = [8 x i32 %24]
+    %26 = sig [8 x i32] %25
+    %27 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %26, i32 %23
+    %28 = extf i32$, [8 x i32]$ %27, 0
+    %fifo_wdata1 = prb i32$ %fifo_wdata
+    %29 = const time 0s 1d
+    drv i32$ %28, %fifo_wdata1, %29
+    br %if_exit1
+if_false1:
+    br %if_exit1
+if_exit1:
+    br %if_exit
+}
+
+proc %cdc_fifo_gray.param1.always_ff.384.18 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q) {
+0:
+    br %init
+init:
+    %src_clk_i1 = prb i1$ %src_clk_i
+    %src_rst_ni1 = prb i1$ %src_rst_ni
+    wait %check, %src_clk_i, %src_rst_ni
+check:
+    %src_clk_i2 = prb i1$ %src_clk_i
+    %1 = const i1 0
+    %2 = eq i1 %src_clk_i1, %1
+    %3 = neq i1 %src_clk_i2, %1
+    %posedge = and i1 %2, %3
+    %src_rst_ni2 = prb i1$ %src_rst_ni
+    %4 = const i1 0
+    %5 = neq i1 %src_rst_ni1, %4
+    %6 = eq i1 %src_rst_ni2, %4
+    %negedge = and i1 %6, %5
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %src_rst_ni3 = prb i1$ %src_rst_ni
+    %7 = not i1 %src_rst_ni3
+    br %7, %if_false, %if_true
+if_true:
+    %8 = const i32 5
+    %9 = const i32 0
+    %10 = [8 x i32 %9]
+    %11 = sig [8 x i32] %10
+    %12 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %11, i32 %8
+    %13 = extf i32$, [8 x i32]$ %12, 0
+    %14 = const i32 0
+    %15 = const i1 0
+    %16 = inss i32 %14, i1 %15, 0, 1
+    %17 = const time 0s 1d
+    drv i32$ %13, %16, %17
+    br %if_exit
+if_false:
+    %fifo_write1 = prb i1$ %fifo_write
+    %18 = const i32 0
+    %fifo_widx1 = prb i3$ %fifo_widx
+    %19 = inss i32 %18, i3 %fifo_widx1, 0, 3
+    %20 = const i32 5
+    %21 = eq i32 %19, %20
+    %22 = and i1 %fifo_write1, %21
+    br %22, %if_false1, %if_true1
+if_exit:
+    br %0
+if_true1:
+    %23 = const i32 5
+    %24 = const i32 0
+    %25 = [8 x i32 %24]
+    %26 = sig [8 x i32] %25
+    %27 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %26, i32 %23
+    %28 = extf i32$, [8 x i32]$ %27, 0
+    %fifo_wdata1 = prb i32$ %fifo_wdata
+    %29 = const time 0s 1d
+    drv i32$ %28, %fifo_wdata1, %29
+    br %if_exit1
+if_false1:
+    br %if_exit1
+if_exit1:
+    br %if_exit
+}
+
+proc %cdc_fifo_gray.param1.always_ff.384.19 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q) {
+0:
+    br %init
+init:
+    %src_clk_i1 = prb i1$ %src_clk_i
+    %src_rst_ni1 = prb i1$ %src_rst_ni
+    wait %check, %src_clk_i, %src_rst_ni
+check:
+    %src_clk_i2 = prb i1$ %src_clk_i
+    %1 = const i1 0
+    %2 = eq i1 %src_clk_i1, %1
+    %3 = neq i1 %src_clk_i2, %1
+    %posedge = and i1 %2, %3
+    %src_rst_ni2 = prb i1$ %src_rst_ni
+    %4 = const i1 0
+    %5 = neq i1 %src_rst_ni1, %4
+    %6 = eq i1 %src_rst_ni2, %4
+    %negedge = and i1 %6, %5
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %src_rst_ni3 = prb i1$ %src_rst_ni
+    %7 = not i1 %src_rst_ni3
+    br %7, %if_false, %if_true
+if_true:
+    %8 = const i32 6
+    %9 = const i32 0
+    %10 = [8 x i32 %9]
+    %11 = sig [8 x i32] %10
+    %12 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %11, i32 %8
+    %13 = extf i32$, [8 x i32]$ %12, 0
+    %14 = const i32 0
+    %15 = const i1 0
+    %16 = inss i32 %14, i1 %15, 0, 1
+    %17 = const time 0s 1d
+    drv i32$ %13, %16, %17
+    br %if_exit
+if_false:
+    %fifo_write1 = prb i1$ %fifo_write
+    %18 = const i32 0
+    %fifo_widx1 = prb i3$ %fifo_widx
+    %19 = inss i32 %18, i3 %fifo_widx1, 0, 3
+    %20 = const i32 6
+    %21 = eq i32 %19, %20
+    %22 = and i1 %fifo_write1, %21
+    br %22, %if_false1, %if_true1
+if_exit:
+    br %0
+if_true1:
+    %23 = const i32 6
+    %24 = const i32 0
+    %25 = [8 x i32 %24]
+    %26 = sig [8 x i32] %25
+    %27 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %26, i32 %23
+    %28 = extf i32$, [8 x i32]$ %27, 0
+    %fifo_wdata1 = prb i32$ %fifo_wdata
+    %29 = const time 0s 1d
+    drv i32$ %28, %fifo_wdata1, %29
+    br %if_exit1
+if_false1:
+    br %if_exit1
+if_exit1:
+    br %if_exit
+}
+
+proc %cdc_fifo_gray.param1.always_ff.384.20 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q) {
+0:
+    br %init
+init:
+    %src_clk_i1 = prb i1$ %src_clk_i
+    %src_rst_ni1 = prb i1$ %src_rst_ni
+    wait %check, %src_clk_i, %src_rst_ni
+check:
+    %src_clk_i2 = prb i1$ %src_clk_i
+    %1 = const i1 0
+    %2 = eq i1 %src_clk_i1, %1
+    %3 = neq i1 %src_clk_i2, %1
+    %posedge = and i1 %2, %3
+    %src_rst_ni2 = prb i1$ %src_rst_ni
+    %4 = const i1 0
+    %5 = neq i1 %src_rst_ni1, %4
+    %6 = eq i1 %src_rst_ni2, %4
+    %negedge = and i1 %6, %5
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %src_rst_ni3 = prb i1$ %src_rst_ni
+    %7 = not i1 %src_rst_ni3
+    br %7, %if_false, %if_true
+if_true:
+    %8 = const i32 7
+    %9 = const i32 0
+    %10 = [8 x i32 %9]
+    %11 = sig [8 x i32] %10
+    %12 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %11, i32 %8
+    %13 = extf i32$, [8 x i32]$ %12, 0
+    %14 = const i32 0
+    %15 = const i1 0
+    %16 = inss i32 %14, i1 %15, 0, 1
+    %17 = const time 0s 1d
+    drv i32$ %13, %16, %17
+    br %if_exit
+if_false:
+    %fifo_write1 = prb i1$ %fifo_write
+    %18 = const i32 0
+    %fifo_widx1 = prb i3$ %fifo_widx
+    %19 = inss i32 %18, i3 %fifo_widx1, 0, 3
+    %20 = const i32 7
+    %21 = eq i32 %19, %20
+    %22 = and i1 %fifo_write1, %21
+    br %22, %if_false1, %if_true1
+if_exit:
+    br %0
+if_true1:
+    %23 = const i32 7
+    %24 = const i32 0
+    %25 = [8 x i32 %24]
+    %26 = sig [8 x i32] %25
+    %27 = shr [8 x i32]$ %fifo_data_q, [8 x i32]$ %26, i32 %23
+    %28 = extf i32$, [8 x i32]$ %27, 0
+    %fifo_wdata1 = prb i32$ %fifo_wdata
+    %29 = const time 0s 1d
+    drv i32$ %28, %fifo_wdata1, %29
+    br %if_exit1
+if_false1:
+    br %if_exit1
+if_exit1:
+    br %if_exit
+}
+
+proc %cdc_fifo_gray.param1.initial.283.1 () -> () {
+0:
+    halt
+}
+
+proc %cdc_fifo_gray.param1.always_ff.317.1 (i1$ %src_rst_ni, i1$ %src_clk_i, i1$ %src_valid_i, i1$ %src_ready_o, i4$ %src_wptr_bin_d, i4$ %src_wptr_gray_d) -> (i4$ %src_wptr_bin_q, i4$ %src_wptr_gray_q) {
+0:
+    br %init
+init:
+    %src_clk_i1 = prb i1$ %src_clk_i
+    %src_rst_ni1 = prb i1$ %src_rst_ni
+    wait %check, %src_clk_i, %src_rst_ni
+check:
+    %src_clk_i2 = prb i1$ %src_clk_i
+    %1 = const i1 0
+    %2 = eq i1 %src_clk_i1, %1
+    %3 = neq i1 %src_clk_i2, %1
+    %posedge = and i1 %2, %3
+    %src_rst_ni2 = prb i1$ %src_rst_ni
+    %4 = const i1 0
+    %5 = neq i1 %src_rst_ni1, %4
+    %6 = eq i1 %src_rst_ni2, %4
+    %negedge = and i1 %6, %5
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %src_rst_ni3 = prb i1$ %src_rst_ni
+    %7 = not i1 %src_rst_ni3
+    br %7, %if_false, %if_true
+if_true:
+    %8 = const i4 0
+    %9 = const i1 0
+    %10 = inss i4 %8, i1 %9, 0, 1
+    %11 = const time 0s 1d
+    drv i4$ %src_wptr_bin_q, %10, %11
+    %12 = const i4 0
+    %13 = const i1 0
+    %14 = inss i4 %12, i1 %13, 0, 1
+    %15 = const time 0s 1d
+    drv i4$ %src_wptr_gray_q, %14, %15
+    br %if_exit
+if_false:
+    %src_valid_i1 = prb i1$ %src_valid_i
+    %src_ready_o1 = prb i1$ %src_ready_o
+    %16 = and i1 %src_valid_i1, %src_ready_o1
+    br %16, %if_false1, %if_true1
+if_exit:
+    br %0
+if_true1:
+    %src_wptr_bin_d1 = prb i4$ %src_wptr_bin_d
+    %17 = const time 0s 1d
+    drv i4$ %src_wptr_bin_q, %src_wptr_bin_d1, %17
+    %src_wptr_gray_d1 = prb i4$ %src_wptr_gray_d
+    %18 = const time 0s 1d
+    drv i4$ %src_wptr_gray_q, %src_wptr_gray_d1, %18
+    br %if_exit1
+if_false1:
+    br %if_exit1
+if_exit1:
+    br %if_exit
+}
+
+proc %cdc_fifo_gray.param1.always_ff.318.1 (i1$ %dst_rst_ni, i1$ %dst_clk_i, i1$ %dst_valid_o, i1$ %dst_ready_i, i4$ %dst_rptr_bin_d, i4$ %dst_rptr_gray_d) -> (i4$ %dst_rptr_bin_q, i4$ %dst_rptr_gray_q) {
+0:
+    br %init
+init:
+    %dst_clk_i1 = prb i1$ %dst_clk_i
+    %dst_rst_ni1 = prb i1$ %dst_rst_ni
+    wait %check, %dst_clk_i, %dst_rst_ni
+check:
+    %dst_clk_i2 = prb i1$ %dst_clk_i
+    %1 = const i1 0
+    %2 = eq i1 %dst_clk_i1, %1
+    %3 = neq i1 %dst_clk_i2, %1
+    %posedge = and i1 %2, %3
+    %dst_rst_ni2 = prb i1$ %dst_rst_ni
+    %4 = const i1 0
+    %5 = neq i1 %dst_rst_ni1, %4
+    %6 = eq i1 %dst_rst_ni2, %4
+    %negedge = and i1 %6, %5
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %dst_rst_ni3 = prb i1$ %dst_rst_ni
+    %7 = not i1 %dst_rst_ni3
+    br %7, %if_false, %if_true
+if_true:
+    %8 = const i4 0
+    %9 = const i1 0
+    %10 = inss i4 %8, i1 %9, 0, 1
+    %11 = const time 0s 1d
+    drv i4$ %dst_rptr_bin_q, %10, %11
+    %12 = const i4 0
+    %13 = const i1 0
+    %14 = inss i4 %12, i1 %13, 0, 1
+    %15 = const time 0s 1d
+    drv i4$ %dst_rptr_gray_q, %14, %15
+    br %if_exit
+if_false:
+    %dst_valid_o1 = prb i1$ %dst_valid_o
+    %dst_ready_i1 = prb i1$ %dst_ready_i
+    %16 = and i1 %dst_valid_o1, %dst_ready_i1
+    br %16, %if_false1, %if_true1
+if_exit:
+    br %0
+if_true1:
+    %dst_rptr_bin_d1 = prb i4$ %dst_rptr_bin_d
+    %17 = const time 0s 1d
+    drv i4$ %dst_rptr_bin_q, %dst_rptr_bin_d1, %17
+    %dst_rptr_gray_d1 = prb i4$ %dst_rptr_gray_d
+    %18 = const time 0s 1d
+    drv i4$ %dst_rptr_gray_q, %dst_rptr_gray_d1, %18
+    br %if_exit1
+if_false1:
+    br %if_exit1
+if_exit1:
+    br %if_exit
+}
+
+proc %cdc_fifo_gray.param1.always_ff.325.1 (i1$ %src_rst_ni, i1$ %src_clk_i, i4$ %dst_rptr_gray_q, i4$ %src_rptr_gray_q) -> (i4$ %src_rptr_gray_q1, i4$ %src_rptr_gray_q2) {
+0:
+    %1 = prb i4$ %src_rptr_gray_q1
+    %src_rptr_gray_q.shadow = var i4 %1
+    br %init
+init:
+    %src_clk_i1 = prb i1$ %src_clk_i
+    %src_rst_ni1 = prb i1$ %src_rst_ni
+    wait %check, %src_clk_i, %src_rst_ni
+check:
+    %2 = prb i4$ %src_rptr_gray_q1
+    st i4* %src_rptr_gray_q.shadow, %2
+    %src_clk_i2 = prb i1$ %src_clk_i
+    %3 = const i1 0
+    %4 = eq i1 %src_clk_i1, %3
+    %5 = neq i1 %src_clk_i2, %3
+    %posedge = and i1 %4, %5
+    %src_rst_ni2 = prb i1$ %src_rst_ni
+    %6 = const i1 0
+    %7 = neq i1 %src_rst_ni1, %6
+    %8 = eq i1 %src_rst_ni2, %6
+    %negedge = and i1 %8, %7
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %src_rst_ni3 = prb i1$ %src_rst_ni
+    %9 = not i1 %src_rst_ni3
+    br %9, %if_false, %if_true
+if_true:
+    %10 = const i4 0
+    %11 = const i1 0
+    %12 = inss i4 %10, i1 %11, 0, 1
+    %13 = const time 0s 1d
+    drv i4$ %src_rptr_gray_q1, %12, %13
+    %14 = const i4 0
+    %15 = const i1 0
+    %16 = inss i4 %14, i1 %15, 0, 1
+    %17 = const time 0s 1d
+    drv i4$ %src_rptr_gray_q2, %16, %17
+    br %if_exit
+if_false:
+    %dst_rptr_gray_q1 = prb i4$ %dst_rptr_gray_q
+    %18 = const time 0s 1d
+    drv i4$ %src_rptr_gray_q1, %dst_rptr_gray_q1, %18
+    %src_rptr_gray_q3 = ld i4* %src_rptr_gray_q.shadow
+    %19 = const time 0s 1d
+    drv i4$ %src_rptr_gray_q2, %src_rptr_gray_q3, %19
+    br %if_exit
+if_exit:
+    br %0
+}
+
+proc %cdc_fifo_gray.param1.always_ff.326.1 (i1$ %dst_rst_ni, i1$ %dst_clk_i, i4$ %src_wptr_gray_q, i4$ %dst_wptr_gray_q) -> (i4$ %dst_wptr_gray_q1, i4$ %dst_wptr_gray_q2) {
+0:
+    %1 = prb i4$ %dst_wptr_gray_q1
+    %dst_wptr_gray_q.shadow = var i4 %1
+    br %init
+init:
+    %dst_clk_i1 = prb i1$ %dst_clk_i
+    %dst_rst_ni1 = prb i1$ %dst_rst_ni
+    wait %check, %dst_clk_i, %dst_rst_ni
+check:
+    %2 = prb i4$ %dst_wptr_gray_q1
+    st i4* %dst_wptr_gray_q.shadow, %2
+    %dst_clk_i2 = prb i1$ %dst_clk_i
+    %3 = const i1 0
+    %4 = eq i1 %dst_clk_i1, %3
+    %5 = neq i1 %dst_clk_i2, %3
+    %posedge = and i1 %4, %5
+    %dst_rst_ni2 = prb i1$ %dst_rst_ni
+    %6 = const i1 0
+    %7 = neq i1 %dst_rst_ni1, %6
+    %8 = eq i1 %dst_rst_ni2, %6
+    %negedge = and i1 %8, %7
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %dst_rst_ni3 = prb i1$ %dst_rst_ni
+    %9 = not i1 %dst_rst_ni3
+    br %9, %if_false, %if_true
+if_true:
+    %10 = const i4 0
+    %11 = const i1 0
+    %12 = inss i4 %10, i1 %11, 0, 1
+    %13 = const time 0s 1d
+    drv i4$ %dst_wptr_gray_q1, %12, %13
+    %14 = const i4 0
+    %15 = const i1 0
+    %16 = inss i4 %14, i1 %15, 0, 1
+    %17 = const time 0s 1d
+    drv i4$ %dst_wptr_gray_q2, %16, %17
+    br %if_exit
+if_false:
+    %src_wptr_gray_q1 = prb i4$ %src_wptr_gray_q
+    %18 = const time 0s 1d
+    drv i4$ %dst_wptr_gray_q1, %src_wptr_gray_q1, %18
+    %dst_wptr_gray_q3 = ld i4* %dst_wptr_gray_q.shadow
+    %19 = const time 0s 1d
+    drv i4$ %dst_wptr_gray_q2, %dst_wptr_gray_q3, %19
+    br %if_exit
+if_exit:
+    br %0
+}
+
+entity @cdc_fifo_gray.param1 (i1$ %src_rst_ni, i1$ %src_clk_i, i32$ %src_data_i, i1$ %src_valid_i, i1$ %dst_rst_ni, i1$ %dst_clk_i, i1$ %dst_ready_i) -> (i1$ %src_ready_o, i32$ %dst_data_o, i1$ %dst_valid_o) {
+    %0 = const i3 0
+    %fifo_widx = sig i3 %0
+    %1 = const i3 0
+    %fifo_ridx = sig i3 %1
+    %2 = const i1 0
+    %fifo_write = sig i1 %2
+    %3 = const i32 0
+    %fifo_wdata = sig i32 %3
+    %4 = const i32 0
+    %fifo_rdata = sig i32 %4
+    %5 = const i32 0
+    %6 = const i32 0
+    %7 = const i32 0
+    %8 = const i32 0
+    %9 = const i32 0
+    %10 = const i32 0
+    %11 = const i32 0
+    %12 = const i32 0
+    %13 = [i32 %5, %6, %7, %8, %9, %10, %11, %12]
+    %fifo_data_q = sig [8 x i32] %13
+    %14 = const i4 0
+    %src_wptr_bin_q = sig i4 %14
+    %15 = const i4 0
+    %src_wptr_gray_q = sig i4 %15
+    %16 = const i4 0
+    %dst_rptr_bin_q = sig i4 %16
+    %17 = const i4 0
+    %dst_rptr_gray_q = sig i4 %17
+    %18 = const i4 0
+    %src_wptr_bin_d = sig i4 %18
+    %19 = const i4 0
+    %src_wptr_gray_d = sig i4 %19
+    %20 = const i4 0
+    %dst_rptr_bin_d = sig i4 %20
+    %21 = const i4 0
+    %dst_rptr_gray_d = sig i4 %21
+    %22 = const i4 0
+    %src_rptr_gray_q = sig i4 %22
+    %23 = const i4 0
+    %src_rptr_gray_q2 = sig i4 %23
+    %24 = const i4 0
+    %dst_wptr_gray_q = sig i4 %24
+    %25 = const i4 0
+    %dst_wptr_gray_q2 = sig i4 %25
+    %26 = const i4 0
+    %src_rptr_bin = sig i4 %26
+    %27 = const i4 0
+    %dst_wptr_bin = sig i4 %27
+    %fifo_data_q1 = prb [8 x i32]$ %fifo_data_q
+    %fifo_ridx1 = prb i3$ %fifo_ridx
+    %28 = const i32 0
+    %29 = [8 x i32 %28]
+    %30 = shr [8 x i32] %fifo_data_q1, [8 x i32] %29, i3 %fifo_ridx1
+    %31 = extf i32, [8 x i32] %30, 0
+    %32 = const time 0s 1e
+    drv i32$ %fifo_rdata, %31, %32
+    %33 = const i32 0
+    %src_wptr_bin_q1 = prb i4$ %src_wptr_bin_q
+    %34 = inss i32 %33, i4 %src_wptr_bin_q1, 0, 4
+    %35 = const i32 1
+    %36 = add i32 %34, %35
+    %37 = exts i4, i32 %36, 0, 4
+    %38 = const time 0s 1e
+    drv i4$ %src_wptr_bin_d, %37, %38
+    %39 = const i32 0
+    %dst_rptr_bin_q1 = prb i4$ %dst_rptr_bin_q
+    %40 = inss i32 %39, i4 %dst_rptr_bin_q1, 0, 4
+    %41 = const i32 1
+    %42 = add i32 %40, %41
+    %43 = exts i4, i32 %42, 0, 4
+    %44 = const time 0s 1e
+    drv i4$ %dst_rptr_bin_d, %43, %44
+    %src_wptr_bin_q2 = prb i4$ %src_wptr_bin_q
+    %src_rptr_bin1 = prb i4$ %src_rptr_bin
+    %45 = xor i4 %src_wptr_bin_q2, %src_rptr_bin1
+    %46 = const i32 8
+    %47 = exts i4, i32 %46, 0, 4
+    %48 = neq i4 %45, %47
+    %49 = const time 0s 1e
+    drv i1$ %src_ready_o, %48, %49
+    %dst_rptr_bin_q2 = prb i4$ %dst_rptr_bin_q
+    %dst_wptr_bin1 = prb i4$ %dst_wptr_bin
+    %50 = xor i4 %dst_rptr_bin_q2, %dst_wptr_bin1
+    %51 = const i4 0
+    %52 = const i1 0
+    %53 = inss i4 %51, i1 %52, 0, 1
+    %54 = neq i4 %50, %53
+    %55 = const time 0s 1e
+    drv i1$ %dst_valid_o, %54, %55
+    %src_wptr_bin_q3 = prb i4$ %src_wptr_bin_q
+    %56 = exts i3, i4 %src_wptr_bin_q3, 0, 3
+    %57 = const time 0s 1e
+    drv i3$ %fifo_widx, %56, %57
+    %src_data_i1 = prb i32$ %src_data_i
+    %58 = const time 0s 1e
+    drv i32$ %fifo_wdata, %src_data_i1, %58
+    %src_valid_i1 = prb i1$ %src_valid_i
+    %src_ready_o1 = prb i1$ %src_ready_o
+    %59 = and i1 %src_valid_i1, %src_ready_o1
+    %60 = const time 0s 1e
+    drv i1$ %fifo_write, %59, %60
+    %dst_rptr_bin_q3 = prb i4$ %dst_rptr_bin_q
+    %61 = exts i3, i4 %dst_rptr_bin_q3, 0, 3
+    %62 = const time 0s 1e
+    drv i3$ %fifo_ridx, %61, %62
+    %fifo_rdata1 = prb i32$ %fifo_rdata
+    %63 = const time 0s 1e
+    drv i32$ %dst_data_o, %fifo_rdata1, %63
+    %src_wptr_bin_d1 = prb i4$ %src_wptr_bin_d
+    %64 = const i4 0
+    %65 = sig i4 %64
+    %66 = const time 0s 1e
+    drv i4$ %65, %src_wptr_bin_d1, %66
+    inst @binary_to_gray.param2 (i4$ %65) -> (i4$ %src_wptr_gray_d)
+    %dst_rptr_bin_d1 = prb i4$ %dst_rptr_bin_d
+    %67 = const i4 0
+    %68 = sig i4 %67
+    %69 = const time 0s 1e
+    drv i4$ %68, %dst_rptr_bin_d1, %69
+    inst @binary_to_gray.param3 (i4$ %68) -> (i4$ %dst_rptr_gray_d)
+    %src_rptr_gray_q21 = prb i4$ %src_rptr_gray_q2
+    %70 = const i4 0
+    %71 = sig i4 %70
+    %72 = const time 0s 1e
+    drv i4$ %71, %src_rptr_gray_q21, %72
+    inst @gray_to_binary.param4 (i4$ %71) -> (i4$ %src_rptr_bin)
+    %dst_wptr_gray_q21 = prb i4$ %dst_wptr_gray_q2
+    %73 = const i4 0
+    %74 = sig i4 %73
+    %75 = const time 0s 1e
+    drv i4$ %74, %dst_wptr_gray_q21, %75
+    inst @gray_to_binary.param9 (i4$ %74) -> (i4$ %dst_wptr_bin)
+    inst %cdc_fifo_gray.param1.always_ff.384.1 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q)
+    inst %cdc_fifo_gray.param1.always_ff.384.14 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q)
+    inst %cdc_fifo_gray.param1.always_ff.384.15 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q)
+    inst %cdc_fifo_gray.param1.always_ff.384.16 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q)
+    inst %cdc_fifo_gray.param1.always_ff.384.17 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q)
+    inst %cdc_fifo_gray.param1.always_ff.384.18 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q)
+    inst %cdc_fifo_gray.param1.always_ff.384.19 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q)
+    inst %cdc_fifo_gray.param1.always_ff.384.20 (i1$ %src_rst_ni, i1$ %src_clk_i, i3$ %fifo_widx, i1$ %fifo_write, i32$ %fifo_wdata) -> ([8 x i32]$ %fifo_data_q)
+    inst %cdc_fifo_gray.param1.initial.283.1 () -> ()
+    inst %cdc_fifo_gray.param1.always_ff.317.1 (i1$ %src_rst_ni, i1$ %src_clk_i, i1$ %src_valid_i, i1$ %src_ready_o, i4$ %src_wptr_bin_d, i4$ %src_wptr_gray_d) -> (i4$ %src_wptr_bin_q, i4$ %src_wptr_gray_q)
+    inst %cdc_fifo_gray.param1.always_ff.318.1 (i1$ %dst_rst_ni, i1$ %dst_clk_i, i1$ %dst_valid_o, i1$ %dst_ready_i, i4$ %dst_rptr_bin_d, i4$ %dst_rptr_gray_d) -> (i4$ %dst_rptr_bin_q, i4$ %dst_rptr_gray_q)
+    inst %cdc_fifo_gray.param1.always_ff.325.1 (i1$ %src_rst_ni, i1$ %src_clk_i, i4$ %dst_rptr_gray_q, i4$ %src_rptr_gray_q) -> (i4$ %src_rptr_gray_q, i4$ %src_rptr_gray_q2)
+    inst %cdc_fifo_gray.param1.always_ff.326.1 (i1$ %dst_rst_ni, i1$ %dst_clk_i, i4$ %src_wptr_gray_q, i4$ %dst_wptr_gray_q) -> (i4$ %dst_wptr_gray_q, i4$ %dst_wptr_gray_q2)
+}
+
+proc %cdc_fifo_gray_tb.initial.250.0 (i1$ %src_ready_o) -> (i1$ %src_rst_ni, i1$ %src_clk_i, i32$ %src_data_i, i1$ %src_valid_i) {
+0:
+    %1 = const i32 0
+    %2 = exts i1, i32 %1, 0, 1
+    %3 = const time 0s 1e
+    drv i1$ %src_rst_ni, %2, %3
+    %4 = const time 1ns
+    wait %5 for %4
+5:
+    %6 = const i32 1
+    %7 = exts i1, i32 %6, 0, 1
+    %8 = const time 0s 1e
+    drv i1$ %src_rst_ni, %7, %8
+    %9 = const time 1ns
+    wait %10 for %9
+10:
+    %11 = const i32 0
+    %i = var i32 %11
+    br %loop_body
+loop_body:
+    %i1 = ld i32* %i
+    %12 = const i32 1000000
+    %13 = slt i32 %i1, %12
+    br %13, %loop_exit, %loop_continue
+loop_exit:
+    halt
+loop_continue:
+    br %loop_body1
+loop_body1:
+    %src_ready_o1 = prb i1$ %src_ready_o
+    %14 = not i1 %src_ready_o1
+    br %14, %loop_exit1, %loop_continue1
+loop_exit1:
+    %i2 = ld i32* %i
+    %15 = const time 0s 1e
+    drv i32$ %src_data_i, %i2, %15
+    %16 = const i32 1
+    %17 = exts i1, i32 %16, 0, 1
+    %18 = const time 0s 1e
+    drv i1$ %src_valid_i, %17, %18
+    %19 = const i32 1
+    %20 = exts i1, i32 %19, 0, 1
+    %21 = const time 1ps
+    drv i1$ %src_clk_i, %20, %21
+    %22 = const time 1ns
+    wait %23 for %22
+loop_continue1:
+    %24 = const i32 1
+    %25 = exts i1, i32 %24, 0, 1
+    %26 = const time 0s 1e
+    drv i1$ %src_clk_i, %25, %26
+    %27 = const time 1ns
+    wait %28 for %27
+28:
+    %29 = const i32 0
+    %30 = exts i1, i32 %29, 0, 1
+    %31 = const time 0s 1e
+    drv i1$ %src_clk_i, %30, %31
+    %32 = const time 1ns
+    wait %33 for %32
+33:
+    br %loop_body1
+23:
+    %34 = const i32 0
+    %35 = exts i1, i32 %34, 0, 1
+    %36 = const time 0s 1e
+    drv i1$ %src_clk_i, %35, %36
+    %37 = const time 1ns
+    wait %38 for %37
+38:
+    %i3 = ld i32* %i
+    %39 = const i32 1
+    %40 = add i32 %i3, %39
+    st i32* %i, %40
+    %i4 = ld i32* %i
+    %41 = const i32 1
+    %42 = add i32 %i4, %41
+    %43 = const i32 0
+    %44 = neq i32 %42, %43
+    br %loop_body
+}
+
+proc %cdc_fifo_gray_tb.initial.251.0 (i32$ %dst_data_o, i1$ %dst_valid_o) -> (i32$ %ERRORS, i1$ %dst_rst_ni, i1$ %dst_clk_i, i1$ %dst_ready_i) {
+0:
+    %1 = const time 250ps
+    wait %2 for %1
+2:
+    %3 = const i32 0
+    %4 = exts i1, i32 %3, 0, 1
+    %5 = const time 0s 1e
+    drv i1$ %dst_rst_ni, %4, %5
+    %6 = const time 1ns
+    wait %7 for %6
+7:
+    %8 = const i32 1
+    %9 = exts i1, i32 %8, 0, 1
+    %10 = const time 0s 1e
+    drv i1$ %dst_rst_ni, %9, %10
+    %11 = const time 1ns
+    wait %12 for %11
+12:
+    %13 = const i32 1
+    %14 = exts i1, i32 %13, 0, 1
+    %15 = const time 0s 1e
+    drv i1$ %dst_ready_i, %14, %15
+    %16 = const i32 0
+    %i = var i32 %16
+    br %loop_body
+loop_body:
+    %i1 = ld i32* %i
+    %17 = const i32 1000000
+    %18 = slt i32 %i1, %17
+    br %18, %loop_exit, %loop_continue
+loop_exit:
+    halt
+loop_continue:
+    br %loop_body1
+loop_body1:
+    %dst_valid_o1 = prb i1$ %dst_valid_o
+    %19 = not i1 %dst_valid_o1
+    br %19, %loop_exit1, %loop_continue1
+loop_exit1:
+    %20 = const i32 1
+    %21 = exts i1, i32 %20, 0, 1
+    %22 = const time 0s 1e
+    drv i1$ %dst_clk_i, %21, %22
+    %23 = const i32 0
+    %i2 = ld i32* %i
+    %dst_data_o1 = prb i32$ %dst_data_o
+    %24 = neq i32 %i2, %dst_data_o1
+    %25 = inss i32 %23, i1 %24, 0, 1
+    %ERRORS1 = prb i32$ %ERRORS
+    %26 = add i32 %ERRORS1, %25
+    %27 = const time 0s 1e
+    drv i32$ %ERRORS, %26, %27
+    %28 = const time 1ns
+    wait %29 for %28
+loop_continue1:
+    %30 = const i32 1
+    %31 = exts i1, i32 %30, 0, 1
+    %32 = const time 0s 1e
+    drv i1$ %dst_clk_i, %31, %32
+    %33 = const time 1ns
+    wait %34 for %33
+34:
+    %35 = const i32 0
+    %36 = exts i1, i32 %35, 0, 1
+    %37 = const time 0s 1e
+    drv i1$ %dst_clk_i, %36, %37
+    %38 = const time 1ns
+    wait %39 for %38
+39:
+    br %loop_body1
+29:
+    %40 = const i32 0
+    %41 = exts i1, i32 %40, 0, 1
+    %42 = const time 0s 1e
+    drv i1$ %dst_clk_i, %41, %42
+    %43 = const time 1ns
+    wait %44 for %43
+44:
+    %i3 = ld i32* %i
+    %45 = const i32 1
+    %46 = add i32 %i3, %45
+    st i32* %i, %46
+    %i4 = ld i32* %i
+    %47 = const i32 1
+    %48 = add i32 %i4, %47
+    %49 = const i32 0
+    %50 = neq i32 %48, %49
+    br %loop_body
+}
+
+entity @cdc_fifo_gray_tb () -> () {
+    %0 = const i32 0
+    %ERRORS = sig i32 %0
+    %1 = const i1 1
+    %src_rst_ni = sig i1 %1
+    %2 = const i1 0
+    %src_clk_i = sig i1 %2
+    %3 = const i32 0
+    %src_data_i = sig i32 %3
+    %4 = const i1 0
+    %src_valid_i = sig i1 %4
+    %5 = const i1 0
+    %src_ready_o = sig i1 %5
+    %6 = const i1 1
+    %dst_rst_ni = sig i1 %6
+    %7 = const i1 0
+    %dst_clk_i = sig i1 %7
+    %8 = const i32 0
+    %dst_data_o = sig i32 %8
+    %9 = const i1 0
+    %dst_valid_o = sig i1 %9
+    %10 = const i1 0
+    %dst_ready_i = sig i1 %10
+    %src_rst_ni1 = prb i1$ %src_rst_ni
+    %11 = const i1 0
+    %12 = sig i1 %11
+    %13 = const time 0s 1e
+    drv i1$ %12, %src_rst_ni1, %13
+    %src_clk_i1 = prb i1$ %src_clk_i
+    %14 = const i1 0
+    %15 = sig i1 %14
+    %16 = const time 0s 1e
+    drv i1$ %15, %src_clk_i1, %16
+    %src_data_i1 = prb i32$ %src_data_i
+    %17 = const i32 0
+    %18 = sig i32 %17
+    %19 = const time 0s 1e
+    drv i32$ %18, %src_data_i1, %19
+    %src_valid_i1 = prb i1$ %src_valid_i
+    %20 = const i1 0
+    %21 = sig i1 %20
+    %22 = const time 0s 1e
+    drv i1$ %21, %src_valid_i1, %22
+    %dst_rst_ni1 = prb i1$ %dst_rst_ni
+    %23 = const i1 0
+    %24 = sig i1 %23
+    %25 = const time 0s 1e
+    drv i1$ %24, %dst_rst_ni1, %25
+    %dst_clk_i1 = prb i1$ %dst_clk_i
+    %26 = const i1 0
+    %27 = sig i1 %26
+    %28 = const time 0s 1e
+    drv i1$ %27, %dst_clk_i1, %28
+    %dst_ready_i1 = prb i1$ %dst_ready_i
+    %29 = const i1 0
+    %30 = sig i1 %29
+    %31 = const time 0s 1e
+    drv i1$ %30, %dst_ready_i1, %31
+    inst @cdc_fifo_gray.param1 (i1$ %12, i1$ %15, i32$ %18, i1$ %21, i1$ %24, i1$ %27, i1$ %30) -> (i1$ %src_ready_o, i32$ %dst_data_o, i1$ %dst_valid_o)
+    inst %cdc_fifo_gray_tb.initial.250.0 (i1$ %src_ready_o) -> (i1$ %src_rst_ni, i1$ %src_clk_i, i32$ %src_data_i, i1$ %src_valid_i)
+    inst %cdc_fifo_gray_tb.initial.251.0 (i32$ %dst_data_o, i1$ %dst_valid_o) -> (i32$ %ERRORS, i1$ %dst_rst_ni, i1$ %dst_clk_i, i1$ %dst_ready_i)
+}

@@ -1,0 +1,692 @@
+proc %delta_counter.param3.always_comb.421.3 (i1$ %clear_i, i1$ %en_i, i1$ %load_i, i1$ %down_i, i4$ %delta_i, i4$ %d_i, i5$ %counter_q) -> (i5$ %counter_d) {
+0:
+    br %body
+body:
+    %counter_q1 = prb i5$ %counter_q
+    %1 = const time 0s 1e
+    drv i5$ %counter_d, %counter_q1, %1
+    %clear_i1 = prb i1$ %clear_i
+    br %clear_i1, %if_false, %if_true
+check:
+    wait %body, %clear_i, %en_i, %load_i, %down_i, %delta_i, %d_i, %counter_q
+if_true:
+    %2 = const i5 0
+    %3 = const i1 0
+    %4 = inss i5 %2, i1 %3, 0, 1
+    %5 = const time 0s 1e
+    drv i5$ %counter_d, %4, %5
+    br %if_exit
+if_false:
+    %load_i1 = prb i1$ %load_i
+    br %load_i1, %if_false1, %if_true1
+if_exit:
+    br %check
+if_true1:
+    %6 = const i5 0
+    %d_i1 = prb i4$ %d_i
+    %7 = inss i5 %6, i4 %d_i1, 0, 4
+    %8 = const i1 0
+    %9 = inss i5 %7, i1 %8, 4, 1
+    %10 = const time 0s 1e
+    drv i5$ %counter_d, %9, %10
+    br %if_exit1
+if_false1:
+    %en_i1 = prb i1$ %en_i
+    br %en_i1, %if_false2, %if_true2
+if_exit1:
+    br %if_exit
+if_true2:
+    %down_i1 = prb i1$ %down_i
+    br %down_i1, %if_false3, %if_true3
+if_false2:
+    br %if_exit2
+if_exit2:
+    br %if_exit1
+if_true3:
+    %counter_q2 = prb i5$ %counter_q
+    %11 = const i5 0
+    %delta_i1 = prb i4$ %delta_i
+    %12 = inss i5 %11, i4 %delta_i1, 0, 4
+    %13 = sub i5 %counter_q2, %12
+    %14 = const time 0s 1e
+    drv i5$ %counter_d, %13, %14
+    br %if_exit3
+if_false3:
+    %counter_q3 = prb i5$ %counter_q
+    %15 = const i5 0
+    %delta_i2 = prb i4$ %delta_i
+    %16 = inss i5 %15, i4 %delta_i2, 0, 4
+    %17 = add i5 %counter_q3, %16
+    %18 = const time 0s 1e
+    drv i5$ %counter_d, %17, %18
+    br %if_exit3
+if_exit3:
+    br %if_exit2
+}
+
+proc %delta_counter.param3.always_ff.422.3 (i1$ %clk_i, i1$ %rst_ni, i5$ %counter_d) -> (i5$ %counter_q) {
+0:
+    br %init
+init:
+    %clk_i1 = prb i1$ %clk_i
+    %rst_ni1 = prb i1$ %rst_ni
+    wait %check, %clk_i, %rst_ni
+check:
+    %clk_i2 = prb i1$ %clk_i
+    %1 = const i1 0
+    %2 = eq i1 %clk_i1, %1
+    %3 = neq i1 %clk_i2, %1
+    %posedge = and i1 %2, %3
+    %rst_ni2 = prb i1$ %rst_ni
+    %4 = const i1 0
+    %5 = neq i1 %rst_ni1, %4
+    %6 = eq i1 %rst_ni2, %4
+    %negedge = and i1 %6, %5
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %rst_ni3 = prb i1$ %rst_ni
+    %7 = not i1 %rst_ni3
+    br %7, %if_false, %if_true
+if_true:
+    %8 = const i5 0
+    %9 = const i1 0
+    %10 = inss i5 %8, i1 %9, 0, 1
+    %11 = const time 0s 1d
+    drv i5$ %counter_q, %10, %11
+    br %if_exit
+if_false:
+    %counter_d1 = prb i5$ %counter_d
+    %12 = const time 0s 1d
+    drv i5$ %counter_q, %counter_d1, %12
+    br %if_exit
+if_exit:
+    br %0
+}
+
+entity @delta_counter.param3 (i1$ %clk_i, i1$ %rst_ni, i1$ %clear_i, i1$ %en_i, i1$ %load_i, i1$ %down_i, i4$ %delta_i, i4$ %d_i) -> (i4$ %q_o, i1$ %overflow_o) {
+    %0 = const i5 0
+    %counter_q = sig i5 %0
+    %1 = const i5 0
+    %counter_d = sig i5 %1
+    %counter_q1 = prb i5$ %counter_q
+    %2 = const i1 0
+    %3 = const i5 0
+    %4 = shr i5 %counter_q1, i5 %3, i1 %2
+    %5 = exts i4, i5 %4, 0, 4
+    %6 = const time 0s 1e
+    drv i4$ %q_o, %5, %6
+    %counter_q2 = prb i5$ %counter_q
+    %7 = const i32 4
+    %8 = const i5 0
+    %9 = shr i5 %counter_q2, i5 %8, i32 %7
+    %10 = exts i1, i5 %9, 0, 1
+    %11 = const time 0s 1e
+    drv i1$ %overflow_o, %10, %11
+    inst %delta_counter.param3.always_comb.421.3 (i1$ %clear_i, i1$ %en_i, i1$ %load_i, i1$ %down_i, i4$ %delta_i, i4$ %d_i, i5$ %counter_q) -> (i5$ %counter_d)
+    inst %delta_counter.param3.always_ff.422.3 (i1$ %clk_i, i1$ %rst_ni, i5$ %counter_d) -> (i5$ %counter_q)
+}
+
+entity @counter.param2 (i1$ %clk_i, i1$ %rst_ni, i1$ %clear_i, i1$ %en_i, i1$ %load_i, i1$ %down_i, i4$ %d_i) -> (i4$ %q_o, i1$ %overflow_o) {
+    %clk_i1 = prb i1$ %clk_i
+    %0 = const i1 0
+    %1 = sig i1 %0
+    %2 = const time 0s 1e
+    drv i1$ %1, %clk_i1, %2
+    %rst_ni1 = prb i1$ %rst_ni
+    %3 = const i1 0
+    %4 = sig i1 %3
+    %5 = const time 0s 1e
+    drv i1$ %4, %rst_ni1, %5
+    %clear_i1 = prb i1$ %clear_i
+    %6 = const i1 0
+    %7 = sig i1 %6
+    %8 = const time 0s 1e
+    drv i1$ %7, %clear_i1, %8
+    %en_i1 = prb i1$ %en_i
+    %9 = const i1 0
+    %10 = sig i1 %9
+    %11 = const time 0s 1e
+    drv i1$ %10, %en_i1, %11
+    %load_i1 = prb i1$ %load_i
+    %12 = const i1 0
+    %13 = sig i1 %12
+    %14 = const time 0s 1e
+    drv i1$ %13, %load_i1, %14
+    %down_i1 = prb i1$ %down_i
+    %15 = const i1 0
+    %16 = sig i1 %15
+    %17 = const time 0s 1e
+    drv i1$ %16, %down_i1, %17
+    %18 = const i4 0
+    %19 = const i1 1
+    %20 = inss i4 %18, i1 %19, 0, 1
+    %21 = const i1 0
+    %22 = const i1 0
+    %23 = inss i1 %21, i1 %22, 0, 1
+    %24 = const i3 0
+    %25 = inss i3 %24, i1 %23, 0, 1
+    %26 = inss i3 %25, i1 %23, 1, 1
+    %27 = inss i3 %26, i1 %23, 2, 1
+    %28 = inss i4 %20, i3 %27, 1, 3
+    %29 = const i4 0
+    %30 = sig i4 %29
+    %31 = const time 0s 1e
+    drv i4$ %30, %28, %31
+    %d_i1 = prb i4$ %d_i
+    %32 = const i4 0
+    %33 = sig i4 %32
+    %34 = const time 0s 1e
+    drv i4$ %33, %d_i1, %34
+    inst @delta_counter.param3 (i1$ %1, i1$ %4, i1$ %7, i1$ %10, i1$ %13, i1$ %16, i4$ %30, i4$ %33) -> (i4$ %q_o, i1$ %overflow_o)
+}
+
+proc %lfsr_16bit.param4.always_comb.610.4 (i1$ %en_i, i16$ %shift_q) -> (i16$ %out_o, i16$ %shift_d) {
+0:
+    br %body
+body:
+    %1 = const i1 0
+    %shift_in = var i1 %1
+    %shift_q1 = prb i16$ %shift_q
+    %2 = const i32 15
+    %3 = const i16 0
+    %4 = shr i16 %shift_q1, i16 %3, i32 %2
+    %5 = exts i1, i16 %4, 0, 1
+    %shift_q2 = prb i16$ %shift_q
+    %6 = const i32 12
+    %7 = const i16 0
+    %8 = shr i16 %shift_q2, i16 %7, i32 %6
+    %9 = exts i1, i16 %8, 0, 1
+    %10 = xor i1 %5, %9
+    %shift_q3 = prb i16$ %shift_q
+    %11 = const i32 5
+    %12 = const i16 0
+    %13 = shr i16 %shift_q3, i16 %12, i32 %11
+    %14 = exts i1, i16 %13, 0, 1
+    %15 = xor i1 %10, %14
+    %shift_q4 = prb i16$ %shift_q
+    %16 = const i32 1
+    %17 = const i16 0
+    %18 = shr i16 %shift_q4, i16 %17, i32 %16
+    %19 = exts i1, i16 %18, 0, 1
+    %20 = xor i1 %15, %19
+    %21 = not i1 %20
+    st i1* %shift_in, %21
+    %shift_q5 = prb i16$ %shift_q
+    %22 = const time 0s 1e
+    drv i16$ %shift_d, %shift_q5, %22
+    %en_i1 = prb i1$ %en_i
+    br %en_i1, %if_false, %if_true
+check:
+    wait %body, %en_i, %shift_q
+if_true:
+    %23 = const i16 0
+    %shift_in1 = ld i1* %shift_in
+    %24 = inss i16 %23, i1 %shift_in1, 0, 1
+    %shift_q6 = prb i16$ %shift_q
+    %25 = const i1 0
+    %26 = const i16 0
+    %27 = shr i16 %shift_q6, i16 %26, i1 %25
+    %28 = exts i15, i16 %27, 0, 15
+    %29 = inss i16 %24, i15 %28, 1, 15
+    %30 = const time 0s 1e
+    drv i16$ %shift_d, %29, %30
+    br %if_exit
+if_false:
+    br %if_exit
+if_exit:
+    %shift_q7 = prb i16$ %shift_q
+    %31 = const time 0s 1e
+    drv i16$ %out_o, %shift_q7, %31
+    br %check
+}
+
+proc %lfsr_16bit.param4.always_ff.611.4 (i1$ %clk_i, i1$ %rst_ni, i16$ %shift_d) -> (i16$ %shift_q) {
+0:
+    br %init
+init:
+    %clk_i1 = prb i1$ %clk_i
+    %rst_ni1 = prb i1$ %rst_ni
+    wait %check, %clk_i, %rst_ni
+check:
+    %clk_i2 = prb i1$ %clk_i
+    %1 = const i1 0
+    %2 = eq i1 %clk_i1, %1
+    %3 = neq i1 %clk_i2, %1
+    %posedge = and i1 %2, %3
+    %rst_ni2 = prb i1$ %rst_ni
+    %4 = const i1 0
+    %5 = neq i1 %rst_ni1, %4
+    %6 = eq i1 %rst_ni2, %4
+    %negedge = and i1 %6, %5
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %rst_ni3 = prb i1$ %rst_ni
+    %7 = not i1 %rst_ni3
+    br %7, %if_false, %if_true
+if_true:
+    %8 = const i16 0
+    %9 = const i8 0
+    %10 = inss i16 %8, i8 %9, 0, 8
+    %11 = const time 0s 1d
+    drv i16$ %shift_q, %10, %11
+    br %if_exit
+if_false:
+    %shift_d1 = prb i16$ %shift_d
+    %12 = const time 0s 1d
+    drv i16$ %shift_q, %shift_d1, %12
+    br %if_exit
+if_exit:
+    br %0
+}
+
+proc %lfsr_16bit.param4.initial.612.4 () -> () {
+0:
+    halt
+}
+
+entity @lfsr_16bit.param4 (i1$ %clk_i, i1$ %rst_ni, i1$ %en_i) -> (i16$ %out_o) {
+    %0 = const i16 0
+    %shift_d = sig i16 %0
+    %1 = const i16 0
+    %shift_q = sig i16 %1
+    inst %lfsr_16bit.param4.always_comb.610.4 (i1$ %en_i, i16$ %shift_q) -> (i16$ %out_o, i16$ %shift_d)
+    inst %lfsr_16bit.param4.always_ff.611.4 (i1$ %clk_i, i1$ %rst_ni, i16$ %shift_d) -> (i16$ %shift_q)
+    inst %lfsr_16bit.param4.initial.612.4 () -> ()
+}
+
+proc %stream_delay.param1.always_comb.320.1 (i1$ %valid_i, i1$ %ready_i, i2$ %state_q, i4$ %count_out, i4$ %counter_load) -> (i1$ %ready_o, i1$ %valid_o, i2$ %state_d, i1$ %load, i1$ %en) {
+0:
+    br %body
+body:
+    %state_q1 = prb i2$ %state_q
+    %1 = const time 0s 1e
+    drv i2$ %state_d, %state_q1, %1
+    %2 = const i1 0
+    %3 = const time 0s 1e
+    drv i1$ %valid_o, %2, %3
+    %4 = const i1 0
+    %5 = const time 0s 1e
+    drv i1$ %ready_o, %4, %5
+    %6 = const i1 0
+    %7 = const time 0s 1e
+    drv i1$ %load, %6, %7
+    %8 = const i1 0
+    %9 = const time 0s 1e
+    drv i1$ %en, %8, %9
+    %state_q2 = prb i2$ %state_q
+    %10 = const i1 0
+    %11 = const i2 0
+    %12 = eq i2 %state_q2, %11
+    %13 = or i1 %10, %12
+    br %13, %14, %case_body
+check:
+    wait %body, %valid_i, %ready_i, %state_q, %count_out, %counter_load
+case_exit:
+    br %check
+case_body:
+    %valid_i1 = prb i1$ %valid_i
+    br %valid_i1, %if_false, %if_true
+14:
+    %15 = const i1 0
+    %16 = const i2 1
+    %17 = eq i2 %state_q2, %16
+    %18 = or i1 %15, %17
+    br %18, %19, %case_body1
+if_true:
+    %20 = const i1 1
+    %21 = const time 0s 1e
+    drv i1$ %load, %20, %21
+    %22 = const i2 1
+    %23 = const time 0s 1e
+    drv i2$ %state_d, %22, %23
+    %24 = const i32 0
+    %25 = const i32 1
+    %26 = eq i32 %24, %25
+    %27 = const i32 1
+    %28 = const i32 0
+    %29 = neq i32 %27, %28
+    %30 = const i32 0
+    %counter_load1 = prb i4$ %counter_load
+    %31 = inss i32 %30, i4 %counter_load1, 0, 4
+    %32 = const i32 1
+    %33 = eq i32 %31, %32
+    %34 = and i1 %29, %33
+    %35 = or i1 %26, %34
+    br %35, %if_false1, %if_true1
+if_false:
+    br %if_exit
+if_exit:
+    br %case_exit
+if_true1:
+    %36 = const i2 2
+    %37 = const time 0s 1e
+    drv i2$ %state_d, %36, %37
+    br %if_exit1
+if_false1:
+    br %if_exit1
+if_exit1:
+    %38 = const i32 1
+    %39 = const i32 0
+    %40 = neq i32 %38, %39
+    %41 = const i32 0
+    %counter_load2 = prb i4$ %counter_load
+    %42 = inss i32 %41, i4 %counter_load2, 0, 4
+    %43 = const i32 0
+    %44 = eq i32 %42, %43
+    %45 = and i1 %40, %44
+    br %45, %if_false2, %if_true2
+if_true2:
+    %46 = const i1 1
+    %47 = const time 0s 1e
+    drv i1$ %valid_o, %46, %47
+    %ready_i1 = prb i1$ %ready_i
+    %48 = const time 0s 1e
+    drv i1$ %ready_o, %ready_i1, %48
+    %ready_i2 = prb i1$ %ready_i
+    br %ready_i2, %if_false3, %if_true3
+if_false2:
+    br %if_exit2
+if_exit2:
+    br %if_exit
+if_true3:
+    %49 = const i2 0
+    %50 = const time 0s 1e
+    drv i2$ %state_d, %49, %50
+    br %if_exit3
+if_false3:
+    %51 = const i2 2
+    %52 = const time 0s 1e
+    drv i2$ %state_d, %51, %52
+    br %if_exit3
+if_exit3:
+    br %if_exit2
+case_body1:
+    %53 = const i1 1
+    %54 = const time 0s 1e
+    drv i1$ %en, %53, %54
+    %55 = const i32 0
+    %count_out1 = prb i4$ %count_out
+    %56 = inss i32 %55, i4 %count_out1, 0, 4
+    %57 = const i32 0
+    %58 = eq i32 %56, %57
+    br %58, %if_false4, %if_true4
+19:
+    %59 = const i1 0
+    %60 = const i2 2
+    %61 = eq i2 %state_q2, %60
+    %62 = or i1 %59, %61
+    br %62, %63, %case_body2
+if_true4:
+    %64 = const i2 2
+    %65 = const time 0s 1e
+    drv i2$ %state_d, %64, %65
+    br %if_exit4
+if_false4:
+    br %if_exit4
+if_exit4:
+    br %case_exit
+case_body2:
+    %66 = const i1 1
+    %67 = const time 0s 1e
+    drv i1$ %valid_o, %66, %67
+    %ready_i3 = prb i1$ %ready_i
+    %68 = const time 0s 1e
+    drv i1$ %ready_o, %ready_i3, %68
+    %ready_i4 = prb i1$ %ready_i
+    br %ready_i4, %if_false5, %if_true5
+63:
+    br %case_exit
+if_true5:
+    %69 = const i2 0
+    %70 = const time 0s 1e
+    drv i2$ %state_d, %69, %70
+    br %if_exit5
+if_false5:
+    br %if_exit5
+if_exit5:
+    br %case_exit
+}
+
+proc %stream_delay.param1.always_ff.324.1 (i1$ %clk_i, i1$ %rst_ni, i2$ %state_d) -> (i2$ %state_q) {
+0:
+    br %init
+init:
+    %clk_i1 = prb i1$ %clk_i
+    %rst_ni1 = prb i1$ %rst_ni
+    wait %check, %clk_i, %rst_ni
+check:
+    %clk_i2 = prb i1$ %clk_i
+    %1 = const i1 0
+    %2 = eq i1 %clk_i1, %1
+    %3 = neq i1 %clk_i2, %1
+    %posedge = and i1 %2, %3
+    %rst_ni2 = prb i1$ %rst_ni
+    %4 = const i1 0
+    %5 = neq i1 %rst_ni1, %4
+    %6 = eq i1 %rst_ni2, %4
+    %negedge = and i1 %6, %5
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %rst_ni3 = prb i1$ %rst_ni
+    %7 = not i1 %rst_ni3
+    br %7, %if_false, %if_true
+if_true:
+    %8 = const i2 0
+    %9 = const time 0s 1d
+    drv i2$ %state_q, %8, %9
+    br %if_exit
+if_false:
+    %state_d1 = prb i2$ %state_d
+    %10 = const time 0s 1d
+    drv i2$ %state_q, %state_d1, %10
+    br %if_exit
+if_exit:
+    br %0
+}
+
+entity @stream_delay.param1 (i1$ %clk_i, i1$ %rst_ni, i32$ %payload_i, i1$ %valid_i, i1$ %ready_i) -> (i1$ %ready_o, i32$ %payload_o, i1$ %valid_o) {
+    %0 = const i2 0
+    %state_d = sig i2 %0
+    %1 = const i2 0
+    %state_q = sig i2 %1
+    %2 = const i1 0
+    %load = sig i1 %2
+    %3 = const i4 0
+    %count_out = sig i4 %3
+    %4 = const i1 0
+    %en = sig i1 %4
+    %5 = const i4 0
+    %counter_load = sig i4 %5
+    %payload_i1 = prb i32$ %payload_i
+    %6 = const time 0s 1e
+    drv i32$ %payload_o, %payload_i1, %6
+    %clk_i1 = prb i1$ %clk_i
+    %7 = const i1 0
+    %8 = sig i1 %7
+    %9 = const time 0s 1e
+    drv i1$ %8, %clk_i1, %9
+    %rst_ni1 = prb i1$ %rst_ni
+    %10 = const i1 0
+    %11 = sig i1 %10
+    %12 = const time 0s 1e
+    drv i1$ %11, %rst_ni1, %12
+    %13 = const i1 0
+    %14 = const i1 0
+    %15 = sig i1 %14
+    %16 = const time 0s 1e
+    drv i1$ %15, %13, %16
+    %en1 = prb i1$ %en
+    %17 = const i1 0
+    %18 = sig i1 %17
+    %19 = const time 0s 1e
+    drv i1$ %18, %en1, %19
+    %load1 = prb i1$ %load
+    %20 = const i1 0
+    %21 = sig i1 %20
+    %22 = const time 0s 1e
+    drv i1$ %21, %load1, %22
+    %23 = const i1 1
+    %24 = const i1 0
+    %25 = sig i1 %24
+    %26 = const time 0s 1e
+    drv i1$ %25, %23, %26
+    %counter_load1 = prb i4$ %counter_load
+    %27 = const i4 0
+    %28 = sig i4 %27
+    %29 = const time 0s 1e
+    drv i4$ %28, %counter_load1, %29
+    %30 = const i1 0
+    %31 = sig i1 %30
+    inst @counter.param2 (i1$ %8, i1$ %11, i1$ %15, i1$ %18, i1$ %21, i1$ %25, i4$ %28) -> (i4$ %count_out, i1$ %31)
+    %32 = const i16 0
+    %lfsr_out = sig i16 %32
+    %lfsr_out1 = prb i16$ %lfsr_out
+    %33 = exts i4, i16 %lfsr_out1, 0, 4
+    %34 = const time 0s 1e
+    drv i4$ %counter_load, %33, %34
+    %clk_i2 = prb i1$ %clk_i
+    %35 = const i1 0
+    %36 = sig i1 %35
+    %37 = const time 0s 1e
+    drv i1$ %36, %clk_i2, %37
+    %rst_ni2 = prb i1$ %rst_ni
+    %38 = const i1 0
+    %39 = sig i1 %38
+    %40 = const time 0s 1e
+    drv i1$ %39, %rst_ni2, %40
+    %load2 = prb i1$ %load
+    %41 = const i1 0
+    %42 = sig i1 %41
+    %43 = const time 0s 1e
+    drv i1$ %42, %load2, %43
+    inst @lfsr_16bit.param4 (i1$ %36, i1$ %39, i1$ %42) -> (i16$ %lfsr_out)
+    inst %stream_delay.param1.always_comb.320.1 (i1$ %valid_i, i1$ %ready_i, i2$ %state_q, i4$ %count_out, i4$ %counter_load) -> (i1$ %ready_o, i1$ %valid_o, i2$ %state_d, i1$ %load, i1$ %en)
+    inst %stream_delay.param1.always_ff.324.1 (i1$ %clk_i, i1$ %rst_ni, i2$ %state_d) -> (i2$ %state_q)
+}
+
+proc %stream_delay_tb.initial.243.0 () -> (i1$ %clk_i, i1$ %rst_ni) {
+0:
+    %1 = const i32 0
+    %2 = exts i1, i32 %1, 0, 1
+    %3 = const time 1ns
+    drv i1$ %rst_ni, %2, %3
+    %4 = const i32 1
+    %5 = exts i1, i32 %4, 0, 1
+    %6 = const time 2ns
+    drv i1$ %rst_ni, %5, %6
+    %7 = const time 4ns
+    wait %8 for %7
+8:
+    %9 = const i32 600000
+    %loop_count = var i32 %9
+    br %loop_body
+loop_body:
+    %10 = ld i32* %loop_count
+    %11 = const i32 0
+    %12 = neq i32 %10, %11
+    br %12, %loop_exit, %loop_continue
+loop_exit:
+    halt
+loop_continue:
+    %13 = const i32 1
+    %14 = exts i1, i32 %13, 0, 1
+    %15 = const time 1ns
+    drv i1$ %clk_i, %14, %15
+    %16 = const i32 0
+    %17 = exts i1, i32 %16, 0, 1
+    %18 = const time 2ns
+    drv i1$ %clk_i, %17, %18
+    %19 = const time 2ns
+    wait %20 for %19
+20:
+    %21 = ld i32* %loop_count
+    %22 = const i32 1
+    %23 = sub i32 %21, %22
+    st i32* %loop_count, %23
+    br %loop_body
+}
+
+proc %stream_delay_tb.always.245.0 (i1$ %clk_i, i32$ %payload_i, i1$ %ready_o) -> (i32$ %payload_i1) {
+0:
+    %1 = prb i32$ %payload_i1
+    %payload_i.shadow = var i32 %1
+    br %init
+init:
+    %clk_i1 = prb i1$ %clk_i
+    wait %check, %clk_i
+check:
+    %2 = prb i32$ %payload_i1
+    st i32* %payload_i.shadow, %2
+    %clk_i2 = prb i1$ %clk_i
+    %3 = const i1 0
+    %4 = eq i1 %clk_i1, %3
+    %5 = neq i1 %clk_i2, %3
+    %posedge = and i1 %4, %5
+    %ready_o1 = prb i1$ %ready_o
+    %iff = and i1 %posedge, %ready_o1
+    br %iff, %init, %event
+event:
+    %payload_i2 = ld i32* %payload_i.shadow
+    %6 = const i32 1
+    %7 = add i32 %payload_i2, %6
+    %8 = const time 500ps
+    drv i32$ %payload_i1, %7, %8
+    br %0
+}
+
+entity @stream_delay_tb () -> () {
+    %0 = const i1 0
+    %clk_i = sig i1 %0
+    %1 = const i1 1
+    %rst_ni = sig i1 %1
+    %2 = const i32 0
+    %payload_i = sig i32 %2
+    %3 = const i1 0
+    %ready_o = sig i1 %3
+    %4 = const i1 0
+    %valid_i = sig i1 %4
+    %5 = const i32 0
+    %payload_o = sig i32 %5
+    %6 = const i1 0
+    %ready_i = sig i1 %6
+    %7 = const i1 0
+    %valid_o = sig i1 %7
+    %8 = const i32 1
+    %9 = exts i1, i32 %8, 0, 1
+    %10 = const time 0s 1e
+    drv i1$ %valid_i, %9, %10
+    %valid_o1 = prb i1$ %valid_o
+    %11 = const time 0s 1e
+    drv i1$ %ready_i, %valid_o1, %11
+    %clk_i1 = prb i1$ %clk_i
+    %12 = const i1 0
+    %13 = sig i1 %12
+    %14 = const time 0s 1e
+    drv i1$ %13, %clk_i1, %14
+    %rst_ni1 = prb i1$ %rst_ni
+    %15 = const i1 0
+    %16 = sig i1 %15
+    %17 = const time 0s 1e
+    drv i1$ %16, %rst_ni1, %17
+    %payload_i1 = prb i32$ %payload_i
+    %18 = const i32 0
+    %19 = sig i32 %18
+    %20 = const time 0s 1e
+    drv i32$ %19, %payload_i1, %20
+    %valid_i1 = prb i1$ %valid_i
+    %21 = const i1 0
+    %22 = sig i1 %21
+    %23 = const time 0s 1e
+    drv i1$ %22, %valid_i1, %23
+    %ready_i1 = prb i1$ %ready_i
+    %24 = const i1 0
+    %25 = sig i1 %24
+    %26 = const time 0s 1e
+    drv i1$ %25, %ready_i1, %26
+    inst @stream_delay.param1 (i1$ %13, i1$ %16, i32$ %19, i1$ %22, i1$ %25) -> (i1$ %ready_o, i32$ %payload_o, i1$ %valid_o)
+    inst %stream_delay_tb.initial.243.0 () -> (i1$ %clk_i, i1$ %rst_ni)
+    inst %stream_delay_tb.always.245.0 (i1$ %clk_i, i32$ %payload_i, i1$ %ready_o) -> (i32$ %payload_i)
+}

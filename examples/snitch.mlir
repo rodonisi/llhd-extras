@@ -218,14 +218,14 @@ llhd.entity @snitch_regfile.param2(%clk_i: !llhd.sig<i1>, %raddr_i: !llhd.sig<!l
     %30 = llhd.const 0 : i32
     %31 = llhd.const 0 : i32
     %32 = llhd.array %0, %1, %2, %3, %4, %5, %6, %7, %8, %9, %10, %11, %12, %13, %14, %15, %16, %17, %18, %19, %20, %21, %22, %23, %24, %25, %26, %27, %28, %29, %30, %31 : !llhd.array<32xi32>
-    %mem = llhd.sig "sig" %32 : !llhd.array<32xi32>
+    %mem = llhd.sig "mem" %32 : !llhd.array<32xi32>
     %33 = llhd.const 0 : i32
     %34 = llhd.array %33 : !llhd.array<1xi32>
-    %we_dec = llhd.sig "sig1" %34 : !llhd.array<1xi32>
+    %we_dec = llhd.sig "we_dec" %34 : !llhd.array<1xi32>
     %35 = llhd.const 0 : i32
     %36 = llhd.const 0 : i32
     %37 = llhd.array_uniform %36 : !llhd.array<2xi32>
-    %38 = llhd.sig "sig2" %37 : !llhd.array<2xi32>
+    %38 = llhd.sig "38" %37 : !llhd.array<2xi32>
     %39 = llhd.shr %rdata_o, %38, %35 : (!llhd.sig<!llhd.array<2xi32>>, !llhd.sig<!llhd.array<2xi32>>, i32) -> !llhd.sig<!llhd.array<2xi32>>
     %40 = llhd.extract_element %39, 0 : !llhd.sig<!llhd.array<2xi32>> -> !llhd.sig<i32>
     %mem1 = llhd.prb %mem : !llhd.sig<!llhd.array<32xi32>>
@@ -244,7 +244,7 @@ llhd.entity @snitch_regfile.param2(%clk_i: !llhd.sig<i1>, %raddr_i: !llhd.sig<!l
     %51 = llhd.const 1 : i32
     %52 = llhd.const 0 : i32
     %53 = llhd.array_uniform %52 : !llhd.array<2xi32>
-    %54 = llhd.sig "sig3" %53 : !llhd.array<2xi32>
+    %54 = llhd.sig "54" %53 : !llhd.array<2xi32>
     %55 = llhd.shr %rdata_o, %54, %51 : (!llhd.sig<!llhd.array<2xi32>>, !llhd.sig<!llhd.array<2xi32>>, i32) -> !llhd.sig<!llhd.array<2xi32>>
     %56 = llhd.extract_element %55, 0 : !llhd.sig<!llhd.array<2xi32>> -> !llhd.sig<i32>
     %mem2 = llhd.prb %mem : !llhd.sig<!llhd.array<32xi32>>
@@ -262,6 +262,11 @@ llhd.entity @snitch_regfile.param2(%clk_i: !llhd.sig<i1>, %raddr_i: !llhd.sig<!l
     llhd.drv %56, %65 after %66 : !llhd.sig<i32>
     llhd.inst "inst" @snitch_regfile.param2.always_comb.1766.2(%waddr_i, %we_i) -> (%we_dec) : (!llhd.sig<!llhd.array<1xi5>>, !llhd.sig<i1>) -> (!llhd.sig<!llhd.array<1xi32>>)
     llhd.inst "inst1" @snitch_regfile.param2.always_ff.1767.2(%clk_i, %wdata_i, %we_dec) -> (%mem) : (!llhd.sig<i1>, !llhd.sig<!llhd.array<1xi32>>, !llhd.sig<!llhd.array<1xi32>>) -> (!llhd.sig<!llhd.array<32xi32>>)
+    // %67 = llhd.const 0 : i32
+    // %68 = llhd.const 0 : i32
+    // %69 = llhd.array %67, %68 : !llhd.array<2xi32>
+    // %70 = llhd.const #llhd.time<0s, 0d, 0e> : !llhd.time
+    // llhd.drv %rdata_o, %69 after %70 : !llhd.sig<!llhd.array<2xi32>>
 }
 
 llhd.proc @fifo_v3.param6.always_comb.2398.6(%full_o: !llhd.sig<i1>, %empty_o: !llhd.sig<i1>, %data_i: !llhd.sig<tuple<i5, i1, i3, i2>>, %push_i: !llhd.sig<i1>, %pop_i: !llhd.sig<i1>, %read_pointer_n: !llhd.sig<i1>, %read_pointer_q: !llhd.sig<i1>, %write_pointer_q: !llhd.sig<i1>, %status_cnt_q: !llhd.sig<i2>, %mem_q: !llhd.sig<!llhd.array<1xtuple<i5, i1, i3, i2>>>) -> (%data_o: !llhd.sig<tuple<i5, i1, i3, i2>> , %gate_clock: !llhd.sig<i1> , %read_pointer_n1: !llhd.sig<i1> , %write_pointer_n: !llhd.sig<i1> , %status_cnt_n: !llhd.sig<i2> , %mem_n: !llhd.sig<!llhd.array<1xtuple<i5, i1, i3, i2>>> ) {
@@ -925,33 +930,33 @@ llhd.proc @fifo_v3.param6.initial.2401.6() -> () {
 
 llhd.entity @fifo_v3.param6(%clk_i: !llhd.sig<i1>, %rst_ni: !llhd.sig<i1>, %flush_i: !llhd.sig<i1>, %testmode_i: !llhd.sig<i1>, %data_i: !llhd.sig<tuple<i5, i1, i3, i2>>, %push_i: !llhd.sig<i1>, %pop_i: !llhd.sig<i1>) -> (%full_o: !llhd.sig<i1> , %empty_o: !llhd.sig<i1> , %usage_o: !llhd.sig<i1> , %data_o: !llhd.sig<tuple<i5, i1, i3, i2>> ) {
     %0 = llhd.const 0 : i1
-    %gate_clock = llhd.sig "sig" %0 : i1
+    %gate_clock = llhd.sig "gate_clock" %0 : i1
     %1 = llhd.const 0 : i1
-    %read_pointer_n = llhd.sig "sig1" %1 : i1
+    %read_pointer_n = llhd.sig "read_pointer_n" %1 : i1
     %2 = llhd.const 0 : i1
-    %read_pointer_q = llhd.sig "sig2" %2 : i1
+    %read_pointer_q = llhd.sig "read_pointer_q" %2 : i1
     %3 = llhd.const 0 : i1
-    %write_pointer_n = llhd.sig "sig3" %3 : i1
+    %write_pointer_n = llhd.sig "write_pointer_n" %3 : i1
     %4 = llhd.const 0 : i1
-    %write_pointer_q = llhd.sig "sig4" %4 : i1
+    %write_pointer_q = llhd.sig "write_pointer_q" %4 : i1
     %5 = llhd.const 0 : i2
-    %status_cnt_n = llhd.sig "sig5" %5 : i2
+    %status_cnt_n = llhd.sig "status_cnt_n" %5 : i2
     %6 = llhd.const 0 : i2
-    %status_cnt_q = llhd.sig "sig6" %6 : i2
+    %status_cnt_q = llhd.sig "status_cnt_q" %6 : i2
     %7 = llhd.const 0 : i5
     %8 = llhd.const 0 : i1
     %9 = llhd.const 0 : i3
     %10 = llhd.const 0 : i2
     %11 = llhd.tuple %7, %8, %9, %10 : tuple<i5, i1, i3, i2>
     %12 = llhd.array %11 : !llhd.array<1xtuple<i5, i1, i3, i2>>
-    %mem_n = llhd.sig "sig7" %12 : !llhd.array<1xtuple<i5, i1, i3, i2>>
+    %mem_n = llhd.sig "mem_n" %12 : !llhd.array<1xtuple<i5, i1, i3, i2>>
     %13 = llhd.const 0 : i5
     %14 = llhd.const 0 : i1
     %15 = llhd.const 0 : i3
     %16 = llhd.const 0 : i2
     %17 = llhd.tuple %13, %14, %15, %16 : tuple<i5, i1, i3, i2>
     %18 = llhd.array %17 : !llhd.array<1xtuple<i5, i1, i3, i2>>
-    %mem_q = llhd.sig "sig8" %18 : !llhd.array<1xtuple<i5, i1, i3, i2>>
+    %mem_q = llhd.sig "mem_q" %18 : !llhd.array<1xtuple<i5, i1, i3, i2>>
     %status_cnt_q1 = llhd.prb %status_cnt_q : !llhd.sig<i2>
     %19 = llhd.const 0 : i1
     %20 = llhd.const 0 : i2
@@ -1519,25 +1524,25 @@ llhd.proc @snitch_lsu.param5.always_comb.2105.5(%laq_out: !llhd.sig<tuple<i5, i1
 
 llhd.entity @snitch_lsu.param5(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %lsu_qtag_i: !llhd.sig<i5>, %lsu_qwrite: !llhd.sig<i1>, %lsu_qsigned: !llhd.sig<i1>, %lsu_qaddr_i: !llhd.sig<i32>, %lsu_qdata_i: !llhd.sig<i64>, %lsu_qsize_i: !llhd.sig<i2>, %lsu_qamo_i: !llhd.sig<i4>, %lsu_qvalid_i: !llhd.sig<i1>, %lsu_pready_i: !llhd.sig<i1>, %data_qready_i: !llhd.sig<i1>, %data_pdata_i: !llhd.sig<i64>, %data_perror_i: !llhd.sig<i1>, %data_pvalid_i: !llhd.sig<i1>) -> (%lsu_qready_o: !llhd.sig<i1> , %lsu_pdata_o: !llhd.sig<i64> , %lsu_ptag_o: !llhd.sig<i5> , %lsu_perror_o: !llhd.sig<i1> , %lsu_pvalid_o: !llhd.sig<i1> , %data_qaddr_o: !llhd.sig<i32> , %data_qwrite_o: !llhd.sig<i1> , %data_qamo_o: !llhd.sig<i4> , %data_qdata_o: !llhd.sig<i64> , %data_qstrb_o: !llhd.sig<i8> , %data_qvalid_o: !llhd.sig<i1> , %data_pready_o: !llhd.sig<i1> ) {
     %0 = llhd.const 0 : i64
-    %ld_result = llhd.sig "sig" %0 : i64
+    %ld_result = llhd.sig "ld_result" %0 : i64
     %1 = llhd.const 0 : i5
     %2 = llhd.const 0 : i1
     %3 = llhd.const 0 : i3
     %4 = llhd.const 0 : i2
     %5 = llhd.tuple %1, %2, %3, %4 : tuple<i5, i1, i3, i2>
-    %laq_in = llhd.sig "sig1" %5 : tuple<i5, i1, i3, i2>
+    %laq_in = llhd.sig "laq_in" %5 : tuple<i5, i1, i3, i2>
     %6 = llhd.const 0 : i5
     %7 = llhd.const 0 : i1
     %8 = llhd.const 0 : i3
     %9 = llhd.const 0 : i2
     %10 = llhd.tuple %6, %7, %8, %9 : tuple<i5, i1, i3, i2>
-    %laq_out = llhd.sig "sig2" %10 : tuple<i5, i1, i3, i2>
+    %laq_out = llhd.sig "laq_out" %10 : tuple<i5, i1, i3, i2>
     %11 = llhd.const 0 : i1
-    %laq_full = llhd.sig "sig3" %11 : i1
+    %laq_full = llhd.sig "laq_full" %11 : i1
     %12 = llhd.const 0 : i1
-    %laq_push = llhd.sig "sig4" %12 : i1
+    %laq_push = llhd.sig "laq_push" %12 : i1
     %13 = llhd.const 0 : i64
-    %shifted_data = llhd.sig "sig5" %13 : i64
+    %shifted_data = llhd.sig "shifted_data" %13 : i64
     %lsu_qtag_i1 = llhd.prb %lsu_qtag_i : !llhd.sig<i5>
     %lsu_qsigned1 = llhd.prb %lsu_qsigned : !llhd.sig<i1>
     %lsu_qaddr_i1 = llhd.prb %lsu_qaddr_i : !llhd.sig<i32>
@@ -1621,48 +1626,48 @@ llhd.entity @snitch_lsu.param5(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %ls
     llhd.drv %data_pready_o, %lsu_pready_i1 after %58 : !llhd.sig<i1>
     %clk_i1 = llhd.prb %clk_i : !llhd.sig<i1>
     %59 = llhd.const 0 : i1
-    %60 = llhd.sig "sig6" %59 : i1
+    %60 = llhd.sig "60" %59 : i1
     %61 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %60, %clk_i1 after %61 : !llhd.sig<i1>
     %rst_i1 = llhd.prb %rst_i : !llhd.sig<i1>
     %62 = llhd.not %rst_i1 : i1
     %63 = llhd.const 0 : i1
-    %64 = llhd.sig "sig7" %63 : i1
+    %64 = llhd.sig "64" %63 : i1
     %65 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %64, %62 after %65 : !llhd.sig<i1>
     %66 = llhd.const 0 : i1
     %67 = llhd.const 0 : i1
-    %68 = llhd.sig "sig8" %67 : i1
+    %68 = llhd.sig "68" %67 : i1
     %69 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %68, %66 after %69 : !llhd.sig<i1>
     %70 = llhd.const 0 : i1
     %71 = llhd.const 0 : i1
-    %72 = llhd.sig "sig9" %71 : i1
+    %72 = llhd.sig "72" %71 : i1
     %73 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %72, %70 after %73 : !llhd.sig<i1>
     %74 = llhd.const 0 : i1
-    %75 = llhd.sig "sig10" %74 : i1
+    %75 = llhd.sig "75" %74 : i1
     %76 = llhd.const 0 : i1
-    %77 = llhd.sig "sig11" %76 : i1
+    %77 = llhd.sig "77" %76 : i1
     %laq_in1 = llhd.prb %laq_in : !llhd.sig<tuple<i5, i1, i3, i2>>
     %78 = llhd.const 0 : i5
     %79 = llhd.const 0 : i1
     %80 = llhd.const 0 : i3
     %81 = llhd.const 0 : i2
     %82 = llhd.tuple %78, %79, %80, %81 : tuple<i5, i1, i3, i2>
-    %83 = llhd.sig "sig12" %82 : tuple<i5, i1, i3, i2>
+    %83 = llhd.sig "83" %82 : tuple<i5, i1, i3, i2>
     %84 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %83, %laq_in1 after %84 : !llhd.sig<tuple<i5, i1, i3, i2>>
     %laq_push1 = llhd.prb %laq_push : !llhd.sig<i1>
     %85 = llhd.const 0 : i1
-    %86 = llhd.sig "sig13" %85 : i1
+    %86 = llhd.sig "86" %85 : i1
     %87 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %86, %laq_push1 after %87 : !llhd.sig<i1>
     %data_pvalid_i2 = llhd.prb %data_pvalid_i : !llhd.sig<i1>
     %data_pready_o1 = llhd.prb %data_pready_o : !llhd.sig<i1>
     %88 = llhd.and %data_pvalid_i2, %data_pready_o1 : i1
     %89 = llhd.const 0 : i1
-    %90 = llhd.sig "sig14" %89 : i1
+    %90 = llhd.sig "90" %89 : i1
     %91 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %90, %88 after %91 : !llhd.sig<i1>
     llhd.inst "inst" @fifo_v3.param6(%60, %64, %68, %72, %83, %86, %90) -> (%laq_full, %75, %77, %laq_out) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<tuple<i5, i1, i3, i2>>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<tuple<i5, i1, i3, i2>>)
@@ -9087,121 +9092,121 @@ llhd.proc @snitch.param1.always_comb.641.1(%acc_pdata_i: !llhd.sig<i64>, %acc_pi
 
 llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_id_i: !llhd.sig<i32>, %inst_data_i: !llhd.sig<i32>, %inst_ready_i: !llhd.sig<i1>, %acc_qready_i: !llhd.sig<i1>, %acc_pdata_i: !llhd.sig<i64>, %acc_pid_i: !llhd.sig<i5>, %acc_perror_i: !llhd.sig<i1>, %acc_pvalid_i: !llhd.sig<i1>, %data_qready_i: !llhd.sig<i1>, %data_pdata_i: !llhd.sig<i64>, %data_perror_i: !llhd.sig<i1>, %data_pvalid_i: !llhd.sig<i1>, %wake_up_sync_i: !llhd.sig<i1>, %fpu_status_i: !llhd.sig<tuple<i1, i1, i1, i1, i1>>) -> (%inst_addr_o: !llhd.sig<i32> , %inst_valid_o: !llhd.sig<i1> , %acc_qaddr_o: !llhd.sig<i32> , %acc_qid_o: !llhd.sig<i5> , %acc_qdata_op_o: !llhd.sig<i32> , %acc_qdata_arga_o: !llhd.sig<i64> , %acc_qdata_argb_o: !llhd.sig<i64> , %acc_qdata_argc_o: !llhd.sig<i64> , %acc_qvalid_o: !llhd.sig<i1> , %acc_pready_o: !llhd.sig<i1> , %data_qaddr_o: !llhd.sig<i32> , %data_qwrite_o: !llhd.sig<i1> , %data_qamo_o: !llhd.sig<i4> , %data_qdata_o: !llhd.sig<i64> , %data_qstrb_o: !llhd.sig<i8> , %data_qvalid_o: !llhd.sig<i1> , %data_pready_o: !llhd.sig<i1> , %fpu_rnd_mode_o: !llhd.sig<i3> , %core_events_o: !llhd.sig<tuple<i1, i1, i1, i1>> ) {
     %0 = llhd.const 0 : i1
-    %illegal_inst = llhd.sig "sig" %0 : i1
+    %illegal_inst = llhd.sig "illegal_inst" %0 : i1
     %1 = llhd.const 0 : i1
-    %zero_lsb = llhd.sig "sig1" %1 : i1
+    %zero_lsb = llhd.sig "zero_lsb" %1 : i1
     %2 = llhd.const 0 : i32
-    %pc_d = llhd.sig "sig2" %2 : i32
+    %pc_d = llhd.sig "pc_d" %2 : i32
     %3 = llhd.const 0 : i32
-    %pc_q = llhd.sig "sig3" %3 : i32
+    %pc_q = llhd.sig "pc_q" %3 : i32
     %4 = llhd.const 0 : i1
-    %wfi_d = llhd.sig "sig4" %4 : i1
+    %wfi_d = llhd.sig "wfi_d" %4 : i1
     %5 = llhd.const 0 : i1
-    %wfi_q = llhd.sig "sig5" %5 : i1
+    %wfi_q = llhd.sig "wfi_q" %5 : i1
     %6 = llhd.const 0 : i32
-    %consec_pc = llhd.sig "sig6" %6 : i32
+    %consec_pc = llhd.sig "consec_pc" %6 : i32
     %7 = llhd.const 0 : i32
-    %iimm = llhd.sig "sig7" %7 : i32
+    %iimm = llhd.sig "iimm" %7 : i32
     %8 = llhd.const 0 : i32
-    %uimm = llhd.sig "sig8" %8 : i32
+    %uimm = llhd.sig "uimm" %8 : i32
     %9 = llhd.const 0 : i32
-    %jimm = llhd.sig "sig9" %9 : i32
+    %jimm = llhd.sig "jimm" %9 : i32
     %10 = llhd.const 0 : i32
-    %bimm = llhd.sig "sig10" %10 : i32
+    %bimm = llhd.sig "bimm" %10 : i32
     %11 = llhd.const 0 : i32
-    %simm = llhd.sig "sig11" %11 : i32
+    %simm = llhd.sig "simm" %11 : i32
     %12 = llhd.const 0 : i32
-    %opa = llhd.sig "sig12" %12 : i32
+    %opa = llhd.sig "opa" %12 : i32
     %13 = llhd.const 0 : i32
-    %opb = llhd.sig "sig13" %13 : i32
+    %opb = llhd.sig "opb" %13 : i32
     %14 = llhd.const 0 : i33
-    %adder_result = llhd.sig "sig14" %14 : i33
+    %adder_result = llhd.sig "adder_result" %14 : i33
     %15 = llhd.const 0 : i32
-    %alu_result = llhd.sig "sig15" %15 : i32
+    %alu_result = llhd.sig "alu_result" %15 : i32
     %16 = llhd.const 0 : i5
-    %rd = llhd.sig "sig16" %16 : i5
+    %rd = llhd.sig "rd" %16 : i5
     %17 = llhd.const 0 : i5
-    %rs1 = llhd.sig "sig17" %17 : i5
+    %rs1 = llhd.sig "rs1" %17 : i5
     %18 = llhd.const 0 : i5
-    %rs2 = llhd.sig "sig18" %18 : i5
+    %rs2 = llhd.sig "rs2" %18 : i5
     %19 = llhd.const 0 : i1
-    %stall = llhd.sig "sig19" %19 : i1
+    %stall = llhd.sig "stall" %19 : i1
     %20 = llhd.const 0 : i1
-    %lsu_stall = llhd.sig "sig20" %20 : i1
+    %lsu_stall = llhd.sig "lsu_stall" %20 : i1
     %21 = llhd.const 0 : i5
     %22 = llhd.const 0 : i5
     %23 = llhd.array %21, %22 : !llhd.array<2xi5>
-    %gpr_raddr = llhd.sig "sig21" %23 : !llhd.array<2xi5>
+    %gpr_raddr = llhd.sig "gpr_raddr" %23 : !llhd.array<2xi5>
     %24 = llhd.const 0 : i32
     %25 = llhd.const 0 : i32
     %26 = llhd.array %24, %25 : !llhd.array<2xi32>
-    %gpr_rdata = llhd.sig "sig22" %26 : !llhd.array<2xi32>
+    %gpr_rdata = llhd.sig "gpr_rdata" %26 : !llhd.array<2xi32>
     %27 = llhd.const 0 : i5
     %28 = llhd.array %27 : !llhd.array<1xi5>
-    %gpr_waddr = llhd.sig "sig23" %28 : !llhd.array<1xi5>
+    %gpr_waddr = llhd.sig "gpr_waddr" %28 : !llhd.array<1xi5>
     %29 = llhd.const 0 : i32
     %30 = llhd.array %29 : !llhd.array<1xi32>
-    %gpr_wdata = llhd.sig "sig24" %30 : !llhd.array<1xi32>
+    %gpr_wdata = llhd.sig "gpr_wdata" %30 : !llhd.array<1xi32>
     %31 = llhd.const 0 : i1
-    %gpr_we = llhd.sig "sig25" %31 : i1
+    %gpr_we = llhd.sig "gpr_we" %31 : i1
     %32 = llhd.const 0 : i32
-    %sb_d = llhd.sig "sig26" %32 : i32
+    %sb_d = llhd.sig "sb_d" %32 : i32
     %33 = llhd.const 0 : i32
-    %sb_q = llhd.sig "sig27" %33 : i32
+    %sb_q = llhd.sig "sb_q" %33 : i32
     %34 = llhd.const 0 : i1
-    %is_load = llhd.sig "sig28" %34 : i1
+    %is_load = llhd.sig "is_load" %34 : i1
     %35 = llhd.const 0 : i1
-    %is_store = llhd.sig "sig29" %35 : i1
+    %is_store = llhd.sig "is_store" %35 : i1
     %36 = llhd.const 0 : i1
-    %is_signed = llhd.sig "sig30" %36 : i1
+    %is_signed = llhd.sig "is_signed" %36 : i1
     %37 = llhd.const 0 : i2
-    %ls_size = llhd.sig "sig31" %37 : i2
+    %ls_size = llhd.sig "ls_size" %37 : i2
     %38 = llhd.const 0 : i4
-    %ls_amo = llhd.sig "sig32" %38 : i4
+    %ls_amo = llhd.sig "ls_amo" %38 : i4
     %39 = llhd.const 0 : i64
-    %ld_result = llhd.sig "sig33" %39 : i64
+    %ld_result = llhd.sig "ld_result" %39 : i64
     %40 = llhd.const 0 : i1
-    %lsu_qready = llhd.sig "sig34" %40 : i1
+    %lsu_qready = llhd.sig "lsu_qready" %40 : i1
     %41 = llhd.const 0 : i1
-    %lsu_qvalid = llhd.sig "sig35" %41 : i1
+    %lsu_qvalid = llhd.sig "lsu_qvalid" %41 : i1
     %42 = llhd.const 0 : i1
-    %lsu_pvalid = llhd.sig "sig36" %42 : i1
+    %lsu_pvalid = llhd.sig "lsu_pvalid" %42 : i1
     %43 = llhd.const 0 : i1
-    %lsu_pready = llhd.sig "sig37" %43 : i1
+    %lsu_pready = llhd.sig "lsu_pready" %43 : i1
     %44 = llhd.const 0 : i5
-    %lsu_rd = llhd.sig "sig38" %44 : i5
+    %lsu_rd = llhd.sig "lsu_rd" %44 : i5
     %45 = llhd.const 0 : i1
-    %retire_load = llhd.sig "sig39" %45 : i1
+    %retire_load = llhd.sig "retire_load" %45 : i1
     %46 = llhd.const 0 : i1
-    %retire_i = llhd.sig "sig40" %46 : i1
+    %retire_i = llhd.sig "retire_i" %46 : i1
     %47 = llhd.const 0 : i1
-    %retire_acc = llhd.sig "sig41" %47 : i1
+    %retire_acc = llhd.sig "retire_acc" %47 : i1
     %48 = llhd.const 0 : i1
-    %acc_stall = llhd.sig "sig42" %48 : i1
+    %acc_stall = llhd.sig "acc_stall" %48 : i1
     %49 = llhd.const 0 : i1
-    %valid_instr = llhd.sig "sig43" %49 : i1
+    %valid_instr = llhd.sig "valid_instr" %49 : i1
     %50 = llhd.const 0 : i4
-    %alu_op = llhd.sig "sig44" %50 : i4
+    %alu_op = llhd.sig "alu_op" %50 : i4
     %51 = llhd.const 0 : i4
-    %opa_select = llhd.sig "sig45" %51 : i4
+    %opa_select = llhd.sig "opa_select" %51 : i4
     %52 = llhd.const 0 : i4
-    %opb_select = llhd.sig "sig46" %52 : i4
+    %opb_select = llhd.sig "opb_select" %52 : i4
     %53 = llhd.const 0 : i1
-    %write_rd = llhd.sig "sig47" %53 : i1
+    %write_rd = llhd.sig "write_rd" %53 : i1
     %54 = llhd.const 0 : i1
-    %uses_rd = llhd.sig "sig48" %54 : i1
+    %uses_rd = llhd.sig "uses_rd" %54 : i1
     %55 = llhd.const 0 : i2
-    %next_pc = llhd.sig "sig49" %55 : i2
+    %next_pc = llhd.sig "next_pc" %55 : i2
     %56 = llhd.const 0 : i2
-    %rd_select = llhd.sig "sig50" %56 : i2
+    %rd_select = llhd.sig "rd_select" %56 : i2
     %57 = llhd.const 0 : i32
-    %rd_bypass = llhd.sig "sig51" %57 : i32
+    %rd_bypass = llhd.sig "rd_bypass" %57 : i32
     %58 = llhd.const 0 : i1
-    %is_branch = llhd.sig "sig52" %58 : i1
+    %is_branch = llhd.sig "is_branch" %58 : i1
     %59 = llhd.const 0 : i32
-    %csr_rvalue = llhd.sig "sig53" %59 : i32
+    %csr_rvalue = llhd.sig "csr_rvalue" %59 : i32
     %60 = llhd.const 0 : i1
-    %csr_en = llhd.sig "sig54" %60 : i1
+    %csr_en = llhd.sig "csr_en" %60 : i1
     %61 = llhd.const 0 : i3
     %62 = llhd.const 0 : i1
     %63 = llhd.const 0 : i1
@@ -9210,7 +9215,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     %66 = llhd.const 0 : i1
     %67 = llhd.tuple %62, %63, %64, %65, %66 : tuple<i1, i1, i1, i1, i1>
     %68 = llhd.tuple %61, %67 : tuple<i3, tuple<i1, i1, i1, i1, i1>>
-    %fcsr_d = llhd.sig "sig55" %68 : tuple<i3, tuple<i1, i1, i1, i1, i1>>
+    %fcsr_d = llhd.sig "fcsr_d" %68 : tuple<i3, tuple<i1, i1, i1, i1, i1>>
     %69 = llhd.const 0 : i3
     %70 = llhd.const 0 : i1
     %71 = llhd.const 0 : i1
@@ -9219,39 +9224,39 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     %74 = llhd.const 0 : i1
     %75 = llhd.tuple %70, %71, %72, %73, %74 : tuple<i1, i1, i1, i1, i1>
     %76 = llhd.tuple %69, %75 : tuple<i3, tuple<i1, i1, i1, i1, i1>>
-    %fcsr_q = llhd.sig "sig56" %76 : tuple<i3, tuple<i1, i1, i1, i1, i1>>
+    %fcsr_q = llhd.sig "fcsr_q" %76 : tuple<i3, tuple<i1, i1, i1, i1, i1>>
     %77 = llhd.const 0 : i1
-    %acc_register_rd = llhd.sig "sig57" %77 : i1
+    %acc_register_rd = llhd.sig "acc_register_rd" %77 : i1
     %78 = llhd.const 0 : i1
-    %operands_ready = llhd.sig "sig58" %78 : i1
+    %operands_ready = llhd.sig "operands_ready" %78 : i1
     %79 = llhd.const 0 : i1
-    %dst_ready = llhd.sig "sig59" %79 : i1
+    %dst_ready = llhd.sig "dst_ready" %79 : i1
     %80 = llhd.const 0 : i1
-    %opa_ready = llhd.sig "sig60" %80 : i1
+    %opa_ready = llhd.sig "opa_ready" %80 : i1
     %81 = llhd.const 0 : i1
-    %opb_ready = llhd.sig "sig61" %81 : i1
+    %opb_ready = llhd.sig "opb_ready" %81 : i1
     %82 = llhd.const 0 : i32
-    %shift_opa = llhd.sig "sig62" %82 : i32
+    %shift_opa = llhd.sig "shift_opa" %82 : i32
     %83 = llhd.const 0 : i32
-    %shift_opa_reversed = llhd.sig "sig63" %83 : i32
+    %shift_opa_reversed = llhd.sig "shift_opa_reversed" %83 : i32
     %84 = llhd.const 0 : i32
-    %shift_right_result = llhd.sig "sig64" %84 : i32
+    %shift_right_result = llhd.sig "shift_right_result" %84 : i32
     %85 = llhd.const 0 : i32
-    %shift_left_result = llhd.sig "sig65" %85 : i32
+    %shift_left_result = llhd.sig "shift_left_result" %85 : i32
     %86 = llhd.const 0 : i33
-    %shift_opa_ext = llhd.sig "sig66" %86 : i33
+    %shift_opa_ext = llhd.sig "shift_opa_ext" %86 : i33
     %87 = llhd.const 0 : i33
-    %shift_right_result_ext = llhd.sig "sig67" %87 : i33
+    %shift_right_result_ext = llhd.sig "shift_right_result_ext" %87 : i33
     %88 = llhd.const 0 : i1
-    %shift_left = llhd.sig "sig68" %88 : i1
+    %shift_left = llhd.sig "shift_left" %88 : i1
     %89 = llhd.const 0 : i1
-    %shift_arithmetic = llhd.sig "sig69" %89 : i1
+    %shift_arithmetic = llhd.sig "shift_arithmetic" %89 : i1
     %90 = llhd.const 0 : i33
-    %alu_opa = llhd.sig "sig70" %90 : i33
+    %alu_opa = llhd.sig "alu_opa" %90 : i33
     %91 = llhd.const 0 : i33
-    %alu_opb = llhd.sig "sig71" %91 : i33
+    %alu_opb = llhd.sig "alu_opb" %91 : i33
     %92 = llhd.const 0 : i32
-    %alu_writeback = llhd.sig "sig72" %92 : i32
+    %alu_writeback = llhd.sig "alu_writeback" %92 : i32
     %93 = llhd.const 0 : i12
     %inst_data_i1 = llhd.prb %inst_data_i : !llhd.sig<i32>
     %94 = llhd.const 20 : i5
@@ -9621,7 +9626,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     %380 = llhd.const 0 : i32
     %381 = llhd.const 0 : i5
     %382 = llhd.array_uniform %381 : !llhd.array<2xi5>
-    %383 = llhd.sig "sig73" %382 : !llhd.array<2xi5>
+    %383 = llhd.sig "383" %382 : !llhd.array<2xi5>
     %384 = llhd.shr %gpr_raddr, %383, %380 : (!llhd.sig<!llhd.array<2xi5>>, !llhd.sig<!llhd.array<2xi5>>, i32) -> !llhd.sig<!llhd.array<2xi5>>
     %385 = llhd.extract_element %384, 0 : !llhd.sig<!llhd.array<2xi5>> -> !llhd.sig<i5>
     %rs12 = llhd.prb %rs1 : !llhd.sig<i5>
@@ -9630,7 +9635,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     %387 = llhd.const 1 : i32
     %388 = llhd.const 0 : i5
     %389 = llhd.array_uniform %388 : !llhd.array<2xi5>
-    %390 = llhd.sig "sig74" %389 : !llhd.array<2xi5>
+    %390 = llhd.sig "390" %389 : !llhd.array<2xi5>
     %391 = llhd.shr %gpr_raddr, %390, %387 : (!llhd.sig<!llhd.array<2xi5>>, !llhd.sig<!llhd.array<2xi5>>, i32) -> !llhd.sig<!llhd.array<2xi5>>
     %392 = llhd.extract_element %391, 0 : !llhd.sig<!llhd.array<2xi5>> -> !llhd.sig<i5>
     %rs22 = llhd.prb %rs2 : !llhd.sig<i5>
@@ -9698,61 +9703,61 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %retire_i, %428 after %429 : !llhd.sig<i1>
     %clk_i1 = llhd.prb %clk_i : !llhd.sig<i1>
     %430 = llhd.const 0 : i1
-    %431 = llhd.sig "sig75" %430 : i1
+    %431 = llhd.sig "431" %430 : i1
     %432 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %431, %clk_i1 after %432 : !llhd.sig<i1>
     %gpr_raddr1 = llhd.prb %gpr_raddr : !llhd.sig<!llhd.array<2xi5>>
     %433 = llhd.const 0 : i5
     %434 = llhd.array_uniform %433 : !llhd.array<2xi5>
-    %435 = llhd.sig "sig76" %434 : !llhd.array<2xi5>
+    %435 = llhd.sig "435" %434 : !llhd.array<2xi5>
     %436 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %435, %gpr_raddr1 after %436 : !llhd.sig<!llhd.array<2xi5>>
     %gpr_waddr1 = llhd.prb %gpr_waddr : !llhd.sig<!llhd.array<1xi5>>
     %437 = llhd.const 0 : i5
     %438 = llhd.array_uniform %437 : !llhd.array<1xi5>
-    %439 = llhd.sig "sig77" %438 : !llhd.array<1xi5>
+    %439 = llhd.sig "439" %438 : !llhd.array<1xi5>
     %440 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %439, %gpr_waddr1 after %440 : !llhd.sig<!llhd.array<1xi5>>
     %gpr_wdata1 = llhd.prb %gpr_wdata : !llhd.sig<!llhd.array<1xi32>>
     %441 = llhd.const 0 : i32
     %442 = llhd.array_uniform %441 : !llhd.array<1xi32>
-    %443 = llhd.sig "sig78" %442 : !llhd.array<1xi32>
+    %443 = llhd.sig "443" %442 : !llhd.array<1xi32>
     %444 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %443, %gpr_wdata1 after %444 : !llhd.sig<!llhd.array<1xi32>>
     %gpr_we1 = llhd.prb %gpr_we : !llhd.sig<i1>
     %445 = llhd.const 0 : i1
-    %446 = llhd.sig "sig79" %445 : i1
+    %446 = llhd.sig "446" %445 : i1
     %447 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %446, %gpr_we1 after %447 : !llhd.sig<i1>
     llhd.inst "inst" @snitch_regfile.param2(%431, %435, %439, %443, %446) -> (%gpr_rdata) : (!llhd.sig<i1>, !llhd.sig<!llhd.array<2xi5>>, !llhd.sig<!llhd.array<1xi5>>, !llhd.sig<!llhd.array<1xi32>>, !llhd.sig<i1>) -> (!llhd.sig<!llhd.array<2xi32>>)
     %clk_i2 = llhd.prb %clk_i : !llhd.sig<i1>
     %448 = llhd.const 0 : i1
-    %449 = llhd.sig "sig80" %448 : i1
+    %449 = llhd.sig "449" %448 : i1
     %450 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %449, %clk_i2 after %450 : !llhd.sig<i1>
     %rst_i1 = llhd.prb %rst_i : !llhd.sig<i1>
     %451 = llhd.const 0 : i1
-    %452 = llhd.sig "sig81" %451 : i1
+    %452 = llhd.sig "452" %451 : i1
     %453 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %452, %rst_i1 after %453 : !llhd.sig<i1>
     %rd4 = llhd.prb %rd : !llhd.sig<i5>
     %454 = llhd.const 0 : i5
-    %455 = llhd.sig "sig82" %454 : i5
+    %455 = llhd.sig "455" %454 : i5
     %456 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %455, %rd4 after %456 : !llhd.sig<i5>
     %is_store2 = llhd.prb %is_store : !llhd.sig<i1>
     %457 = llhd.const 0 : i1
-    %458 = llhd.sig "sig83" %457 : i1
+    %458 = llhd.sig "458" %457 : i1
     %459 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %458, %is_store2 after %459 : !llhd.sig<i1>
     %is_signed1 = llhd.prb %is_signed : !llhd.sig<i1>
     %460 = llhd.const 0 : i1
-    %461 = llhd.sig "sig84" %460 : i1
+    %461 = llhd.sig "461" %460 : i1
     %462 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %461, %is_signed1 after %462 : !llhd.sig<i1>
     %alu_result3 = llhd.prb %alu_result : !llhd.sig<i32>
     %463 = llhd.const 0 : i32
-    %464 = llhd.sig "sig85" %463 : i32
+    %464 = llhd.sig "464" %463 : i32
     %465 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %464, %alu_result3 after %465 : !llhd.sig<i32>
     %466 = llhd.const 0 : i64
@@ -9766,55 +9771,55 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     %473 = llhd.const 0 : i32
     %474 = llhd.insert_slice %472, %473, 32 : i64, i32
     %475 = llhd.const 0 : i64
-    %476 = llhd.sig "sig86" %475 : i64
+    %476 = llhd.sig "476" %475 : i64
     %477 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %476, %474 after %477 : !llhd.sig<i64>
     %ls_size1 = llhd.prb %ls_size : !llhd.sig<i2>
     %478 = llhd.const 0 : i2
-    %479 = llhd.sig "sig87" %478 : i2
+    %479 = llhd.sig "479" %478 : i2
     %480 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %479, %ls_size1 after %480 : !llhd.sig<i2>
     %ls_amo1 = llhd.prb %ls_amo : !llhd.sig<i4>
     %481 = llhd.const 0 : i4
-    %482 = llhd.sig "sig88" %481 : i4
+    %482 = llhd.sig "482" %481 : i4
     %483 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %482, %ls_amo1 after %483 : !llhd.sig<i4>
     %lsu_qvalid2 = llhd.prb %lsu_qvalid : !llhd.sig<i1>
     %484 = llhd.const 0 : i1
-    %485 = llhd.sig "sig89" %484 : i1
+    %485 = llhd.sig "485" %484 : i1
     %486 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %485, %lsu_qvalid2 after %486 : !llhd.sig<i1>
     %487 = llhd.const 0 : i1
-    %488 = llhd.sig "sig90" %487 : i1
+    %488 = llhd.sig "488" %487 : i1
     %lsu_pready1 = llhd.prb %lsu_pready : !llhd.sig<i1>
     %489 = llhd.const 0 : i1
-    %490 = llhd.sig "sig91" %489 : i1
+    %490 = llhd.sig "490" %489 : i1
     %491 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %490, %lsu_pready1 after %491 : !llhd.sig<i1>
     %data_qready_i1 = llhd.prb %data_qready_i : !llhd.sig<i1>
     %492 = llhd.const 0 : i1
-    %493 = llhd.sig "sig92" %492 : i1
+    %493 = llhd.sig "493" %492 : i1
     %494 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %493, %data_qready_i1 after %494 : !llhd.sig<i1>
     %data_pdata_i1 = llhd.prb %data_pdata_i : !llhd.sig<i64>
     %495 = llhd.const 0 : i64
-    %496 = llhd.sig "sig93" %495 : i64
+    %496 = llhd.sig "496" %495 : i64
     %497 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %496, %data_pdata_i1 after %497 : !llhd.sig<i64>
     %data_perror_i1 = llhd.prb %data_perror_i : !llhd.sig<i1>
     %498 = llhd.const 0 : i1
-    %499 = llhd.sig "sig94" %498 : i1
+    %499 = llhd.sig "499" %498 : i1
     %500 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %499, %data_perror_i1 after %500 : !llhd.sig<i1>
     %data_pvalid_i1 = llhd.prb %data_pvalid_i : !llhd.sig<i1>
     %501 = llhd.const 0 : i1
-    %502 = llhd.sig "sig95" %501 : i1
+    %502 = llhd.sig "502" %501 : i1
     %503 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %502, %data_pvalid_i1 after %503 : !llhd.sig<i1>
     llhd.inst "inst1" @snitch_lsu.param5(%449, %452, %455, %458, %461, %464, %476, %479, %482, %485, %490, %493, %496, %499, %502) -> (%lsu_qready, %ld_result, %lsu_rd, %488, %lsu_pvalid, %data_qaddr_o, %data_qwrite_o, %data_qamo_o, %data_qdata_o, %data_qstrb_o, %data_qvalid_o, %data_pready_o) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i5>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i64>, !llhd.sig<i2>, !llhd.sig<i4>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i64>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i1>, !llhd.sig<i64>, !llhd.sig<i5>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i1>, !llhd.sig<i4>, !llhd.sig<i64>, !llhd.sig<i8>, !llhd.sig<i1>, !llhd.sig<i1>)
     %504 = llhd.const 0 : i32
     %505 = llhd.const 0 : i32
-    %506 = llhd.sig "sig96" %505 : i32
+    %506 = llhd.sig "506" %505 : i32
     %507 = llhd.shr %shift_opa_reversed, %506, %504 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %508 = llhd.extract_slice %507, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa2 = llhd.prb %opa : !llhd.sig<i32>
@@ -9828,7 +9833,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %508, %514 after %515 : !llhd.sig<i1>
     %516 = llhd.const 0 : i32
     %517 = llhd.const 0 : i32
-    %518 = llhd.sig "sig97" %517 : i32
+    %518 = llhd.sig "518" %517 : i32
     %519 = llhd.shr %shift_left_result, %518, %516 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %520 = llhd.extract_slice %519, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result1 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -9842,7 +9847,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %520, %526 after %527 : !llhd.sig<i1>
     %528 = llhd.const 1 : i32
     %529 = llhd.const 0 : i32
-    %530 = llhd.sig "sig98" %529 : i32
+    %530 = llhd.sig "530" %529 : i32
     %531 = llhd.shr %shift_opa_reversed, %530, %528 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %532 = llhd.extract_slice %531, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa3 = llhd.prb %opa : !llhd.sig<i32>
@@ -9856,7 +9861,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %532, %538 after %539 : !llhd.sig<i1>
     %540 = llhd.const 1 : i32
     %541 = llhd.const 0 : i32
-    %542 = llhd.sig "sig99" %541 : i32
+    %542 = llhd.sig "542" %541 : i32
     %543 = llhd.shr %shift_left_result, %542, %540 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %544 = llhd.extract_slice %543, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result2 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -9870,7 +9875,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %544, %550 after %551 : !llhd.sig<i1>
     %552 = llhd.const 2 : i32
     %553 = llhd.const 0 : i32
-    %554 = llhd.sig "sig100" %553 : i32
+    %554 = llhd.sig "554" %553 : i32
     %555 = llhd.shr %shift_opa_reversed, %554, %552 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %556 = llhd.extract_slice %555, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa4 = llhd.prb %opa : !llhd.sig<i32>
@@ -9884,7 +9889,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %556, %562 after %563 : !llhd.sig<i1>
     %564 = llhd.const 2 : i32
     %565 = llhd.const 0 : i32
-    %566 = llhd.sig "sig101" %565 : i32
+    %566 = llhd.sig "566" %565 : i32
     %567 = llhd.shr %shift_left_result, %566, %564 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %568 = llhd.extract_slice %567, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result3 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -9898,7 +9903,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %568, %574 after %575 : !llhd.sig<i1>
     %576 = llhd.const 3 : i32
     %577 = llhd.const 0 : i32
-    %578 = llhd.sig "sig102" %577 : i32
+    %578 = llhd.sig "578" %577 : i32
     %579 = llhd.shr %shift_opa_reversed, %578, %576 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %580 = llhd.extract_slice %579, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa5 = llhd.prb %opa : !llhd.sig<i32>
@@ -9912,7 +9917,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %580, %586 after %587 : !llhd.sig<i1>
     %588 = llhd.const 3 : i32
     %589 = llhd.const 0 : i32
-    %590 = llhd.sig "sig103" %589 : i32
+    %590 = llhd.sig "590" %589 : i32
     %591 = llhd.shr %shift_left_result, %590, %588 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %592 = llhd.extract_slice %591, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result4 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -9926,7 +9931,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %592, %598 after %599 : !llhd.sig<i1>
     %600 = llhd.const 4 : i32
     %601 = llhd.const 0 : i32
-    %602 = llhd.sig "sig104" %601 : i32
+    %602 = llhd.sig "602" %601 : i32
     %603 = llhd.shr %shift_opa_reversed, %602, %600 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %604 = llhd.extract_slice %603, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa6 = llhd.prb %opa : !llhd.sig<i32>
@@ -9940,7 +9945,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %604, %610 after %611 : !llhd.sig<i1>
     %612 = llhd.const 4 : i32
     %613 = llhd.const 0 : i32
-    %614 = llhd.sig "sig105" %613 : i32
+    %614 = llhd.sig "614" %613 : i32
     %615 = llhd.shr %shift_left_result, %614, %612 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %616 = llhd.extract_slice %615, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result5 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -9954,7 +9959,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %616, %622 after %623 : !llhd.sig<i1>
     %624 = llhd.const 5 : i32
     %625 = llhd.const 0 : i32
-    %626 = llhd.sig "sig106" %625 : i32
+    %626 = llhd.sig "626" %625 : i32
     %627 = llhd.shr %shift_opa_reversed, %626, %624 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %628 = llhd.extract_slice %627, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa7 = llhd.prb %opa : !llhd.sig<i32>
@@ -9968,7 +9973,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %628, %634 after %635 : !llhd.sig<i1>
     %636 = llhd.const 5 : i32
     %637 = llhd.const 0 : i32
-    %638 = llhd.sig "sig107" %637 : i32
+    %638 = llhd.sig "638" %637 : i32
     %639 = llhd.shr %shift_left_result, %638, %636 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %640 = llhd.extract_slice %639, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result6 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -9982,7 +9987,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %640, %646 after %647 : !llhd.sig<i1>
     %648 = llhd.const 6 : i32
     %649 = llhd.const 0 : i32
-    %650 = llhd.sig "sig108" %649 : i32
+    %650 = llhd.sig "650" %649 : i32
     %651 = llhd.shr %shift_opa_reversed, %650, %648 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %652 = llhd.extract_slice %651, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa8 = llhd.prb %opa : !llhd.sig<i32>
@@ -9996,7 +10001,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %652, %658 after %659 : !llhd.sig<i1>
     %660 = llhd.const 6 : i32
     %661 = llhd.const 0 : i32
-    %662 = llhd.sig "sig109" %661 : i32
+    %662 = llhd.sig "662" %661 : i32
     %663 = llhd.shr %shift_left_result, %662, %660 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %664 = llhd.extract_slice %663, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result7 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10010,7 +10015,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %664, %670 after %671 : !llhd.sig<i1>
     %672 = llhd.const 7 : i32
     %673 = llhd.const 0 : i32
-    %674 = llhd.sig "sig110" %673 : i32
+    %674 = llhd.sig "674" %673 : i32
     %675 = llhd.shr %shift_opa_reversed, %674, %672 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %676 = llhd.extract_slice %675, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa9 = llhd.prb %opa : !llhd.sig<i32>
@@ -10024,7 +10029,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %676, %682 after %683 : !llhd.sig<i1>
     %684 = llhd.const 7 : i32
     %685 = llhd.const 0 : i32
-    %686 = llhd.sig "sig111" %685 : i32
+    %686 = llhd.sig "686" %685 : i32
     %687 = llhd.shr %shift_left_result, %686, %684 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %688 = llhd.extract_slice %687, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result8 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10038,7 +10043,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %688, %694 after %695 : !llhd.sig<i1>
     %696 = llhd.const 8 : i32
     %697 = llhd.const 0 : i32
-    %698 = llhd.sig "sig112" %697 : i32
+    %698 = llhd.sig "698" %697 : i32
     %699 = llhd.shr %shift_opa_reversed, %698, %696 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %700 = llhd.extract_slice %699, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa10 = llhd.prb %opa : !llhd.sig<i32>
@@ -10052,7 +10057,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %700, %706 after %707 : !llhd.sig<i1>
     %708 = llhd.const 8 : i32
     %709 = llhd.const 0 : i32
-    %710 = llhd.sig "sig113" %709 : i32
+    %710 = llhd.sig "710" %709 : i32
     %711 = llhd.shr %shift_left_result, %710, %708 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %712 = llhd.extract_slice %711, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result9 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10066,7 +10071,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %712, %718 after %719 : !llhd.sig<i1>
     %720 = llhd.const 9 : i32
     %721 = llhd.const 0 : i32
-    %722 = llhd.sig "sig114" %721 : i32
+    %722 = llhd.sig "722" %721 : i32
     %723 = llhd.shr %shift_opa_reversed, %722, %720 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %724 = llhd.extract_slice %723, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa11 = llhd.prb %opa : !llhd.sig<i32>
@@ -10080,7 +10085,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %724, %730 after %731 : !llhd.sig<i1>
     %732 = llhd.const 9 : i32
     %733 = llhd.const 0 : i32
-    %734 = llhd.sig "sig115" %733 : i32
+    %734 = llhd.sig "734" %733 : i32
     %735 = llhd.shr %shift_left_result, %734, %732 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %736 = llhd.extract_slice %735, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result10 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10094,7 +10099,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %736, %742 after %743 : !llhd.sig<i1>
     %744 = llhd.const 10 : i32
     %745 = llhd.const 0 : i32
-    %746 = llhd.sig "sig116" %745 : i32
+    %746 = llhd.sig "746" %745 : i32
     %747 = llhd.shr %shift_opa_reversed, %746, %744 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %748 = llhd.extract_slice %747, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa12 = llhd.prb %opa : !llhd.sig<i32>
@@ -10108,7 +10113,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %748, %754 after %755 : !llhd.sig<i1>
     %756 = llhd.const 10 : i32
     %757 = llhd.const 0 : i32
-    %758 = llhd.sig "sig117" %757 : i32
+    %758 = llhd.sig "758" %757 : i32
     %759 = llhd.shr %shift_left_result, %758, %756 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %760 = llhd.extract_slice %759, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result11 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10122,7 +10127,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %760, %766 after %767 : !llhd.sig<i1>
     %768 = llhd.const 11 : i32
     %769 = llhd.const 0 : i32
-    %770 = llhd.sig "sig118" %769 : i32
+    %770 = llhd.sig "770" %769 : i32
     %771 = llhd.shr %shift_opa_reversed, %770, %768 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %772 = llhd.extract_slice %771, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa13 = llhd.prb %opa : !llhd.sig<i32>
@@ -10136,7 +10141,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %772, %778 after %779 : !llhd.sig<i1>
     %780 = llhd.const 11 : i32
     %781 = llhd.const 0 : i32
-    %782 = llhd.sig "sig119" %781 : i32
+    %782 = llhd.sig "782" %781 : i32
     %783 = llhd.shr %shift_left_result, %782, %780 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %784 = llhd.extract_slice %783, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result12 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10150,7 +10155,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %784, %790 after %791 : !llhd.sig<i1>
     %792 = llhd.const 12 : i32
     %793 = llhd.const 0 : i32
-    %794 = llhd.sig "sig120" %793 : i32
+    %794 = llhd.sig "794" %793 : i32
     %795 = llhd.shr %shift_opa_reversed, %794, %792 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %796 = llhd.extract_slice %795, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa14 = llhd.prb %opa : !llhd.sig<i32>
@@ -10164,7 +10169,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %796, %802 after %803 : !llhd.sig<i1>
     %804 = llhd.const 12 : i32
     %805 = llhd.const 0 : i32
-    %806 = llhd.sig "sig121" %805 : i32
+    %806 = llhd.sig "806" %805 : i32
     %807 = llhd.shr %shift_left_result, %806, %804 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %808 = llhd.extract_slice %807, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result13 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10178,7 +10183,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %808, %814 after %815 : !llhd.sig<i1>
     %816 = llhd.const 13 : i32
     %817 = llhd.const 0 : i32
-    %818 = llhd.sig "sig122" %817 : i32
+    %818 = llhd.sig "818" %817 : i32
     %819 = llhd.shr %shift_opa_reversed, %818, %816 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %820 = llhd.extract_slice %819, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa15 = llhd.prb %opa : !llhd.sig<i32>
@@ -10192,7 +10197,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %820, %826 after %827 : !llhd.sig<i1>
     %828 = llhd.const 13 : i32
     %829 = llhd.const 0 : i32
-    %830 = llhd.sig "sig123" %829 : i32
+    %830 = llhd.sig "830" %829 : i32
     %831 = llhd.shr %shift_left_result, %830, %828 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %832 = llhd.extract_slice %831, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result14 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10206,7 +10211,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %832, %838 after %839 : !llhd.sig<i1>
     %840 = llhd.const 14 : i32
     %841 = llhd.const 0 : i32
-    %842 = llhd.sig "sig124" %841 : i32
+    %842 = llhd.sig "842" %841 : i32
     %843 = llhd.shr %shift_opa_reversed, %842, %840 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %844 = llhd.extract_slice %843, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa16 = llhd.prb %opa : !llhd.sig<i32>
@@ -10220,7 +10225,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %844, %850 after %851 : !llhd.sig<i1>
     %852 = llhd.const 14 : i32
     %853 = llhd.const 0 : i32
-    %854 = llhd.sig "sig125" %853 : i32
+    %854 = llhd.sig "854" %853 : i32
     %855 = llhd.shr %shift_left_result, %854, %852 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %856 = llhd.extract_slice %855, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result15 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10234,7 +10239,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %856, %862 after %863 : !llhd.sig<i1>
     %864 = llhd.const 15 : i32
     %865 = llhd.const 0 : i32
-    %866 = llhd.sig "sig126" %865 : i32
+    %866 = llhd.sig "866" %865 : i32
     %867 = llhd.shr %shift_opa_reversed, %866, %864 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %868 = llhd.extract_slice %867, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa17 = llhd.prb %opa : !llhd.sig<i32>
@@ -10248,7 +10253,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %868, %874 after %875 : !llhd.sig<i1>
     %876 = llhd.const 15 : i32
     %877 = llhd.const 0 : i32
-    %878 = llhd.sig "sig127" %877 : i32
+    %878 = llhd.sig "878" %877 : i32
     %879 = llhd.shr %shift_left_result, %878, %876 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %880 = llhd.extract_slice %879, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result16 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10262,7 +10267,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %880, %886 after %887 : !llhd.sig<i1>
     %888 = llhd.const 16 : i32
     %889 = llhd.const 0 : i32
-    %890 = llhd.sig "sig128" %889 : i32
+    %890 = llhd.sig "890" %889 : i32
     %891 = llhd.shr %shift_opa_reversed, %890, %888 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %892 = llhd.extract_slice %891, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa18 = llhd.prb %opa : !llhd.sig<i32>
@@ -10276,7 +10281,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %892, %898 after %899 : !llhd.sig<i1>
     %900 = llhd.const 16 : i32
     %901 = llhd.const 0 : i32
-    %902 = llhd.sig "sig129" %901 : i32
+    %902 = llhd.sig "902" %901 : i32
     %903 = llhd.shr %shift_left_result, %902, %900 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %904 = llhd.extract_slice %903, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result17 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10290,7 +10295,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %904, %910 after %911 : !llhd.sig<i1>
     %912 = llhd.const 17 : i32
     %913 = llhd.const 0 : i32
-    %914 = llhd.sig "sig130" %913 : i32
+    %914 = llhd.sig "914" %913 : i32
     %915 = llhd.shr %shift_opa_reversed, %914, %912 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %916 = llhd.extract_slice %915, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa19 = llhd.prb %opa : !llhd.sig<i32>
@@ -10304,7 +10309,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %916, %922 after %923 : !llhd.sig<i1>
     %924 = llhd.const 17 : i32
     %925 = llhd.const 0 : i32
-    %926 = llhd.sig "sig131" %925 : i32
+    %926 = llhd.sig "926" %925 : i32
     %927 = llhd.shr %shift_left_result, %926, %924 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %928 = llhd.extract_slice %927, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result18 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10318,7 +10323,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %928, %934 after %935 : !llhd.sig<i1>
     %936 = llhd.const 18 : i32
     %937 = llhd.const 0 : i32
-    %938 = llhd.sig "sig132" %937 : i32
+    %938 = llhd.sig "938" %937 : i32
     %939 = llhd.shr %shift_opa_reversed, %938, %936 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %940 = llhd.extract_slice %939, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa20 = llhd.prb %opa : !llhd.sig<i32>
@@ -10332,7 +10337,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %940, %946 after %947 : !llhd.sig<i1>
     %948 = llhd.const 18 : i32
     %949 = llhd.const 0 : i32
-    %950 = llhd.sig "sig133" %949 : i32
+    %950 = llhd.sig "950" %949 : i32
     %951 = llhd.shr %shift_left_result, %950, %948 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %952 = llhd.extract_slice %951, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result19 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10346,7 +10351,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %952, %958 after %959 : !llhd.sig<i1>
     %960 = llhd.const 19 : i32
     %961 = llhd.const 0 : i32
-    %962 = llhd.sig "sig134" %961 : i32
+    %962 = llhd.sig "962" %961 : i32
     %963 = llhd.shr %shift_opa_reversed, %962, %960 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %964 = llhd.extract_slice %963, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa21 = llhd.prb %opa : !llhd.sig<i32>
@@ -10360,7 +10365,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %964, %970 after %971 : !llhd.sig<i1>
     %972 = llhd.const 19 : i32
     %973 = llhd.const 0 : i32
-    %974 = llhd.sig "sig135" %973 : i32
+    %974 = llhd.sig "974" %973 : i32
     %975 = llhd.shr %shift_left_result, %974, %972 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %976 = llhd.extract_slice %975, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result20 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10374,7 +10379,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %976, %982 after %983 : !llhd.sig<i1>
     %984 = llhd.const 20 : i32
     %985 = llhd.const 0 : i32
-    %986 = llhd.sig "sig136" %985 : i32
+    %986 = llhd.sig "986" %985 : i32
     %987 = llhd.shr %shift_opa_reversed, %986, %984 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %988 = llhd.extract_slice %987, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa22 = llhd.prb %opa : !llhd.sig<i32>
@@ -10388,7 +10393,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %988, %994 after %995 : !llhd.sig<i1>
     %996 = llhd.const 20 : i32
     %997 = llhd.const 0 : i32
-    %998 = llhd.sig "sig137" %997 : i32
+    %998 = llhd.sig "998" %997 : i32
     %999 = llhd.shr %shift_left_result, %998, %996 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1000 = llhd.extract_slice %999, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result21 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10402,7 +10407,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1000, %1006 after %1007 : !llhd.sig<i1>
     %1008 = llhd.const 21 : i32
     %1009 = llhd.const 0 : i32
-    %1010 = llhd.sig "sig138" %1009 : i32
+    %1010 = llhd.sig "1010" %1009 : i32
     %1011 = llhd.shr %shift_opa_reversed, %1010, %1008 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1012 = llhd.extract_slice %1011, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa23 = llhd.prb %opa : !llhd.sig<i32>
@@ -10416,7 +10421,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1012, %1018 after %1019 : !llhd.sig<i1>
     %1020 = llhd.const 21 : i32
     %1021 = llhd.const 0 : i32
-    %1022 = llhd.sig "sig139" %1021 : i32
+    %1022 = llhd.sig "1022" %1021 : i32
     %1023 = llhd.shr %shift_left_result, %1022, %1020 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1024 = llhd.extract_slice %1023, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result22 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10430,7 +10435,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1024, %1030 after %1031 : !llhd.sig<i1>
     %1032 = llhd.const 22 : i32
     %1033 = llhd.const 0 : i32
-    %1034 = llhd.sig "sig140" %1033 : i32
+    %1034 = llhd.sig "1034" %1033 : i32
     %1035 = llhd.shr %shift_opa_reversed, %1034, %1032 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1036 = llhd.extract_slice %1035, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa24 = llhd.prb %opa : !llhd.sig<i32>
@@ -10444,7 +10449,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1036, %1042 after %1043 : !llhd.sig<i1>
     %1044 = llhd.const 22 : i32
     %1045 = llhd.const 0 : i32
-    %1046 = llhd.sig "sig141" %1045 : i32
+    %1046 = llhd.sig "1046" %1045 : i32
     %1047 = llhd.shr %shift_left_result, %1046, %1044 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1048 = llhd.extract_slice %1047, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result23 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10458,7 +10463,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1048, %1054 after %1055 : !llhd.sig<i1>
     %1056 = llhd.const 23 : i32
     %1057 = llhd.const 0 : i32
-    %1058 = llhd.sig "sig142" %1057 : i32
+    %1058 = llhd.sig "1058" %1057 : i32
     %1059 = llhd.shr %shift_opa_reversed, %1058, %1056 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1060 = llhd.extract_slice %1059, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa25 = llhd.prb %opa : !llhd.sig<i32>
@@ -10472,7 +10477,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1060, %1066 after %1067 : !llhd.sig<i1>
     %1068 = llhd.const 23 : i32
     %1069 = llhd.const 0 : i32
-    %1070 = llhd.sig "sig143" %1069 : i32
+    %1070 = llhd.sig "1070" %1069 : i32
     %1071 = llhd.shr %shift_left_result, %1070, %1068 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1072 = llhd.extract_slice %1071, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result24 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10486,7 +10491,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1072, %1078 after %1079 : !llhd.sig<i1>
     %1080 = llhd.const 24 : i32
     %1081 = llhd.const 0 : i32
-    %1082 = llhd.sig "sig144" %1081 : i32
+    %1082 = llhd.sig "1082" %1081 : i32
     %1083 = llhd.shr %shift_opa_reversed, %1082, %1080 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1084 = llhd.extract_slice %1083, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa26 = llhd.prb %opa : !llhd.sig<i32>
@@ -10500,7 +10505,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1084, %1090 after %1091 : !llhd.sig<i1>
     %1092 = llhd.const 24 : i32
     %1093 = llhd.const 0 : i32
-    %1094 = llhd.sig "sig145" %1093 : i32
+    %1094 = llhd.sig "1094" %1093 : i32
     %1095 = llhd.shr %shift_left_result, %1094, %1092 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1096 = llhd.extract_slice %1095, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result25 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10514,7 +10519,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1096, %1102 after %1103 : !llhd.sig<i1>
     %1104 = llhd.const 25 : i32
     %1105 = llhd.const 0 : i32
-    %1106 = llhd.sig "sig146" %1105 : i32
+    %1106 = llhd.sig "1106" %1105 : i32
     %1107 = llhd.shr %shift_opa_reversed, %1106, %1104 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1108 = llhd.extract_slice %1107, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa27 = llhd.prb %opa : !llhd.sig<i32>
@@ -10528,7 +10533,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1108, %1114 after %1115 : !llhd.sig<i1>
     %1116 = llhd.const 25 : i32
     %1117 = llhd.const 0 : i32
-    %1118 = llhd.sig "sig147" %1117 : i32
+    %1118 = llhd.sig "1118" %1117 : i32
     %1119 = llhd.shr %shift_left_result, %1118, %1116 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1120 = llhd.extract_slice %1119, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result26 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10542,7 +10547,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1120, %1126 after %1127 : !llhd.sig<i1>
     %1128 = llhd.const 26 : i32
     %1129 = llhd.const 0 : i32
-    %1130 = llhd.sig "sig148" %1129 : i32
+    %1130 = llhd.sig "1130" %1129 : i32
     %1131 = llhd.shr %shift_opa_reversed, %1130, %1128 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1132 = llhd.extract_slice %1131, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa28 = llhd.prb %opa : !llhd.sig<i32>
@@ -10556,7 +10561,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1132, %1138 after %1139 : !llhd.sig<i1>
     %1140 = llhd.const 26 : i32
     %1141 = llhd.const 0 : i32
-    %1142 = llhd.sig "sig149" %1141 : i32
+    %1142 = llhd.sig "1142" %1141 : i32
     %1143 = llhd.shr %shift_left_result, %1142, %1140 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1144 = llhd.extract_slice %1143, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result27 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10570,7 +10575,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1144, %1150 after %1151 : !llhd.sig<i1>
     %1152 = llhd.const 27 : i32
     %1153 = llhd.const 0 : i32
-    %1154 = llhd.sig "sig150" %1153 : i32
+    %1154 = llhd.sig "1154" %1153 : i32
     %1155 = llhd.shr %shift_opa_reversed, %1154, %1152 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1156 = llhd.extract_slice %1155, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa29 = llhd.prb %opa : !llhd.sig<i32>
@@ -10584,7 +10589,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1156, %1162 after %1163 : !llhd.sig<i1>
     %1164 = llhd.const 27 : i32
     %1165 = llhd.const 0 : i32
-    %1166 = llhd.sig "sig151" %1165 : i32
+    %1166 = llhd.sig "1166" %1165 : i32
     %1167 = llhd.shr %shift_left_result, %1166, %1164 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1168 = llhd.extract_slice %1167, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result28 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10598,7 +10603,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1168, %1174 after %1175 : !llhd.sig<i1>
     %1176 = llhd.const 28 : i32
     %1177 = llhd.const 0 : i32
-    %1178 = llhd.sig "sig152" %1177 : i32
+    %1178 = llhd.sig "1178" %1177 : i32
     %1179 = llhd.shr %shift_opa_reversed, %1178, %1176 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1180 = llhd.extract_slice %1179, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa30 = llhd.prb %opa : !llhd.sig<i32>
@@ -10612,7 +10617,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1180, %1186 after %1187 : !llhd.sig<i1>
     %1188 = llhd.const 28 : i32
     %1189 = llhd.const 0 : i32
-    %1190 = llhd.sig "sig153" %1189 : i32
+    %1190 = llhd.sig "1190" %1189 : i32
     %1191 = llhd.shr %shift_left_result, %1190, %1188 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1192 = llhd.extract_slice %1191, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result29 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10626,7 +10631,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1192, %1198 after %1199 : !llhd.sig<i1>
     %1200 = llhd.const 29 : i32
     %1201 = llhd.const 0 : i32
-    %1202 = llhd.sig "sig154" %1201 : i32
+    %1202 = llhd.sig "1202" %1201 : i32
     %1203 = llhd.shr %shift_opa_reversed, %1202, %1200 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1204 = llhd.extract_slice %1203, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa31 = llhd.prb %opa : !llhd.sig<i32>
@@ -10640,7 +10645,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1204, %1210 after %1211 : !llhd.sig<i1>
     %1212 = llhd.const 29 : i32
     %1213 = llhd.const 0 : i32
-    %1214 = llhd.sig "sig155" %1213 : i32
+    %1214 = llhd.sig "1214" %1213 : i32
     %1215 = llhd.shr %shift_left_result, %1214, %1212 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1216 = llhd.extract_slice %1215, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result30 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10654,7 +10659,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1216, %1222 after %1223 : !llhd.sig<i1>
     %1224 = llhd.const 30 : i32
     %1225 = llhd.const 0 : i32
-    %1226 = llhd.sig "sig156" %1225 : i32
+    %1226 = llhd.sig "1226" %1225 : i32
     %1227 = llhd.shr %shift_opa_reversed, %1226, %1224 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1228 = llhd.extract_slice %1227, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa32 = llhd.prb %opa : !llhd.sig<i32>
@@ -10668,7 +10673,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1228, %1234 after %1235 : !llhd.sig<i1>
     %1236 = llhd.const 30 : i32
     %1237 = llhd.const 0 : i32
-    %1238 = llhd.sig "sig157" %1237 : i32
+    %1238 = llhd.sig "1238" %1237 : i32
     %1239 = llhd.shr %shift_left_result, %1238, %1236 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1240 = llhd.extract_slice %1239, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result31 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10682,7 +10687,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1240, %1246 after %1247 : !llhd.sig<i1>
     %1248 = llhd.const 31 : i32
     %1249 = llhd.const 0 : i32
-    %1250 = llhd.sig "sig158" %1249 : i32
+    %1250 = llhd.sig "1250" %1249 : i32
     %1251 = llhd.shr %shift_opa_reversed, %1250, %1248 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1252 = llhd.extract_slice %1251, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %opa33 = llhd.prb %opa : !llhd.sig<i32>
@@ -10696,7 +10701,7 @@ llhd.entity @snitch.param1(%clk_i: !llhd.sig<i1>, %rst_i: !llhd.sig<i1>, %hart_i
     llhd.drv %1252, %1258 after %1259 : !llhd.sig<i1>
     %1260 = llhd.const 31 : i32
     %1261 = llhd.const 0 : i32
-    %1262 = llhd.sig "sig159" %1261 : i32
+    %1262 = llhd.sig "1262" %1261 : i32
     %1263 = llhd.shr %shift_left_result, %1262, %1260 : (!llhd.sig<i32>, !llhd.sig<i32>, i32) -> !llhd.sig<i32>
     %1264 = llhd.extract_slice %1263, 0 : !llhd.sig<i32> -> !llhd.sig<i1>
     %shift_right_result32 = llhd.prb %shift_right_result : !llhd.sig<i32>
@@ -10833,7 +10838,7 @@ llhd.entity @snitch_tb() -> () {
     %0 = llhd.const 0 : i1
     %clk_i = llhd.sig "clk_i" %0 : i1
     %1 = llhd.const 0 : i1
-    %rst_i = llhd.sig"rst_i" %1 : i1
+    %rst_i = llhd.sig "rst_i" %1 : i1
     %2 = llhd.const 0 : i32
     %inst_addr_o = llhd.sig "inst_addr_o" %2 : i32
     %3 = llhd.const 0 : i32
@@ -10945,92 +10950,92 @@ llhd.entity @snitch_tb() -> () {
     llhd.drv %data_pvalid_i, %82 after %83 : !llhd.sig<i1>
     %clk_i1 = llhd.prb %clk_i : !llhd.sig<i1>
     %84 = llhd.const 0 : i1
-    %85 = llhd.sig "sig19" %84 : i1
+    %85 = llhd.sig "85" %84 : i1
     %86 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %85, %clk_i1 after %86 : !llhd.sig<i1>
     %rst_i1 = llhd.prb %rst_i : !llhd.sig<i1>
     %87 = llhd.const 0 : i1
-    %88 = llhd.sig "sig20" %87 : i1
+    %88 = llhd.sig "88" %87 : i1
     %89 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %88, %rst_i1 after %89 : !llhd.sig<i1>
     %90 = llhd.const 66 : i32
     %91 = llhd.const 0 : i32
-    %92 = llhd.sig "sig21" %91 : i32
+    %92 = llhd.sig "92" %91 : i32
     %93 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %92, %90 after %93 : !llhd.sig<i32>
     %inst_data_i1 = llhd.prb %inst_data_i : !llhd.sig<i32>
     %94 = llhd.const 0 : i32
-    %95 = llhd.sig "sig22" %94 : i32
+    %95 = llhd.sig "95" %94 : i32
     %96 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %95, %inst_data_i1 after %96 : !llhd.sig<i32>
     %inst_ready_i1 = llhd.prb %inst_ready_i : !llhd.sig<i1>
     %97 = llhd.const 0 : i1
-    %98 = llhd.sig "sig23" %97 : i1
+    %98 = llhd.sig "98" %97 : i1
     %99 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %98, %inst_ready_i1 after %99 : !llhd.sig<i1>
     %100 = llhd.const 0 : i32
-    %101 = llhd.sig "sig24" %100 : i32
+    %101 = llhd.sig "101" %100 : i32
     %102 = llhd.const 0 : i5
-    %103 = llhd.sig "sig25" %102 : i5
+    %103 = llhd.sig "103" %102 : i5
     %104 = llhd.const 0 : i32
-    %105 = llhd.sig "sig26" %104 : i32
+    %105 = llhd.sig "105" %104 : i32
     %106 = llhd.const 0 : i64
-    %107 = llhd.sig "sig27" %106 : i64
+    %107 = llhd.sig "107" %106 : i64
     %108 = llhd.const 0 : i64
-    %109 = llhd.sig "sig28" %108 : i64
+    %109 = llhd.sig "109" %108 : i64
     %110 = llhd.const 0 : i64
-    %111 = llhd.sig "sig29" %110 : i64
+    %111 = llhd.sig "111" %110 : i64
     %112 = llhd.const 0 : i1
-    %113 = llhd.sig "sig30" %112 : i1
+    %113 = llhd.sig "113" %112 : i1
     %114 = llhd.const 0 : i1
-    %115 = llhd.sig "sig31" %114 : i1
+    %115 = llhd.sig "115" %114 : i1
     %116 = llhd.const 0 : i64
-    %117 = llhd.sig "sig32" %116 : i64
+    %117 = llhd.sig "117" %116 : i64
     %118 = llhd.const 0 : i5
-    %119 = llhd.sig "sig33" %118 : i5
+    %119 = llhd.sig "119" %118 : i5
     %120 = llhd.const 0 : i1
-    %121 = llhd.sig "sig34" %120 : i1
+    %121 = llhd.sig "121" %120 : i1
     %122 = llhd.const 0 : i1
-    %123 = llhd.sig "sig35" %122 : i1
+    %123 = llhd.sig "123" %122 : i1
     %124 = llhd.const 0 : i1
-    %125 = llhd.sig "sig36" %124 : i1
+    %125 = llhd.sig "125" %124 : i1
     %data_qready_i1 = llhd.prb %data_qready_i : !llhd.sig<i1>
     %126 = llhd.const 0 : i1
-    %127 = llhd.sig "sig37" %126 : i1
+    %127 = llhd.sig "127" %126 : i1
     %128 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %127, %data_qready_i1 after %128 : !llhd.sig<i1>
     %data_pdata_i1 = llhd.prb %data_pdata_i : !llhd.sig<i64>
     %129 = llhd.const 0 : i64
-    %130 = llhd.sig "sig38" %129 : i64
+    %130 = llhd.sig "130" %129 : i64
     %131 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %130, %data_pdata_i1 after %131 : !llhd.sig<i64>
     %data_perror_i1 = llhd.prb %data_perror_i : !llhd.sig<i1>
     %132 = llhd.const 0 : i1
-    %133 = llhd.sig "sig39" %132 : i1
+    %133 = llhd.sig "133" %132 : i1
     %134 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %133, %data_perror_i1 after %134 : !llhd.sig<i1>
     %data_pvalid_i1 = llhd.prb %data_pvalid_i : !llhd.sig<i1>
     %135 = llhd.const 0 : i1
-    %136 = llhd.sig "sig40" %135 : i1
+    %136 = llhd.sig "136" %135 : i1
     %137 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %136, %data_pvalid_i1 after %137 : !llhd.sig<i1>
     %138 = llhd.const 0 : i1
-    %139 = llhd.sig "sig41" %138 : i1
+    %139 = llhd.sig "139" %138 : i1
     %140 = llhd.const 0 : i3
-    %141 = llhd.sig "sig42" %140 : i3
+    %141 = llhd.sig "141" %140 : i3
     %142 = llhd.const 0 : i1
     %143 = llhd.const 0 : i1
     %144 = llhd.const 0 : i1
     %145 = llhd.const 0 : i1
     %146 = llhd.const 0 : i1
     %147 = llhd.tuple %142, %143, %144, %145, %146 : tuple<i1, i1, i1, i1, i1>
-    %148 = llhd.sig "sig43" %147 : tuple<i1, i1, i1, i1, i1>
+    %148 = llhd.sig "148" %147 : tuple<i1, i1, i1, i1, i1>
     %149 = llhd.const 0 : i1
     %150 = llhd.const 0 : i1
     %151 = llhd.const 0 : i1
     %152 = llhd.const 0 : i1
     %153 = llhd.tuple %149, %150, %151, %152 : tuple<i1, i1, i1, i1>
-    %154 = llhd.sig "sig44" %153 : tuple<i1, i1, i1, i1>
+    %154 = llhd.sig "154" %153 : tuple<i1, i1, i1, i1>
     llhd.inst "inst" @snitch.param1(%85, %88, %92, %95, %98, %115, %117, %119, %121, %123, %127, %130, %133, %136, %139, %148) -> (%inst_addr_o, %inst_valid_o, %101, %103, %105, %107, %109, %111, %113, %125, %data_qaddr_o, %data_qwrite_o, %data_qamo_o, %data_qdata_o, %data_qstrb_o, %data_qvalid_o, %data_pready_o, %141, %154) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i32>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i64>, !llhd.sig<i5>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i64>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<tuple<i1, i1, i1, i1, i1>>) -> (!llhd.sig<i32>, !llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i5>, !llhd.sig<i32>, !llhd.sig<i64>, !llhd.sig<i64>, !llhd.sig<i64>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i1>, !llhd.sig<i4>, !llhd.sig<i64>, !llhd.sig<i8>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i3>, !llhd.sig<tuple<i1, i1, i1, i1>>)
     llhd.inst "inst1" @snitch_tb.always.272.0(%clk_i, %data_qvalid_o, %data_qready_i, %data_pvalid_i, %data_pready_o, %data_resp_pending) -> () : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i32>) -> ()
     llhd.inst "inst2" @snitch_tb.initial.277.0() -> (%clk_i, %rst_i) : () -> (!llhd.sig<i1>, !llhd.sig<i1>)

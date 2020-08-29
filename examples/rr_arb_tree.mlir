@@ -1,4 +1,6 @@
-llhd.proc @rr_arb_tree.param1.always_ff.639.1(%rr_d: !llhd.sig<i3>, %clk_i: !llhd.sig<i1>, %rst_ni: !llhd.sig<i1>, %flush_i: !llhd.sig<i1>) -> (%rr_q: !llhd.sig<i3> ) {
+llhd.proc @rr_arb_tree.param1.always_ff.474.1(%clk_i: !llhd.sig<i1>, %rst_ni: !llhd.sig<i1>, %flush_i: !llhd.sig<i1>, %rr_d: !llhd.sig<i3>) -> (%rr_q: !llhd.sig<i3> ) {
+    br ^0
+^0:
     br ^init
 ^init:
     %clk_i1 = llhd.prb %clk_i : !llhd.sig<i1>
@@ -6,40 +8,50 @@ llhd.proc @rr_arb_tree.param1.always_ff.639.1(%rr_d: !llhd.sig<i3>, %clk_i: !llh
     llhd.wait (%clk_i, %rst_ni : !llhd.sig<i1>, !llhd.sig<i1>), ^check
 ^check:
     %clk_i2 = llhd.prb %clk_i : !llhd.sig<i1>
-    %0 = llhd.const 0 : i1
-    %1 = cmpi "eq", %clk_i1, %0 : i1
-    %2 = cmpi "ne", %clk_i2, %0 : i1
-    %posedge = llhd.and %1, %2 : i1
+    %1 = llhd.const 0 : i1
+    %2 = llhd.eq %clk_i1, %1 : i1
+    %3 = llhd.neq %clk_i2, %1 : i1
+    %posedge = llhd.and %2, %3 : i1
     %rst_ni2 = llhd.prb %rst_ni : !llhd.sig<i1>
-    %3 = cmpi "ne", %rst_ni1, %0 : i1
-    %4 = cmpi "eq", %rst_ni2, %0 : i1
-    %negedge = llhd.and %4, %3 : i1
+    %4 = llhd.const 0 : i1
+    %5 = llhd.neq %rst_ni1, %4 : i1
+    %6 = llhd.eq %rst_ni2, %4 : i1
+    %negedge = llhd.and %6, %5 : i1
     %event_or = llhd.or %posedge, %negedge : i1
     cond_br %event_or, ^event, ^init
 ^event:
-    %5 = cmpi "ne", %rst_ni2, %0 : i1
-    %6 = llhd.not %5 : i1
-    %7 = cmpi "ne", %6, %0 : i1
-    %8 = llhd.const 0 : i3
-    %9 = llhd.const #llhd.time<0s, 1d, 0e> : !llhd.time
+    %rst_ni3 = llhd.prb %rst_ni : !llhd.sig<i1>
+    %7 = llhd.not %rst_ni3 : i1
     cond_br %7, ^if_true, ^if_false
 ^if_false:
     %flush_i1 = llhd.prb %flush_i : !llhd.sig<i1>
-    %10 = cmpi "ne", %flush_i1, %0 : i1
-    cond_br %10, ^if_true1, ^if_false1
+    cond_br %flush_i1, ^if_true1, ^if_false1
 ^if_true:
-    llhd.drv %rr_q, %8 after %9 : !llhd.sig<i3>
-    br ^init
+    %8 = llhd.const 0 : i3
+    %9 = llhd.const 0 : i1
+    %10 = llhd.insert_slice %8, %9, 0 : i3, i1
+    %11 = llhd.const #llhd.time<0s, 1d, 0e> : !llhd.time
+    llhd.drv %rr_q, %10 after %11 : !llhd.sig<i3>
+    br ^if_exit
+^if_exit:
+    br ^0
 ^if_false1:
     %rr_d1 = llhd.prb %rr_d : !llhd.sig<i3>
-    llhd.drv %rr_q, %rr_d1 after %9 : !llhd.sig<i3>
-    br ^init
+    %12 = llhd.const #llhd.time<0s, 1d, 0e> : !llhd.time
+    llhd.drv %rr_q, %rr_d1 after %12 : !llhd.sig<i3>
+    br ^if_exit1
 ^if_true1:
-    llhd.drv %rr_q, %8 after %9 : !llhd.sig<i3>
-    br ^init
+    %13 = llhd.const 0 : i3
+    %14 = llhd.const 0 : i1
+    %15 = llhd.insert_slice %13, %14, 0 : i3, i1
+    %16 = llhd.const #llhd.time<0s, 1d, 0e> : !llhd.time
+    llhd.drv %rr_q, %15 after %16 : !llhd.sig<i3>
+    br ^if_exit1
+^if_exit1:
+    br ^if_exit
 }
 
-llhd.proc @rr_arb_tree.param1.initial.1529.1() -> () {
+llhd.proc @rr_arb_tree.param1.initial.396.1() -> () {
     br ^0
 ^0:
     llhd.halt
@@ -47,526 +59,1193 @@ llhd.proc @rr_arb_tree.param1.initial.1529.1() -> () {
 
 llhd.entity @rr_arb_tree.param1(%clk_i: !llhd.sig<i1>, %rst_ni: !llhd.sig<i1>, %flush_i: !llhd.sig<i1>, %rr_i: !llhd.sig<i3>, %req_i: !llhd.sig<i8>, %data_i: !llhd.sig<!llhd.array<8xi32>>, %gnt_i: !llhd.sig<i1>) -> (%gnt_o: !llhd.sig<i8> , %req_o: !llhd.sig<i1> , %data_o: !llhd.sig<i32> , %idx_o: !llhd.sig<i3> ) {
     %0 = llhd.const 0 : i3
-    %1 = llhd.array %0, %0, %0, %0, %0, %0, %0 : !llhd.array<7xi3>
-    %index_nodes = llhd.sig "index_nodes" %1 : !llhd.array<7xi3>
-    %2 = llhd.const 0 : i32
-    %3 = llhd.array %2, %2, %2, %2, %2, %2, %2 : !llhd.array<7xi32>
-    %data_nodes = llhd.sig "data_nodes" %3 : !llhd.array<7xi32>
-    %4 = llhd.const 0 : i7
-    %gnt_nodes = llhd.sig "gnt_nodes" %4 : i7
-    %req_nodes = llhd.sig "req_nodes" %4 : i7
-    %rr_q = llhd.sig "rr_q" %0 : i3
-    %5 = llhd.const 0 : i8
-    %req_d = llhd.sig "req_d" %5 : i8
+    %1 = llhd.const 0 : i3
+    %2 = llhd.const 0 : i3
+    %3 = llhd.const 0 : i3
+    %4 = llhd.const 0 : i3
+    %5 = llhd.const 0 : i3
+    %6 = llhd.const 0 : i3
+    %7 = llhd.array %0, %1, %2, %3, %4, %5, %6 : !llhd.array<7xi3>
+    %index_nodes = llhd.sig "index_nodes" %7 : !llhd.array<7xi3>
+    %8 = llhd.const 0 : i32
+    %9 = llhd.const 0 : i32
+    %10 = llhd.const 0 : i32
+    %11 = llhd.const 0 : i32
+    %12 = llhd.const 0 : i32
+    %13 = llhd.const 0 : i32
+    %14 = llhd.const 0 : i32
+    %15 = llhd.array %8, %9, %10, %11, %12, %13, %14 : !llhd.array<7xi32>
+    %data_nodes = llhd.sig "data_nodes" %15 : !llhd.array<7xi32>
+    %16 = llhd.const 0 : i7
+    %gnt_nodes = llhd.sig "gnt_nodes" %16 : i7
+    %17 = llhd.const 0 : i7
+    %req_nodes = llhd.sig "req_nodes" %17 : i7
+    %18 = llhd.const 0 : i3
+    %rr_q = llhd.sig "rr_q" %18 : i3
+    %19 = llhd.const 0 : i8
+    %req_d = llhd.sig "req_d" %19 : i8
     %req_nodes1 = llhd.prb %req_nodes : !llhd.sig<i7>
-    %6 = llhd.extract_slice %req_nodes1, 0 : i7 -> i1
-    %7 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
-    llhd.drv %req_o, %6 after %7 : !llhd.sig<i1>
+    %20 = llhd.const 0 : i32
+    %21 = llhd.const 0 : i7
+    %22 = llhd.shr %req_nodes1, %21, %20 : (i7, i7, i32) -> i7
+    %23 = llhd.extract_slice %22, 0 : i7 -> i1
+    %24 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %req_o, %23 after %24 : !llhd.sig<i1>
     %data_nodes1 = llhd.prb %data_nodes : !llhd.sig<!llhd.array<7xi32>>
-    %8 = llhd.extract_element %data_nodes1, 0 : !llhd.array<7xi32> -> i32
-    llhd.drv %data_o, %8 after %7 : !llhd.sig<i32>
+    %25 = llhd.const 0 : i32
+    %26 = llhd.const 0 : i32
+    %27 = llhd.array_uniform %26 : !llhd.array<7xi32>
+    %28 = llhd.shr %data_nodes1, %27, %25 : (!llhd.array<7xi32>, !llhd.array<7xi32>, i32) -> !llhd.array<7xi32>
+    %29 = llhd.extract_element %28, 0 : !llhd.array<7xi32> -> i32
+    %30 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %data_o, %29 after %30 : !llhd.sig<i32>
     %index_nodes1 = llhd.prb %index_nodes : !llhd.sig<!llhd.array<7xi3>>
-    %9 = llhd.extract_element %index_nodes1, 0 : !llhd.array<7xi3> -> i3
-    llhd.drv %idx_o, %9 after %7 : !llhd.sig<i3>
-    %10 = llhd.extract_slice %gnt_nodes, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %31 = llhd.const 0 : i32
+    %32 = llhd.const 0 : i3
+    %33 = llhd.array_uniform %32 : !llhd.array<7xi3>
+    %34 = llhd.shr %index_nodes1, %33, %31 : (!llhd.array<7xi3>, !llhd.array<7xi3>, i32) -> !llhd.array<7xi3>
+    %35 = llhd.extract_element %34, 0 : !llhd.array<7xi3> -> i3
+    %36 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %idx_o, %35 after %36 : !llhd.sig<i3>
+    %37 = llhd.const 0 : i32
+    %38 = llhd.const 0 : i7
+    %39 = llhd.sig "39" %38 : i7
+    %40 = llhd.shr %gnt_nodes, %39, %37 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %41 = llhd.extract_slice %40, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
     %gnt_i1 = llhd.prb %gnt_i : !llhd.sig<i1>
-    llhd.drv %10, %gnt_i1 after %7 : !llhd.sig<i1>
-    %rr_d = llhd.sig "rr_d" %0 : i3
-    %11 = llhd.const 0 : i1
-    %12 = cmpi "ne", %gnt_i1, %11 : i1
+    %42 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %41, %gnt_i1 after %42 : !llhd.sig<i1>
+    %43 = llhd.const 0 : i3
+    %rr_d = llhd.sig "rr_d" %43 : i3
+    %gnt_i2 = llhd.prb %gnt_i : !llhd.sig<i1>
     %req_o1 = llhd.prb %req_o : !llhd.sig<i1>
-    %13 = cmpi "ne", %req_o1, %11 : i1
-    %14 = llhd.and %12, %13 : i1
-    %15 = cmpi "ne", %14, %11 : i1
+    %44 = llhd.and %gnt_i2, %req_o1 : i1
+    %45 = llhd.const 0 : i32
     %rr_q1 = llhd.prb %rr_q : !llhd.sig<i3>
-    %16 = llhd.insert_slice %2, %rr_q1, 0 : i32, i3
-    %17 = llhd.const 7 : i32
-    %18 = cmpi "eq", %16, %17 : i32
-    %19 = cmpi "ne", %18, %11 : i1
-    %20 = llhd.const 1 : i3
-    %21 = addi %rr_q1, %20 : i3
-    %22 = llhd.array %21, %0 : !llhd.array<2xi3>
-    %23 = llhd.dyn_extract_element %22, %19 : (!llhd.array<2xi3>, i1) -> i3
-    %24 = llhd.array %rr_q1, %23 : !llhd.array<2xi3>
-    %25 = llhd.dyn_extract_element %24, %15 : (!llhd.array<2xi3>, i1) -> i3
-    llhd.drv %rr_d, %25 after %7 : !llhd.sig<i3>
+    %46 = llhd.insert_slice %45, %rr_q1, 0 : i32, i3
+    %47 = llhd.const 8 : i32
+    %48 = llhd.const 1 : i32
+    %49 = subi %47, %48 : i32
+    %50 = llhd.eq %46, %49 : i32
+    %51 = llhd.const 0 : i3
+    %rr_q2 = llhd.prb %rr_q : !llhd.sig<i3>
+    %52 = llhd.const 0 : i3
+    %53 = llhd.const 1 : i1
+    %54 = llhd.insert_slice %52, %53, 0 : i3, i1
+    %55 = addi %rr_q2, %54 : i3
+    %56 = llhd.array %55, %51 : !llhd.array<2xi3>
+    %57 = llhd.dyn_extract_element %56, %50 : (!llhd.array<2xi3>, i1) -> i3
+    %rr_q3 = llhd.prb %rr_q : !llhd.sig<i3>
+    %58 = llhd.array %rr_q3, %57 : !llhd.array<2xi3>
+    %59 = llhd.dyn_extract_element %58, %44 : (!llhd.array<2xi3>, i1) -> i3
+    %60 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %rr_d, %59 after %60 : !llhd.sig<i3>
     %req_i1 = llhd.prb %req_i : !llhd.sig<i8>
-    llhd.drv %req_d, %req_i1 after %7 : !llhd.sig<i8>
-    llhd.inst "inst" @rr_arb_tree.param1.always_ff.639.1(%rr_d, %clk_i, %rst_ni, %flush_i) -> (%rr_q) : (!llhd.sig<i3>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>) -> (!llhd.sig<i3>)
-    %sel = llhd.sig "sel" %11 : i1
-    %26 = llhd.extract_slice %req_nodes, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
-    %27 = llhd.extract_slice %req_nodes1, 1 : i7 -> i6
-    %28 = llhd.insert_slice %4, %27, 0 : i7, i6
-    %29 = llhd.extract_slice %28, 0 : i7 -> i1
-    %30 = llhd.extract_slice %req_nodes1, 2 : i7 -> i5
-    %31 = llhd.insert_slice %4, %30, 0 : i7, i5
-    %32 = llhd.extract_slice %31, 0 : i7 -> i1
-    %33 = llhd.or %29, %32 : i1
-    llhd.drv %26, %33 after %7 : !llhd.sig<i1>
-    %34 = llhd.not %29 : i1
-    %35 = llhd.extract_slice %rr_q1, 2 : i3 -> i1
-    %36 = llhd.insert_slice %0, %35, 0 : i3, i1
-    %37 = llhd.extract_slice %36, 0 : i3 -> i1
-    %38 = llhd.and %32, %37 : i1
-    %39 = llhd.or %34, %38 : i1
-    llhd.drv %sel, %39 after %7 : !llhd.sig<i1>
-    %40 = llhd.extract_element %index_nodes, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
+    %61 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %req_d, %req_i1 after %61 : !llhd.sig<i8>
+    llhd.inst "inst" @rr_arb_tree.param1.always_ff.474.1(%clk_i, %rst_ni, %flush_i, %rr_d) -> (%rr_q) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i3>) -> (!llhd.sig<i3>)
+    %62 = llhd.const 0 : i1
+    %sel = llhd.sig "sel" %62 : i1
+    %63 = llhd.const 0 : i32
+    %64 = llhd.const 0 : i7
+    %65 = llhd.sig "65" %64 : i7
+    %66 = llhd.shr %req_nodes, %65, %63 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %67 = llhd.extract_slice %66, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %req_nodes2 = llhd.prb %req_nodes : !llhd.sig<i7>
+    %68 = llhd.const 1 : i32
+    %69 = llhd.const 0 : i7
+    %70 = llhd.shr %req_nodes2, %69, %68 : (i7, i7, i32) -> i7
+    %71 = llhd.extract_slice %70, 0 : i7 -> i1
+    %req_nodes3 = llhd.prb %req_nodes : !llhd.sig<i7>
+    %72 = llhd.const 1 : i32
+    %73 = llhd.const 1 : i32
+    %74 = addi %72, %73 : i32
+    %75 = llhd.const 0 : i7
+    %76 = llhd.shr %req_nodes3, %75, %74 : (i7, i7, i32) -> i7
+    %77 = llhd.extract_slice %76, 0 : i7 -> i1
+    %78 = llhd.or %71, %77 : i1
+    %79 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %67, %78 after %79 : !llhd.sig<i1>
+    %req_nodes4 = llhd.prb %req_nodes : !llhd.sig<i7>
+    %80 = llhd.const 1 : i32
+    %81 = llhd.const 0 : i7
+    %82 = llhd.shr %req_nodes4, %81, %80 : (i7, i7, i32) -> i7
+    %83 = llhd.extract_slice %82, 0 : i7 -> i1
+    %84 = llhd.not %83 : i1
+    %req_nodes5 = llhd.prb %req_nodes : !llhd.sig<i7>
+    %85 = llhd.const 1 : i32
+    %86 = llhd.const 1 : i32
+    %87 = addi %85, %86 : i32
+    %88 = llhd.const 0 : i7
+    %89 = llhd.shr %req_nodes5, %88, %87 : (i7, i7, i32) -> i7
+    %90 = llhd.extract_slice %89, 0 : i7 -> i1
+    %rr_q4 = llhd.prb %rr_q : !llhd.sig<i3>
+    %91 = llhd.const 3 : i32
+    %92 = llhd.const 1 : i32
+    %93 = subi %91, %92 : i32
+    %94 = llhd.const 0 : i32
+    %95 = subi %93, %94 : i32
+    %96 = llhd.const 0 : i3
+    %97 = llhd.shr %rr_q4, %96, %95 : (i3, i3, i32) -> i3
+    %98 = llhd.extract_slice %97, 0 : i3 -> i1
+    %99 = llhd.and %90, %98 : i1
+    %100 = llhd.or %84, %99 : i1
+    %101 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %sel, %100 after %101 : !llhd.sig<i1>
+    %102 = llhd.const 0 : i32
+    %103 = llhd.const 0 : i3
+    %104 = llhd.array_uniform %103 : !llhd.array<7xi3>
+    %105 = llhd.sig "105" %104 : !llhd.array<7xi3>
+    %106 = llhd.shr %index_nodes, %105, %102 : (!llhd.sig<!llhd.array<7xi3>>, !llhd.sig<!llhd.array<7xi3>>, i32) -> !llhd.sig<!llhd.array<7xi3>>
+    %107 = llhd.extract_element %106, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
     %sel1 = llhd.prb %sel : !llhd.sig<i1>
-    %41 = cmpi "ne", %sel1, %11 : i1
-    %42 = llhd.array_uniform %0 : !llhd.array<7xi3>
-    %43 = llhd.extract_slice %42, 0 : !llhd.array<7xi3> -> !llhd.array<2xi3>
-    %44 = llhd.extract_slice %index_nodes1, 2 : !llhd.array<7xi3> -> !llhd.array<5xi3>
-    %45 = llhd.insert_slice %42, %43, 5 : !llhd.array<7xi3>, !llhd.array<2xi3>
-    %46 = llhd.insert_slice %45, %44, 0 : !llhd.array<7xi3>, !llhd.array<5xi3>
-    %47 = llhd.extract_element %46, 0 : !llhd.array<7xi3> -> i3
-    %48 = llhd.extract_slice %47, 0 : i3 -> i2
-    %49 = llhd.insert_slice %0, %48, 0 : i3, i2
-    %50 = llhd.const 1 : i1
-    %51 = llhd.insert_slice %49, %50, 2 : i3, i1
-    %52 = llhd.extract_slice %42, 0 : !llhd.array<7xi3> -> !llhd.array<1xi3>
-    %53 = llhd.extract_slice %index_nodes1, 1 : !llhd.array<7xi3> -> !llhd.array<6xi3>
-    %54 = llhd.insert_slice %42, %52, 6 : !llhd.array<7xi3>, !llhd.array<1xi3>
-    %55 = llhd.insert_slice %54, %53, 0 : !llhd.array<7xi3>, !llhd.array<6xi3>
-    %56 = llhd.extract_element %55, 0 : !llhd.array<7xi3> -> i3
-    %57 = llhd.extract_slice %56, 0 : i3 -> i2
-    %58 = llhd.insert_slice %0, %57, 0 : i3, i2
-    %59 = llhd.insert_slice %58, %11, 2 : i3, i1
-    %60 = llhd.array %59, %51 : !llhd.array<2xi3>
-    %61 = llhd.dyn_extract_element %60, %41 : (!llhd.array<2xi3>, i1) -> i3
-    llhd.drv %40, %61 after %7 : !llhd.sig<i3>
-    %62 = llhd.extract_element %data_nodes, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
-    %63 = llhd.array_uniform %2 : !llhd.array<7xi32>
-    %64 = llhd.extract_slice %63, 0 : !llhd.array<7xi32> -> !llhd.array<2xi32>
-    %65 = llhd.extract_slice %data_nodes1, 2 : !llhd.array<7xi32> -> !llhd.array<5xi32>
-    %66 = llhd.insert_slice %63, %64, 5 : !llhd.array<7xi32>, !llhd.array<2xi32>
-    %67 = llhd.insert_slice %66, %65, 0 : !llhd.array<7xi32>, !llhd.array<5xi32>
-    %68 = llhd.extract_element %67, 0 : !llhd.array<7xi32> -> i32
-    %69 = llhd.extract_slice %63, 0 : !llhd.array<7xi32> -> !llhd.array<1xi32>
-    %70 = llhd.extract_slice %data_nodes1, 1 : !llhd.array<7xi32> -> !llhd.array<6xi32>
-    %71 = llhd.insert_slice %63, %69, 6 : !llhd.array<7xi32>, !llhd.array<1xi32>
-    %72 = llhd.insert_slice %71, %70, 0 : !llhd.array<7xi32>, !llhd.array<6xi32>
-    %73 = llhd.extract_element %72, 0 : !llhd.array<7xi32> -> i32
-    %74 = llhd.array %73, %68 : !llhd.array<2xi32>
-    %75 = llhd.dyn_extract_element %74, %41 : (!llhd.array<2xi32>, i1) -> i32
-    llhd.drv %62, %75 after %7 : !llhd.sig<i32>
-    %76 = llhd.const 1 : i32
-    %77 = llhd.sig "sig8" %4 : i7
-    %78 = llhd.shr %gnt_nodes, %77, %76 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
-    %79 = llhd.extract_slice %78, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %108 = llhd.const 0 : i3
+    %index_nodes2 = llhd.prb %index_nodes : !llhd.sig<!llhd.array<7xi3>>
+    %109 = llhd.const 1 : i32
+    %110 = llhd.const 1 : i32
+    %111 = addi %109, %110 : i32
+    %112 = llhd.const 0 : i3
+    %113 = llhd.array_uniform %112 : !llhd.array<7xi3>
+    %114 = llhd.shr %index_nodes2, %113, %111 : (!llhd.array<7xi3>, !llhd.array<7xi3>, i32) -> !llhd.array<7xi3>
+    %115 = llhd.extract_element %114, 0 : !llhd.array<7xi3> -> i3
+    %116 = llhd.const 0 : i1
+    %117 = llhd.const 0 : i3
+    %118 = llhd.shr %115, %117, %116 : (i3, i3, i1) -> i3
+    %119 = llhd.extract_slice %118, 0 : i3 -> i2
+    %120 = llhd.insert_slice %108, %119, 0 : i3, i2
+    %121 = llhd.const 1 : i1
+    %122 = llhd.insert_slice %120, %121, 2 : i3, i1
+    %123 = llhd.const 0 : i3
+    %index_nodes3 = llhd.prb %index_nodes : !llhd.sig<!llhd.array<7xi3>>
+    %124 = llhd.const 1 : i32
+    %125 = llhd.const 0 : i3
+    %126 = llhd.array_uniform %125 : !llhd.array<7xi3>
+    %127 = llhd.shr %index_nodes3, %126, %124 : (!llhd.array<7xi3>, !llhd.array<7xi3>, i32) -> !llhd.array<7xi3>
+    %128 = llhd.extract_element %127, 0 : !llhd.array<7xi3> -> i3
+    %129 = llhd.const 0 : i1
+    %130 = llhd.const 0 : i3
+    %131 = llhd.shr %128, %130, %129 : (i3, i3, i1) -> i3
+    %132 = llhd.extract_slice %131, 0 : i3 -> i2
+    %133 = llhd.insert_slice %123, %132, 0 : i3, i2
+    %134 = llhd.const 0 : i1
+    %135 = llhd.insert_slice %133, %134, 2 : i3, i1
+    %136 = llhd.array %135, %122 : !llhd.array<2xi3>
+    %137 = llhd.dyn_extract_element %136, %sel1 : (!llhd.array<2xi3>, i1) -> i3
+    %138 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %107, %137 after %138 : !llhd.sig<i3>
+    %139 = llhd.const 0 : i32
+    %140 = llhd.const 0 : i32
+    %141 = llhd.array_uniform %140 : !llhd.array<7xi32>
+    %142 = llhd.sig "142" %141 : !llhd.array<7xi32>
+    %143 = llhd.shr %data_nodes, %142, %139 : (!llhd.sig<!llhd.array<7xi32>>, !llhd.sig<!llhd.array<7xi32>>, i32) -> !llhd.sig<!llhd.array<7xi32>>
+    %144 = llhd.extract_element %143, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
+    %sel2 = llhd.prb %sel : !llhd.sig<i1>
+    %data_nodes2 = llhd.prb %data_nodes : !llhd.sig<!llhd.array<7xi32>>
+    %145 = llhd.const 1 : i32
+    %146 = llhd.const 1 : i32
+    %147 = addi %145, %146 : i32
+    %148 = llhd.const 0 : i32
+    %149 = llhd.array_uniform %148 : !llhd.array<7xi32>
+    %150 = llhd.shr %data_nodes2, %149, %147 : (!llhd.array<7xi32>, !llhd.array<7xi32>, i32) -> !llhd.array<7xi32>
+    %151 = llhd.extract_element %150, 0 : !llhd.array<7xi32> -> i32
+    %data_nodes3 = llhd.prb %data_nodes : !llhd.sig<!llhd.array<7xi32>>
+    %152 = llhd.const 1 : i32
+    %153 = llhd.const 0 : i32
+    %154 = llhd.array_uniform %153 : !llhd.array<7xi32>
+    %155 = llhd.shr %data_nodes3, %154, %152 : (!llhd.array<7xi32>, !llhd.array<7xi32>, i32) -> !llhd.array<7xi32>
+    %156 = llhd.extract_element %155, 0 : !llhd.array<7xi32> -> i32
+    %157 = llhd.array %156, %151 : !llhd.array<2xi32>
+    %158 = llhd.dyn_extract_element %157, %sel2 : (!llhd.array<2xi32>, i1) -> i32
+    %159 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %144, %158 after %159 : !llhd.sig<i32>
+    %160 = llhd.const 1 : i32
+    %161 = llhd.const 0 : i7
+    %162 = llhd.sig "162" %161 : i7
+    %163 = llhd.shr %gnt_nodes, %162, %160 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %164 = llhd.extract_slice %163, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
     %gnt_nodes1 = llhd.prb %gnt_nodes : !llhd.sig<i7>
-    %80 = llhd.extract_slice %gnt_nodes1, 0 : i7 -> i1
-    %81 = llhd.not %sel1 : i1
-    %82 = llhd.and %80, %81 : i1
-    llhd.drv %79, %82 after %7 : !llhd.sig<i1>
-    %83 = llhd.const 2 : i32
-    %84 = llhd.sig "sig9" %4 : i7
-    %85 = llhd.shr %gnt_nodes, %84, %83 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
-    %86 = llhd.extract_slice %85, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
-    %87 = llhd.and %80, %sel1 : i1
-    llhd.drv %86, %87 after %7 : !llhd.sig<i1>
-    %sel2 = llhd.sig "sel2" %11 : i1
-    %88 = llhd.sig "sig11" %4 : i7
-    %89 = llhd.shr %req_nodes, %88, %76 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
-    %90 = llhd.extract_slice %89, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
-    %91 = llhd.extract_slice %req_nodes1, 3 : i7 -> i4
-    %92 = llhd.insert_slice %4, %91, 0 : i7, i4
-    %93 = llhd.extract_slice %92, 0 : i7 -> i1
-    %94 = llhd.extract_slice %req_nodes1, 4 : i7 -> i3
-    %95 = llhd.insert_slice %4, %94, 0 : i7, i3
-    %96 = llhd.extract_slice %95, 0 : i7 -> i1
-    %97 = llhd.or %93, %96 : i1
-    llhd.drv %90, %97 after %7 : !llhd.sig<i1>
-    %98 = llhd.not %93 : i1
-    %99 = llhd.extract_slice %rr_q1, 1 : i3 -> i2
-    %100 = llhd.insert_slice %0, %99, 0 : i3, i2
-    %101 = llhd.extract_slice %100, 0 : i3 -> i1
-    %102 = llhd.and %96, %101 : i1
-    %103 = llhd.or %98, %102 : i1
-    llhd.drv %sel2, %103 after %7 : !llhd.sig<i1>
-    %104 = llhd.sig "sig12" %42 : !llhd.array<7xi3>
-    %105 = llhd.shr %index_nodes, %104, %76 : (!llhd.sig<!llhd.array<7xi3>>, !llhd.sig<!llhd.array<7xi3>>, i32) -> !llhd.sig<!llhd.array<7xi3>>
-    %106 = llhd.extract_element %105, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
-    %sel3 = llhd.prb %sel2 : !llhd.sig<i1>
-    %107 = cmpi "ne", %sel3, %11 : i1
-    %108 = llhd.const 0 : i2
-    %109 = llhd.extract_slice %42, 0 : !llhd.array<7xi3> -> !llhd.array<4xi3>
-    %110 = llhd.extract_slice %index_nodes1, 4 : !llhd.array<7xi3> -> !llhd.array<3xi3>
-    %111 = llhd.insert_slice %42, %109, 3 : !llhd.array<7xi3>, !llhd.array<4xi3>
-    %112 = llhd.insert_slice %111, %110, 0 : !llhd.array<7xi3>, !llhd.array<3xi3>
-    %113 = llhd.extract_element %112, 0 : !llhd.array<7xi3> -> i3
-    %114 = llhd.extract_slice %113, 0 : i3 -> i1
-    %115 = llhd.insert_slice %108, %114, 0 : i2, i1
-    %116 = llhd.insert_slice %115, %50, 1 : i2, i1
-    %117 = llhd.insert_slice %0, %116, 0 : i3, i2
-    %118 = llhd.extract_slice %42, 0 : !llhd.array<7xi3> -> !llhd.array<3xi3>
-    %119 = llhd.extract_slice %index_nodes1, 3 : !llhd.array<7xi3> -> !llhd.array<4xi3>
-    %120 = llhd.insert_slice %42, %118, 4 : !llhd.array<7xi3>, !llhd.array<3xi3>
-    %121 = llhd.insert_slice %120, %119, 0 : !llhd.array<7xi3>, !llhd.array<4xi3>
-    %122 = llhd.extract_element %121, 0 : !llhd.array<7xi3> -> i3
-    %123 = llhd.extract_slice %122, 0 : i3 -> i1
-    %124 = llhd.insert_slice %108, %123, 0 : i2, i1
-    %125 = llhd.insert_slice %124, %11, 1 : i2, i1
-    %126 = llhd.insert_slice %0, %125, 0 : i3, i2
-    %127 = llhd.array %126, %117 : !llhd.array<2xi3>
-    %128 = llhd.dyn_extract_element %127, %107 : (!llhd.array<2xi3>, i1) -> i3
-    llhd.drv %106, %128 after %7 : !llhd.sig<i3>
-    %129 = llhd.sig "sig13" %63 : !llhd.array<7xi32>
-    %130 = llhd.shr %data_nodes, %129, %76 : (!llhd.sig<!llhd.array<7xi32>>, !llhd.sig<!llhd.array<7xi32>>, i32) -> !llhd.sig<!llhd.array<7xi32>>
-    %131 = llhd.extract_element %130, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
-    %132 = llhd.extract_slice %63, 0 : !llhd.array<7xi32> -> !llhd.array<4xi32>
-    %133 = llhd.extract_slice %data_nodes1, 4 : !llhd.array<7xi32> -> !llhd.array<3xi32>
-    %134 = llhd.insert_slice %63, %132, 3 : !llhd.array<7xi32>, !llhd.array<4xi32>
-    %135 = llhd.insert_slice %134, %133, 0 : !llhd.array<7xi32>, !llhd.array<3xi32>
-    %136 = llhd.extract_element %135, 0 : !llhd.array<7xi32> -> i32
-    %137 = llhd.extract_slice %63, 0 : !llhd.array<7xi32> -> !llhd.array<3xi32>
-    %138 = llhd.extract_slice %data_nodes1, 3 : !llhd.array<7xi32> -> !llhd.array<4xi32>
-    %139 = llhd.insert_slice %63, %137, 4 : !llhd.array<7xi32>, !llhd.array<3xi32>
-    %140 = llhd.insert_slice %139, %138, 0 : !llhd.array<7xi32>, !llhd.array<4xi32>
-    %141 = llhd.extract_element %140, 0 : !llhd.array<7xi32> -> i32
-    %142 = llhd.array %141, %136 : !llhd.array<2xi32>
-    %143 = llhd.dyn_extract_element %142, %107 : (!llhd.array<2xi32>, i1) -> i32
-    llhd.drv %131, %143 after %7 : !llhd.sig<i32>
-    %144 = llhd.const 3 : i32
-    %145 = llhd.sig "sig14" %4 : i7
-    %146 = llhd.shr %gnt_nodes, %145, %144 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
-    %147 = llhd.extract_slice %146, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
-    %148 = llhd.extract_slice %gnt_nodes1, 1 : i7 -> i6
-    %149 = llhd.insert_slice %4, %148, 0 : i7, i6
-    %150 = llhd.extract_slice %149, 0 : i7 -> i1
-    %151 = llhd.not %sel3 : i1
-    %152 = llhd.and %150, %151 : i1
-    llhd.drv %147, %152 after %7 : !llhd.sig<i1>
-    %153 = llhd.const 4 : i32
-    %154 = llhd.sig "sig15" %4 : i7
-    %155 = llhd.shr %gnt_nodes, %154, %153 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
-    %156 = llhd.extract_slice %155, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
-    %157 = llhd.and %150, %sel3 : i1
-    llhd.drv %156, %157 after %7 : !llhd.sig<i1>
-    %sel4 = llhd.sig "sel4" %11 : i1
-    %158 = llhd.sig "sig17" %4 : i7
-    %159 = llhd.shr %req_nodes, %158, %83 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
-    %160 = llhd.extract_slice %159, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
-    %161 = llhd.extract_slice %req_nodes1, 5 : i7 -> i2
-    %162 = llhd.insert_slice %4, %161, 0 : i7, i2
-    %163 = llhd.extract_slice %162, 0 : i7 -> i1
-    %164 = llhd.extract_slice %req_nodes1, 6 : i7 -> i1
-    %165 = llhd.insert_slice %4, %164, 0 : i7, i1
-    %166 = llhd.extract_slice %165, 0 : i7 -> i1
-    %167 = llhd.or %163, %166 : i1
-    llhd.drv %160, %167 after %7 : !llhd.sig<i1>
-    %168 = llhd.not %163 : i1
-    %169 = llhd.and %166, %101 : i1
-    %170 = llhd.or %168, %169 : i1
-    llhd.drv %sel4, %170 after %7 : !llhd.sig<i1>
-    %171 = llhd.sig "sig18" %42 : !llhd.array<7xi3>
-    %172 = llhd.shr %index_nodes, %171, %83 : (!llhd.sig<!llhd.array<7xi3>>, !llhd.sig<!llhd.array<7xi3>>, i32) -> !llhd.sig<!llhd.array<7xi3>>
-    %173 = llhd.extract_element %172, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
-    %sel5 = llhd.prb %sel4 : !llhd.sig<i1>
-    %174 = cmpi "ne", %sel5, %11 : i1
-    %175 = llhd.extract_slice %42, 0 : !llhd.array<7xi3> -> !llhd.array<6xi3>
-    %176 = llhd.extract_slice %index_nodes1, 6 : !llhd.array<7xi3> -> !llhd.array<1xi3>
-    %177 = llhd.insert_slice %42, %175, 1 : !llhd.array<7xi3>, !llhd.array<6xi3>
-    %178 = llhd.insert_slice %177, %176, 0 : !llhd.array<7xi3>, !llhd.array<1xi3>
-    %179 = llhd.extract_element %178, 0 : !llhd.array<7xi3> -> i3
-    %180 = llhd.extract_slice %179, 0 : i3 -> i1
-    %181 = llhd.insert_slice %108, %180, 0 : i2, i1
-    %182 = llhd.insert_slice %181, %50, 1 : i2, i1
-    %183 = llhd.insert_slice %0, %182, 0 : i3, i2
-    %184 = llhd.extract_slice %42, 0 : !llhd.array<7xi3> -> !llhd.array<5xi3>
-    %185 = llhd.extract_slice %index_nodes1, 5 : !llhd.array<7xi3> -> !llhd.array<2xi3>
-    %186 = llhd.insert_slice %42, %184, 2 : !llhd.array<7xi3>, !llhd.array<5xi3>
-    %187 = llhd.insert_slice %186, %185, 0 : !llhd.array<7xi3>, !llhd.array<2xi3>
-    %188 = llhd.extract_element %187, 0 : !llhd.array<7xi3> -> i3
-    %189 = llhd.extract_slice %188, 0 : i3 -> i1
-    %190 = llhd.insert_slice %108, %189, 0 : i2, i1
-    %191 = llhd.insert_slice %190, %11, 1 : i2, i1
-    %192 = llhd.insert_slice %0, %191, 0 : i3, i2
-    %193 = llhd.array %192, %183 : !llhd.array<2xi3>
-    %194 = llhd.dyn_extract_element %193, %174 : (!llhd.array<2xi3>, i1) -> i3
-    llhd.drv %173, %194 after %7 : !llhd.sig<i3>
-    %195 = llhd.sig "sig19" %63 : !llhd.array<7xi32>
-    %196 = llhd.shr %data_nodes, %195, %83 : (!llhd.sig<!llhd.array<7xi32>>, !llhd.sig<!llhd.array<7xi32>>, i32) -> !llhd.sig<!llhd.array<7xi32>>
-    %197 = llhd.extract_element %196, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
-    %198 = llhd.extract_slice %63, 0 : !llhd.array<7xi32> -> !llhd.array<6xi32>
-    %199 = llhd.extract_slice %data_nodes1, 6 : !llhd.array<7xi32> -> !llhd.array<1xi32>
-    %200 = llhd.insert_slice %63, %198, 1 : !llhd.array<7xi32>, !llhd.array<6xi32>
-    %201 = llhd.insert_slice %200, %199, 0 : !llhd.array<7xi32>, !llhd.array<1xi32>
-    %202 = llhd.extract_element %201, 0 : !llhd.array<7xi32> -> i32
-    %203 = llhd.extract_slice %63, 0 : !llhd.array<7xi32> -> !llhd.array<5xi32>
-    %204 = llhd.extract_slice %data_nodes1, 5 : !llhd.array<7xi32> -> !llhd.array<2xi32>
-    %205 = llhd.insert_slice %63, %203, 2 : !llhd.array<7xi32>, !llhd.array<5xi32>
-    %206 = llhd.insert_slice %205, %204, 0 : !llhd.array<7xi32>, !llhd.array<2xi32>
-    %207 = llhd.extract_element %206, 0 : !llhd.array<7xi32> -> i32
-    %208 = llhd.array %207, %202 : !llhd.array<2xi32>
-    %209 = llhd.dyn_extract_element %208, %174 : (!llhd.array<2xi32>, i1) -> i32
-    llhd.drv %197, %209 after %7 : !llhd.sig<i32>
-    %210 = llhd.const 5 : i32
-    %211 = llhd.sig "sig20" %4 : i7
-    %212 = llhd.shr %gnt_nodes, %211, %210 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
-    %213 = llhd.extract_slice %212, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
-    %214 = llhd.extract_slice %gnt_nodes1, 2 : i7 -> i5
-    %215 = llhd.insert_slice %4, %214, 0 : i7, i5
-    %216 = llhd.extract_slice %215, 0 : i7 -> i1
-    %217 = llhd.not %sel5 : i1
-    %218 = llhd.and %216, %217 : i1
-    llhd.drv %213, %218 after %7 : !llhd.sig<i1>
-    %219 = llhd.const 6 : i32
-    %220 = llhd.sig "sig21" %4 : i7
-    %221 = llhd.shr %gnt_nodes, %220, %219 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
-    %222 = llhd.extract_slice %221, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
-    %223 = llhd.and %216, %sel5 : i1
-    llhd.drv %222, %223 after %7 : !llhd.sig<i1>
-    %sel6 = llhd.sig "sel6" %11 : i1
-    %224 = llhd.sig "sig23" %4 : i7
-    %225 = llhd.shr %req_nodes, %224, %144 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
-    %226 = llhd.extract_slice %225, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
-    %req_d1 = llhd.prb %req_d : !llhd.sig<i8>
-    %227 = llhd.extract_slice %req_d1, 0 : i8 -> i1
-    %228 = llhd.extract_slice %req_d1, 1 : i8 -> i7
-    %229 = llhd.insert_slice %5, %228, 0 : i8, i7
-    %230 = llhd.extract_slice %229, 0 : i8 -> i1
-    %231 = llhd.or %227, %230 : i1
-    llhd.drv %226, %231 after %7 : !llhd.sig<i1>
-    %232 = llhd.not %227 : i1
-    %233 = llhd.extract_slice %rr_q1, 0 : i3 -> i1
-    %234 = llhd.and %230, %233 : i1
-    %235 = llhd.or %232, %234 : i1
-    llhd.drv %sel6, %235 after %7 : !llhd.sig<i1>
-    %236 = llhd.sig "sig24" %42 : !llhd.array<7xi3>
-    %237 = llhd.shr %index_nodes, %236, %144 : (!llhd.sig<!llhd.array<7xi3>>, !llhd.sig<!llhd.array<7xi3>>, i32) -> !llhd.sig<!llhd.array<7xi3>>
-    %238 = llhd.extract_element %237, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
-    %sel7 = llhd.prb %sel6 : !llhd.sig<i1>
-    %239 = llhd.insert_slice %0, %sel7, 0 : i3, i1
-    llhd.drv %238, %239 after %7 : !llhd.sig<i3>
-    %240 = llhd.sig "sig25" %63 : !llhd.array<7xi32>
-    %241 = llhd.shr %data_nodes, %240, %144 : (!llhd.sig<!llhd.array<7xi32>>, !llhd.sig<!llhd.array<7xi32>>, i32) -> !llhd.sig<!llhd.array<7xi32>>
-    %242 = llhd.extract_element %241, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
-    %243 = cmpi "ne", %sel7, %11 : i1
-    %data_i1 = llhd.prb %data_i : !llhd.sig<!llhd.array<8xi32>>
-    %244 = llhd.array_uniform %2 : !llhd.array<8xi32>
-    %245 = llhd.extract_slice %244, 0 : !llhd.array<8xi32> -> !llhd.array<1xi32>
-    %246 = llhd.extract_slice %data_i1, 1 : !llhd.array<8xi32> -> !llhd.array<7xi32>
-    %247 = llhd.insert_slice %244, %245, 7 : !llhd.array<8xi32>, !llhd.array<1xi32>
-    %248 = llhd.insert_slice %247, %246, 0 : !llhd.array<8xi32>, !llhd.array<7xi32>
-    %249 = llhd.extract_element %248, 0 : !llhd.array<8xi32> -> i32
-    %250 = llhd.extract_element %data_i1, 0 : !llhd.array<8xi32> -> i32
-    %251 = llhd.array %250, %249 : !llhd.array<2xi32>
-    %252 = llhd.dyn_extract_element %251, %243 : (!llhd.array<2xi32>, i1) -> i32
-    llhd.drv %242, %252 after %7 : !llhd.sig<i32>
-    %253 = llhd.extract_slice %gnt_o, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
-    %254 = llhd.extract_slice %gnt_nodes1, 3 : i7 -> i4
-    %255 = llhd.insert_slice %4, %254, 0 : i7, i4
-    %256 = llhd.extract_slice %255, 0 : i7 -> i1
-    %257 = llhd.and %256, %227 : i1
-    %258 = llhd.not %sel7 : i1
-    %259 = llhd.and %257, %258 : i1
-    llhd.drv %253, %259 after %7 : !llhd.sig<i1>
-    %260 = llhd.sig "sig26" %5 : i8
-    %261 = llhd.shr %gnt_o, %260, %76 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
-    %262 = llhd.extract_slice %261, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
-    %263 = llhd.and %256, %230 : i1
-    %264 = llhd.and %263, %sel7 : i1
-    llhd.drv %262, %264 after %7 : !llhd.sig<i1>
-    %sel8 = llhd.sig "sel8" %11 : i1
-    %265 = llhd.sig "sig28" %4 : i7
-    %266 = llhd.shr %req_nodes, %265, %153 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
-    %267 = llhd.extract_slice %266, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
-    %268 = llhd.extract_slice %req_d1, 2 : i8 -> i6
-    %269 = llhd.insert_slice %5, %268, 0 : i8, i6
-    %270 = llhd.extract_slice %269, 0 : i8 -> i1
-    %271 = llhd.extract_slice %req_d1, 3 : i8 -> i5
-    %272 = llhd.insert_slice %5, %271, 0 : i8, i5
-    %273 = llhd.extract_slice %272, 0 : i8 -> i1
-    %274 = llhd.or %270, %273 : i1
-    llhd.drv %267, %274 after %7 : !llhd.sig<i1>
-    %275 = llhd.not %270 : i1
-    %276 = llhd.and %273, %233 : i1
-    %277 = llhd.or %275, %276 : i1
-    llhd.drv %sel8, %277 after %7 : !llhd.sig<i1>
-    %278 = llhd.sig "sig29" %42 : !llhd.array<7xi3>
-    %279 = llhd.shr %index_nodes, %278, %153 : (!llhd.sig<!llhd.array<7xi3>>, !llhd.sig<!llhd.array<7xi3>>, i32) -> !llhd.sig<!llhd.array<7xi3>>
-    %280 = llhd.extract_element %279, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
-    %sel9 = llhd.prb %sel8 : !llhd.sig<i1>
-    %281 = llhd.insert_slice %0, %sel9, 0 : i3, i1
-    llhd.drv %280, %281 after %7 : !llhd.sig<i3>
-    %282 = llhd.sig "sig30" %63 : !llhd.array<7xi32>
-    %283 = llhd.shr %data_nodes, %282, %153 : (!llhd.sig<!llhd.array<7xi32>>, !llhd.sig<!llhd.array<7xi32>>, i32) -> !llhd.sig<!llhd.array<7xi32>>
-    %284 = llhd.extract_element %283, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
-    %285 = cmpi "ne", %sel9, %11 : i1
-    %286 = llhd.extract_slice %244, 0 : !llhd.array<8xi32> -> !llhd.array<3xi32>
-    %287 = llhd.extract_slice %data_i1, 3 : !llhd.array<8xi32> -> !llhd.array<5xi32>
-    %288 = llhd.insert_slice %244, %286, 5 : !llhd.array<8xi32>, !llhd.array<3xi32>
-    %289 = llhd.insert_slice %288, %287, 0 : !llhd.array<8xi32>, !llhd.array<5xi32>
-    %290 = llhd.extract_element %289, 0 : !llhd.array<8xi32> -> i32
-    %291 = llhd.extract_slice %244, 0 : !llhd.array<8xi32> -> !llhd.array<2xi32>
-    %292 = llhd.extract_slice %data_i1, 2 : !llhd.array<8xi32> -> !llhd.array<6xi32>
-    %293 = llhd.insert_slice %244, %291, 6 : !llhd.array<8xi32>, !llhd.array<2xi32>
-    %294 = llhd.insert_slice %293, %292, 0 : !llhd.array<8xi32>, !llhd.array<6xi32>
-    %295 = llhd.extract_element %294, 0 : !llhd.array<8xi32> -> i32
-    %296 = llhd.array %295, %290 : !llhd.array<2xi32>
-    %297 = llhd.dyn_extract_element %296, %285 : (!llhd.array<2xi32>, i1) -> i32
-    llhd.drv %284, %297 after %7 : !llhd.sig<i32>
-    %298 = llhd.sig "sig31" %5 : i8
-    %299 = llhd.shr %gnt_o, %298, %83 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
-    %300 = llhd.extract_slice %299, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
-    %301 = llhd.extract_slice %gnt_nodes1, 4 : i7 -> i3
-    %302 = llhd.insert_slice %4, %301, 0 : i7, i3
-    %303 = llhd.extract_slice %302, 0 : i7 -> i1
-    %304 = llhd.and %303, %270 : i1
-    %305 = llhd.not %sel9 : i1
-    %306 = llhd.and %304, %305 : i1
-    llhd.drv %300, %306 after %7 : !llhd.sig<i1>
-    %307 = llhd.sig "sig32" %5 : i8
-    %308 = llhd.shr %gnt_o, %307, %144 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
-    %309 = llhd.extract_slice %308, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
-    %310 = llhd.and %303, %273 : i1
-    %311 = llhd.and %310, %sel9 : i1
-    llhd.drv %309, %311 after %7 : !llhd.sig<i1>
-    %sel10 = llhd.sig "sel10" %11 : i1
-    %312 = llhd.sig "sig34" %4 : i7
-    %313 = llhd.shr %req_nodes, %312, %210 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
-    %314 = llhd.extract_slice %313, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
-    %315 = llhd.extract_slice %req_d1, 4 : i8 -> i4
-    %316 = llhd.insert_slice %5, %315, 0 : i8, i4
-    %317 = llhd.extract_slice %316, 0 : i8 -> i1
-    %318 = llhd.extract_slice %req_d1, 5 : i8 -> i3
-    %319 = llhd.insert_slice %5, %318, 0 : i8, i3
-    %320 = llhd.extract_slice %319, 0 : i8 -> i1
-    %321 = llhd.or %317, %320 : i1
-    llhd.drv %314, %321 after %7 : !llhd.sig<i1>
-    %322 = llhd.not %317 : i1
-    %323 = llhd.and %320, %233 : i1
-    %324 = llhd.or %322, %323 : i1
-    llhd.drv %sel10, %324 after %7 : !llhd.sig<i1>
-    %325 = llhd.sig "sig35" %42 : !llhd.array<7xi3>
-    %326 = llhd.shr %index_nodes, %325, %210 : (!llhd.sig<!llhd.array<7xi3>>, !llhd.sig<!llhd.array<7xi3>>, i32) -> !llhd.sig<!llhd.array<7xi3>>
-    %327 = llhd.extract_element %326, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
+    %165 = llhd.const 0 : i32
+    %166 = llhd.const 0 : i7
+    %167 = llhd.shr %gnt_nodes1, %166, %165 : (i7, i7, i32) -> i7
+    %168 = llhd.extract_slice %167, 0 : i7 -> i1
+    %sel3 = llhd.prb %sel : !llhd.sig<i1>
+    %169 = llhd.not %sel3 : i1
+    %170 = llhd.and %168, %169 : i1
+    %171 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %164, %170 after %171 : !llhd.sig<i1>
+    %172 = llhd.const 1 : i32
+    %173 = llhd.const 1 : i32
+    %174 = addi %172, %173 : i32
+    %175 = llhd.const 0 : i7
+    %176 = llhd.sig "176" %175 : i7
+    %177 = llhd.shr %gnt_nodes, %176, %174 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %178 = llhd.extract_slice %177, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %gnt_nodes2 = llhd.prb %gnt_nodes : !llhd.sig<i7>
+    %179 = llhd.const 0 : i32
+    %180 = llhd.const 0 : i7
+    %181 = llhd.shr %gnt_nodes2, %180, %179 : (i7, i7, i32) -> i7
+    %182 = llhd.extract_slice %181, 0 : i7 -> i1
+    %sel4 = llhd.prb %sel : !llhd.sig<i1>
+    %183 = llhd.and %182, %sel4 : i1
+    %184 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %178, %183 after %184 : !llhd.sig<i1>
+    %185 = llhd.const 0 : i1
+    %sel5 = llhd.sig "sel5" %185 : i1
+    %186 = llhd.const 1 : i32
+    %187 = llhd.const 0 : i7
+    %188 = llhd.sig "188" %187 : i7
+    %189 = llhd.shr %req_nodes, %188, %186 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %190 = llhd.extract_slice %189, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %req_nodes6 = llhd.prb %req_nodes : !llhd.sig<i7>
+    %191 = llhd.const 3 : i32
+    %192 = llhd.const 0 : i7
+    %193 = llhd.shr %req_nodes6, %192, %191 : (i7, i7, i32) -> i7
+    %194 = llhd.extract_slice %193, 0 : i7 -> i1
+    %req_nodes7 = llhd.prb %req_nodes : !llhd.sig<i7>
+    %195 = llhd.const 3 : i32
+    %196 = llhd.const 1 : i32
+    %197 = addi %195, %196 : i32
+    %198 = llhd.const 0 : i7
+    %199 = llhd.shr %req_nodes7, %198, %197 : (i7, i7, i32) -> i7
+    %200 = llhd.extract_slice %199, 0 : i7 -> i1
+    %201 = llhd.or %194, %200 : i1
+    %202 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %190, %201 after %202 : !llhd.sig<i1>
+    %req_nodes8 = llhd.prb %req_nodes : !llhd.sig<i7>
+    %203 = llhd.const 3 : i32
+    %204 = llhd.const 0 : i7
+    %205 = llhd.shr %req_nodes8, %204, %203 : (i7, i7, i32) -> i7
+    %206 = llhd.extract_slice %205, 0 : i7 -> i1
+    %207 = llhd.not %206 : i1
+    %req_nodes9 = llhd.prb %req_nodes : !llhd.sig<i7>
+    %208 = llhd.const 3 : i32
+    %209 = llhd.const 1 : i32
+    %210 = addi %208, %209 : i32
+    %211 = llhd.const 0 : i7
+    %212 = llhd.shr %req_nodes9, %211, %210 : (i7, i7, i32) -> i7
+    %213 = llhd.extract_slice %212, 0 : i7 -> i1
+    %rr_q5 = llhd.prb %rr_q : !llhd.sig<i3>
+    %214 = llhd.const 3 : i32
+    %215 = llhd.const 1 : i32
+    %216 = subi %214, %215 : i32
+    %217 = llhd.const 1 : i32
+    %218 = subi %216, %217 : i32
+    %219 = llhd.const 0 : i3
+    %220 = llhd.shr %rr_q5, %219, %218 : (i3, i3, i32) -> i3
+    %221 = llhd.extract_slice %220, 0 : i3 -> i1
+    %222 = llhd.and %213, %221 : i1
+    %223 = llhd.or %207, %222 : i1
+    %224 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %sel5, %223 after %224 : !llhd.sig<i1>
+    %225 = llhd.const 1 : i32
+    %226 = llhd.const 0 : i3
+    %227 = llhd.array_uniform %226 : !llhd.array<7xi3>
+    %228 = llhd.sig "228" %227 : !llhd.array<7xi3>
+    %229 = llhd.shr %index_nodes, %228, %225 : (!llhd.sig<!llhd.array<7xi3>>, !llhd.sig<!llhd.array<7xi3>>, i32) -> !llhd.sig<!llhd.array<7xi3>>
+    %230 = llhd.extract_element %229, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
+    %sel6 = llhd.prb %sel5 : !llhd.sig<i1>
+    %231 = llhd.const 0 : i3
+    %232 = llhd.const 0 : i2
+    %index_nodes4 = llhd.prb %index_nodes : !llhd.sig<!llhd.array<7xi3>>
+    %233 = llhd.const 3 : i32
+    %234 = llhd.const 1 : i32
+    %235 = addi %233, %234 : i32
+    %236 = llhd.const 0 : i3
+    %237 = llhd.array_uniform %236 : !llhd.array<7xi3>
+    %238 = llhd.shr %index_nodes4, %237, %235 : (!llhd.array<7xi3>, !llhd.array<7xi3>, i32) -> !llhd.array<7xi3>
+    %239 = llhd.extract_element %238, 0 : !llhd.array<7xi3> -> i3
+    %240 = llhd.const 0 : i1
+    %241 = llhd.const 0 : i3
+    %242 = llhd.shr %239, %241, %240 : (i3, i3, i1) -> i3
+    %243 = llhd.extract_slice %242, 0 : i3 -> i1
+    %244 = llhd.insert_slice %232, %243, 0 : i2, i1
+    %245 = llhd.const 1 : i1
+    %246 = llhd.insert_slice %244, %245, 1 : i2, i1
+    %247 = llhd.insert_slice %231, %246, 0 : i3, i2
+    %248 = llhd.const 0 : i3
+    %249 = llhd.const 0 : i2
+    %index_nodes5 = llhd.prb %index_nodes : !llhd.sig<!llhd.array<7xi3>>
+    %250 = llhd.const 3 : i32
+    %251 = llhd.const 0 : i3
+    %252 = llhd.array_uniform %251 : !llhd.array<7xi3>
+    %253 = llhd.shr %index_nodes5, %252, %250 : (!llhd.array<7xi3>, !llhd.array<7xi3>, i32) -> !llhd.array<7xi3>
+    %254 = llhd.extract_element %253, 0 : !llhd.array<7xi3> -> i3
+    %255 = llhd.const 0 : i1
+    %256 = llhd.const 0 : i3
+    %257 = llhd.shr %254, %256, %255 : (i3, i3, i1) -> i3
+    %258 = llhd.extract_slice %257, 0 : i3 -> i1
+    %259 = llhd.insert_slice %249, %258, 0 : i2, i1
+    %260 = llhd.const 0 : i1
+    %261 = llhd.insert_slice %259, %260, 1 : i2, i1
+    %262 = llhd.insert_slice %248, %261, 0 : i3, i2
+    %263 = llhd.array %262, %247 : !llhd.array<2xi3>
+    %264 = llhd.dyn_extract_element %263, %sel6 : (!llhd.array<2xi3>, i1) -> i3
+    %265 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %230, %264 after %265 : !llhd.sig<i3>
+    %266 = llhd.const 1 : i32
+    %267 = llhd.const 0 : i32
+    %268 = llhd.array_uniform %267 : !llhd.array<7xi32>
+    %269 = llhd.sig "269" %268 : !llhd.array<7xi32>
+    %270 = llhd.shr %data_nodes, %269, %266 : (!llhd.sig<!llhd.array<7xi32>>, !llhd.sig<!llhd.array<7xi32>>, i32) -> !llhd.sig<!llhd.array<7xi32>>
+    %271 = llhd.extract_element %270, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
+    %sel7 = llhd.prb %sel5 : !llhd.sig<i1>
+    %data_nodes4 = llhd.prb %data_nodes : !llhd.sig<!llhd.array<7xi32>>
+    %272 = llhd.const 3 : i32
+    %273 = llhd.const 1 : i32
+    %274 = addi %272, %273 : i32
+    %275 = llhd.const 0 : i32
+    %276 = llhd.array_uniform %275 : !llhd.array<7xi32>
+    %277 = llhd.shr %data_nodes4, %276, %274 : (!llhd.array<7xi32>, !llhd.array<7xi32>, i32) -> !llhd.array<7xi32>
+    %278 = llhd.extract_element %277, 0 : !llhd.array<7xi32> -> i32
+    %data_nodes5 = llhd.prb %data_nodes : !llhd.sig<!llhd.array<7xi32>>
+    %279 = llhd.const 3 : i32
+    %280 = llhd.const 0 : i32
+    %281 = llhd.array_uniform %280 : !llhd.array<7xi32>
+    %282 = llhd.shr %data_nodes5, %281, %279 : (!llhd.array<7xi32>, !llhd.array<7xi32>, i32) -> !llhd.array<7xi32>
+    %283 = llhd.extract_element %282, 0 : !llhd.array<7xi32> -> i32
+    %284 = llhd.array %283, %278 : !llhd.array<2xi32>
+    %285 = llhd.dyn_extract_element %284, %sel7 : (!llhd.array<2xi32>, i1) -> i32
+    %286 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %271, %285 after %286 : !llhd.sig<i32>
+    %287 = llhd.const 3 : i32
+    %288 = llhd.const 0 : i7
+    %289 = llhd.sig "289" %288 : i7
+    %290 = llhd.shr %gnt_nodes, %289, %287 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %291 = llhd.extract_slice %290, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %gnt_nodes3 = llhd.prb %gnt_nodes : !llhd.sig<i7>
+    %292 = llhd.const 1 : i32
+    %293 = llhd.const 0 : i7
+    %294 = llhd.shr %gnt_nodes3, %293, %292 : (i7, i7, i32) -> i7
+    %295 = llhd.extract_slice %294, 0 : i7 -> i1
+    %sel8 = llhd.prb %sel5 : !llhd.sig<i1>
+    %296 = llhd.not %sel8 : i1
+    %297 = llhd.and %295, %296 : i1
+    %298 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %291, %297 after %298 : !llhd.sig<i1>
+    %299 = llhd.const 3 : i32
+    %300 = llhd.const 1 : i32
+    %301 = addi %299, %300 : i32
+    %302 = llhd.const 0 : i7
+    %303 = llhd.sig "303" %302 : i7
+    %304 = llhd.shr %gnt_nodes, %303, %301 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %305 = llhd.extract_slice %304, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %gnt_nodes4 = llhd.prb %gnt_nodes : !llhd.sig<i7>
+    %306 = llhd.const 1 : i32
+    %307 = llhd.const 0 : i7
+    %308 = llhd.shr %gnt_nodes4, %307, %306 : (i7, i7, i32) -> i7
+    %309 = llhd.extract_slice %308, 0 : i7 -> i1
+    %sel9 = llhd.prb %sel5 : !llhd.sig<i1>
+    %310 = llhd.and %309, %sel9 : i1
+    %311 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %305, %310 after %311 : !llhd.sig<i1>
+    %312 = llhd.const 0 : i1
+    %sel10 = llhd.sig "sel10" %312 : i1
+    %313 = llhd.const 2 : i32
+    %314 = llhd.const 0 : i7
+    %315 = llhd.sig "315" %314 : i7
+    %316 = llhd.shr %req_nodes, %315, %313 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %317 = llhd.extract_slice %316, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %req_nodes10 = llhd.prb %req_nodes : !llhd.sig<i7>
+    %318 = llhd.const 5 : i32
+    %319 = llhd.const 0 : i7
+    %320 = llhd.shr %req_nodes10, %319, %318 : (i7, i7, i32) -> i7
+    %321 = llhd.extract_slice %320, 0 : i7 -> i1
+    %req_nodes11 = llhd.prb %req_nodes : !llhd.sig<i7>
+    %322 = llhd.const 5 : i32
+    %323 = llhd.const 1 : i32
+    %324 = addi %322, %323 : i32
+    %325 = llhd.const 0 : i7
+    %326 = llhd.shr %req_nodes11, %325, %324 : (i7, i7, i32) -> i7
+    %327 = llhd.extract_slice %326, 0 : i7 -> i1
+    %328 = llhd.or %321, %327 : i1
+    %329 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %317, %328 after %329 : !llhd.sig<i1>
+    %req_nodes12 = llhd.prb %req_nodes : !llhd.sig<i7>
+    %330 = llhd.const 5 : i32
+    %331 = llhd.const 0 : i7
+    %332 = llhd.shr %req_nodes12, %331, %330 : (i7, i7, i32) -> i7
+    %333 = llhd.extract_slice %332, 0 : i7 -> i1
+    %334 = llhd.not %333 : i1
+    %req_nodes13 = llhd.prb %req_nodes : !llhd.sig<i7>
+    %335 = llhd.const 5 : i32
+    %336 = llhd.const 1 : i32
+    %337 = addi %335, %336 : i32
+    %338 = llhd.const 0 : i7
+    %339 = llhd.shr %req_nodes13, %338, %337 : (i7, i7, i32) -> i7
+    %340 = llhd.extract_slice %339, 0 : i7 -> i1
+    %rr_q6 = llhd.prb %rr_q : !llhd.sig<i3>
+    %341 = llhd.const 3 : i32
+    %342 = llhd.const 1 : i32
+    %343 = subi %341, %342 : i32
+    %344 = llhd.const 1 : i32
+    %345 = subi %343, %344 : i32
+    %346 = llhd.const 0 : i3
+    %347 = llhd.shr %rr_q6, %346, %345 : (i3, i3, i32) -> i3
+    %348 = llhd.extract_slice %347, 0 : i3 -> i1
+    %349 = llhd.and %340, %348 : i1
+    %350 = llhd.or %334, %349 : i1
+    %351 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %sel10, %350 after %351 : !llhd.sig<i1>
+    %352 = llhd.const 2 : i32
+    %353 = llhd.const 0 : i3
+    %354 = llhd.array_uniform %353 : !llhd.array<7xi3>
+    %355 = llhd.sig "355" %354 : !llhd.array<7xi3>
+    %356 = llhd.shr %index_nodes, %355, %352 : (!llhd.sig<!llhd.array<7xi3>>, !llhd.sig<!llhd.array<7xi3>>, i32) -> !llhd.sig<!llhd.array<7xi3>>
+    %357 = llhd.extract_element %356, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
     %sel11 = llhd.prb %sel10 : !llhd.sig<i1>
-    %328 = llhd.insert_slice %0, %sel11, 0 : i3, i1
-    llhd.drv %327, %328 after %7 : !llhd.sig<i3>
-    %329 = llhd.sig "sig36" %63 : !llhd.array<7xi32>
-    %330 = llhd.shr %data_nodes, %329, %210 : (!llhd.sig<!llhd.array<7xi32>>, !llhd.sig<!llhd.array<7xi32>>, i32) -> !llhd.sig<!llhd.array<7xi32>>
-    %331 = llhd.extract_element %330, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
-    %332 = cmpi "ne", %sel11, %11 : i1
-    %333 = llhd.extract_slice %244, 0 : !llhd.array<8xi32> -> !llhd.array<5xi32>
-    %334 = llhd.extract_slice %data_i1, 5 : !llhd.array<8xi32> -> !llhd.array<3xi32>
-    %335 = llhd.insert_slice %244, %333, 3 : !llhd.array<8xi32>, !llhd.array<5xi32>
-    %336 = llhd.insert_slice %335, %334, 0 : !llhd.array<8xi32>, !llhd.array<3xi32>
-    %337 = llhd.extract_element %336, 0 : !llhd.array<8xi32> -> i32
-    %338 = llhd.extract_slice %244, 0 : !llhd.array<8xi32> -> !llhd.array<4xi32>
-    %339 = llhd.extract_slice %data_i1, 4 : !llhd.array<8xi32> -> !llhd.array<4xi32>
-    %340 = llhd.insert_slice %244, %338, 4 : !llhd.array<8xi32>, !llhd.array<4xi32>
-    %341 = llhd.insert_slice %340, %339, 0 : !llhd.array<8xi32>, !llhd.array<4xi32>
-    %342 = llhd.extract_element %341, 0 : !llhd.array<8xi32> -> i32
-    %343 = llhd.array %342, %337 : !llhd.array<2xi32>
-    %344 = llhd.dyn_extract_element %343, %332 : (!llhd.array<2xi32>, i1) -> i32
-    llhd.drv %331, %344 after %7 : !llhd.sig<i32>
-    %345 = llhd.sig "sig37" %5 : i8
-    %346 = llhd.shr %gnt_o, %345, %153 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
-    %347 = llhd.extract_slice %346, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
-    %348 = llhd.extract_slice %gnt_nodes1, 5 : i7 -> i2
-    %349 = llhd.insert_slice %4, %348, 0 : i7, i2
-    %350 = llhd.extract_slice %349, 0 : i7 -> i1
-    %351 = llhd.and %350, %317 : i1
-    %352 = llhd.not %sel11 : i1
-    %353 = llhd.and %351, %352 : i1
-    llhd.drv %347, %353 after %7 : !llhd.sig<i1>
-    %354 = llhd.sig "sig38" %5 : i8
-    %355 = llhd.shr %gnt_o, %354, %210 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
-    %356 = llhd.extract_slice %355, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
-    %357 = llhd.and %350, %320 : i1
-    %358 = llhd.and %357, %sel11 : i1
-    llhd.drv %356, %358 after %7 : !llhd.sig<i1>
-    %sel12 = llhd.sig "sel12" %11 : i1
-    %359 = llhd.sig "sig40" %4 : i7
-    %360 = llhd.shr %req_nodes, %359, %219 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
-    %361 = llhd.extract_slice %360, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
-    %362 = llhd.extract_slice %req_d1, 6 : i8 -> i2
-    %363 = llhd.insert_slice %5, %362, 0 : i8, i2
-    %364 = llhd.extract_slice %363, 0 : i8 -> i1
-    %365 = llhd.extract_slice %req_d1, 7 : i8 -> i1
-    %366 = llhd.insert_slice %5, %365, 0 : i8, i1
-    %367 = llhd.extract_slice %366, 0 : i8 -> i1
-    %368 = llhd.or %364, %367 : i1
-    llhd.drv %361, %368 after %7 : !llhd.sig<i1>
-    %369 = llhd.not %364 : i1
-    %370 = llhd.and %367, %233 : i1
-    %371 = llhd.or %369, %370 : i1
-    llhd.drv %sel12, %371 after %7 : !llhd.sig<i1>
-    %372 = llhd.sig "sig41" %42 : !llhd.array<7xi3>
-    %373 = llhd.shr %index_nodes, %372, %219 : (!llhd.sig<!llhd.array<7xi3>>, !llhd.sig<!llhd.array<7xi3>>, i32) -> !llhd.sig<!llhd.array<7xi3>>
-    %374 = llhd.extract_element %373, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
-    %sel13 = llhd.prb %sel12 : !llhd.sig<i1>
-    %375 = llhd.insert_slice %0, %sel13, 0 : i3, i1
-    llhd.drv %374, %375 after %7 : !llhd.sig<i3>
-    %376 = llhd.sig "sig42" %63 : !llhd.array<7xi32>
-    %377 = llhd.shr %data_nodes, %376, %219 : (!llhd.sig<!llhd.array<7xi32>>, !llhd.sig<!llhd.array<7xi32>>, i32) -> !llhd.sig<!llhd.array<7xi32>>
-    %378 = llhd.extract_element %377, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
-    %379 = cmpi "ne", %sel13, %11 : i1
-    %380 = llhd.extract_slice %244, 0 : !llhd.array<8xi32> -> !llhd.array<7xi32>
-    %381 = llhd.extract_slice %data_i1, 7 : !llhd.array<8xi32> -> !llhd.array<1xi32>
-    %382 = llhd.insert_slice %244, %380, 1 : !llhd.array<8xi32>, !llhd.array<7xi32>
-    %383 = llhd.insert_slice %382, %381, 0 : !llhd.array<8xi32>, !llhd.array<1xi32>
-    %384 = llhd.extract_element %383, 0 : !llhd.array<8xi32> -> i32
-    %385 = llhd.extract_slice %244, 0 : !llhd.array<8xi32> -> !llhd.array<6xi32>
-    %386 = llhd.extract_slice %data_i1, 6 : !llhd.array<8xi32> -> !llhd.array<2xi32>
-    %387 = llhd.insert_slice %244, %385, 2 : !llhd.array<8xi32>, !llhd.array<6xi32>
-    %388 = llhd.insert_slice %387, %386, 0 : !llhd.array<8xi32>, !llhd.array<2xi32>
-    %389 = llhd.extract_element %388, 0 : !llhd.array<8xi32> -> i32
-    %390 = llhd.array %389, %384 : !llhd.array<2xi32>
-    %391 = llhd.dyn_extract_element %390, %379 : (!llhd.array<2xi32>, i1) -> i32
-    llhd.drv %378, %391 after %7 : !llhd.sig<i32>
-    %392 = llhd.sig "sig43" %5 : i8
-    %393 = llhd.shr %gnt_o, %392, %219 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
-    %394 = llhd.extract_slice %393, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
-    %395 = llhd.extract_slice %gnt_nodes1, 6 : i7 -> i1
-    %396 = llhd.insert_slice %4, %395, 0 : i7, i1
-    %397 = llhd.extract_slice %396, 0 : i7 -> i1
-    %398 = llhd.and %397, %364 : i1
-    %399 = llhd.not %sel13 : i1
-    %400 = llhd.and %398, %399 : i1
-    llhd.drv %394, %400 after %7 : !llhd.sig<i1>
-    %401 = llhd.sig "sig44" %5 : i8
-    %402 = llhd.shr %gnt_o, %401, %17 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
-    %403 = llhd.extract_slice %402, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
-    %404 = llhd.and %397, %367 : i1
-    %405 = llhd.and %404, %sel13 : i1
-    llhd.drv %403, %405 after %7 : !llhd.sig<i1>
-    llhd.inst "inst1" @rr_arb_tree.param1.initial.1529.1() -> () : () -> ()
+    %358 = llhd.const 0 : i3
+    %359 = llhd.const 0 : i2
+    %index_nodes6 = llhd.prb %index_nodes : !llhd.sig<!llhd.array<7xi3>>
+    %360 = llhd.const 5 : i32
+    %361 = llhd.const 1 : i32
+    %362 = addi %360, %361 : i32
+    %363 = llhd.const 0 : i3
+    %364 = llhd.array_uniform %363 : !llhd.array<7xi3>
+    %365 = llhd.shr %index_nodes6, %364, %362 : (!llhd.array<7xi3>, !llhd.array<7xi3>, i32) -> !llhd.array<7xi3>
+    %366 = llhd.extract_element %365, 0 : !llhd.array<7xi3> -> i3
+    %367 = llhd.const 0 : i1
+    %368 = llhd.const 0 : i3
+    %369 = llhd.shr %366, %368, %367 : (i3, i3, i1) -> i3
+    %370 = llhd.extract_slice %369, 0 : i3 -> i1
+    %371 = llhd.insert_slice %359, %370, 0 : i2, i1
+    %372 = llhd.const 1 : i1
+    %373 = llhd.insert_slice %371, %372, 1 : i2, i1
+    %374 = llhd.insert_slice %358, %373, 0 : i3, i2
+    %375 = llhd.const 0 : i3
+    %376 = llhd.const 0 : i2
+    %index_nodes7 = llhd.prb %index_nodes : !llhd.sig<!llhd.array<7xi3>>
+    %377 = llhd.const 5 : i32
+    %378 = llhd.const 0 : i3
+    %379 = llhd.array_uniform %378 : !llhd.array<7xi3>
+    %380 = llhd.shr %index_nodes7, %379, %377 : (!llhd.array<7xi3>, !llhd.array<7xi3>, i32) -> !llhd.array<7xi3>
+    %381 = llhd.extract_element %380, 0 : !llhd.array<7xi3> -> i3
+    %382 = llhd.const 0 : i1
+    %383 = llhd.const 0 : i3
+    %384 = llhd.shr %381, %383, %382 : (i3, i3, i1) -> i3
+    %385 = llhd.extract_slice %384, 0 : i3 -> i1
+    %386 = llhd.insert_slice %376, %385, 0 : i2, i1
+    %387 = llhd.const 0 : i1
+    %388 = llhd.insert_slice %386, %387, 1 : i2, i1
+    %389 = llhd.insert_slice %375, %388, 0 : i3, i2
+    %390 = llhd.array %389, %374 : !llhd.array<2xi3>
+    %391 = llhd.dyn_extract_element %390, %sel11 : (!llhd.array<2xi3>, i1) -> i3
+    %392 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %357, %391 after %392 : !llhd.sig<i3>
+    %393 = llhd.const 2 : i32
+    %394 = llhd.const 0 : i32
+    %395 = llhd.array_uniform %394 : !llhd.array<7xi32>
+    %396 = llhd.sig "396" %395 : !llhd.array<7xi32>
+    %397 = llhd.shr %data_nodes, %396, %393 : (!llhd.sig<!llhd.array<7xi32>>, !llhd.sig<!llhd.array<7xi32>>, i32) -> !llhd.sig<!llhd.array<7xi32>>
+    %398 = llhd.extract_element %397, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
+    %sel12 = llhd.prb %sel10 : !llhd.sig<i1>
+    %data_nodes6 = llhd.prb %data_nodes : !llhd.sig<!llhd.array<7xi32>>
+    %399 = llhd.const 5 : i32
+    %400 = llhd.const 1 : i32
+    %401 = addi %399, %400 : i32
+    %402 = llhd.const 0 : i32
+    %403 = llhd.array_uniform %402 : !llhd.array<7xi32>
+    %404 = llhd.shr %data_nodes6, %403, %401 : (!llhd.array<7xi32>, !llhd.array<7xi32>, i32) -> !llhd.array<7xi32>
+    %405 = llhd.extract_element %404, 0 : !llhd.array<7xi32> -> i32
+    %data_nodes7 = llhd.prb %data_nodes : !llhd.sig<!llhd.array<7xi32>>
+    %406 = llhd.const 5 : i32
+    %407 = llhd.const 0 : i32
+    %408 = llhd.array_uniform %407 : !llhd.array<7xi32>
+    %409 = llhd.shr %data_nodes7, %408, %406 : (!llhd.array<7xi32>, !llhd.array<7xi32>, i32) -> !llhd.array<7xi32>
+    %410 = llhd.extract_element %409, 0 : !llhd.array<7xi32> -> i32
+    %411 = llhd.array %410, %405 : !llhd.array<2xi32>
+    %412 = llhd.dyn_extract_element %411, %sel12 : (!llhd.array<2xi32>, i1) -> i32
+    %413 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %398, %412 after %413 : !llhd.sig<i32>
+    %414 = llhd.const 5 : i32
+    %415 = llhd.const 0 : i7
+    %416 = llhd.sig "416" %415 : i7
+    %417 = llhd.shr %gnt_nodes, %416, %414 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %418 = llhd.extract_slice %417, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %gnt_nodes5 = llhd.prb %gnt_nodes : !llhd.sig<i7>
+    %419 = llhd.const 2 : i32
+    %420 = llhd.const 0 : i7
+    %421 = llhd.shr %gnt_nodes5, %420, %419 : (i7, i7, i32) -> i7
+    %422 = llhd.extract_slice %421, 0 : i7 -> i1
+    %sel13 = llhd.prb %sel10 : !llhd.sig<i1>
+    %423 = llhd.not %sel13 : i1
+    %424 = llhd.and %422, %423 : i1
+    %425 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %418, %424 after %425 : !llhd.sig<i1>
+    %426 = llhd.const 5 : i32
+    %427 = llhd.const 1 : i32
+    %428 = addi %426, %427 : i32
+    %429 = llhd.const 0 : i7
+    %430 = llhd.sig "430" %429 : i7
+    %431 = llhd.shr %gnt_nodes, %430, %428 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %432 = llhd.extract_slice %431, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %gnt_nodes6 = llhd.prb %gnt_nodes : !llhd.sig<i7>
+    %433 = llhd.const 2 : i32
+    %434 = llhd.const 0 : i7
+    %435 = llhd.shr %gnt_nodes6, %434, %433 : (i7, i7, i32) -> i7
+    %436 = llhd.extract_slice %435, 0 : i7 -> i1
+    %sel14 = llhd.prb %sel10 : !llhd.sig<i1>
+    %437 = llhd.and %436, %sel14 : i1
+    %438 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %432, %437 after %438 : !llhd.sig<i1>
+    %439 = llhd.const 0 : i1
+    %sel15 = llhd.sig "sel15" %439 : i1
+    %440 = llhd.const 3 : i32
+    %441 = llhd.const 0 : i7
+    %442 = llhd.sig "442" %441 : i7
+    %443 = llhd.shr %req_nodes, %442, %440 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %444 = llhd.extract_slice %443, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %req_d1 = llhd.prb %req_d : !llhd.sig<i8>
+    %445 = llhd.const 0 : i32
+    %446 = llhd.const 2 : i32
+    %447 = muli %445, %446 : i32
+    %448 = llhd.const 0 : i8
+    %449 = llhd.shr %req_d1, %448, %447 : (i8, i8, i32) -> i8
+    %450 = llhd.extract_slice %449, 0 : i8 -> i1
+    %req_d2 = llhd.prb %req_d : !llhd.sig<i8>
+    %451 = llhd.const 0 : i32
+    %452 = llhd.const 2 : i32
+    %453 = muli %451, %452 : i32
+    %454 = llhd.const 1 : i32
+    %455 = addi %453, %454 : i32
+    %456 = llhd.const 0 : i8
+    %457 = llhd.shr %req_d2, %456, %455 : (i8, i8, i32) -> i8
+    %458 = llhd.extract_slice %457, 0 : i8 -> i1
+    %459 = llhd.or %450, %458 : i1
+    %460 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %444, %459 after %460 : !llhd.sig<i1>
+    %req_d3 = llhd.prb %req_d : !llhd.sig<i8>
+    %461 = llhd.const 0 : i32
+    %462 = llhd.const 2 : i32
+    %463 = muli %461, %462 : i32
+    %464 = llhd.const 0 : i8
+    %465 = llhd.shr %req_d3, %464, %463 : (i8, i8, i32) -> i8
+    %466 = llhd.extract_slice %465, 0 : i8 -> i1
+    %467 = llhd.not %466 : i1
+    %req_d4 = llhd.prb %req_d : !llhd.sig<i8>
+    %468 = llhd.const 0 : i32
+    %469 = llhd.const 2 : i32
+    %470 = muli %468, %469 : i32
+    %471 = llhd.const 1 : i32
+    %472 = addi %470, %471 : i32
+    %473 = llhd.const 0 : i8
+    %474 = llhd.shr %req_d4, %473, %472 : (i8, i8, i32) -> i8
+    %475 = llhd.extract_slice %474, 0 : i8 -> i1
+    %rr_q7 = llhd.prb %rr_q : !llhd.sig<i3>
+    %476 = llhd.const 3 : i32
+    %477 = llhd.const 1 : i32
+    %478 = subi %476, %477 : i32
+    %479 = llhd.const 2 : i32
+    %480 = subi %478, %479 : i32
+    %481 = llhd.const 0 : i3
+    %482 = llhd.shr %rr_q7, %481, %480 : (i3, i3, i32) -> i3
+    %483 = llhd.extract_slice %482, 0 : i3 -> i1
+    %484 = llhd.and %475, %483 : i1
+    %485 = llhd.or %467, %484 : i1
+    %486 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %sel15, %485 after %486 : !llhd.sig<i1>
+    %487 = llhd.const 3 : i32
+    %488 = llhd.const 0 : i3
+    %489 = llhd.array_uniform %488 : !llhd.array<7xi3>
+    %490 = llhd.sig "490" %489 : !llhd.array<7xi3>
+    %491 = llhd.shr %index_nodes, %490, %487 : (!llhd.sig<!llhd.array<7xi3>>, !llhd.sig<!llhd.array<7xi3>>, i32) -> !llhd.sig<!llhd.array<7xi3>>
+    %492 = llhd.extract_element %491, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
+    %493 = llhd.const 0 : i3
+    %sel16 = llhd.prb %sel15 : !llhd.sig<i1>
+    %494 = llhd.insert_slice %493, %sel16, 0 : i3, i1
+    %495 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %492, %494 after %495 : !llhd.sig<i3>
+    %496 = llhd.const 3 : i32
+    %497 = llhd.const 0 : i32
+    %498 = llhd.array_uniform %497 : !llhd.array<7xi32>
+    %499 = llhd.sig "499" %498 : !llhd.array<7xi32>
+    %500 = llhd.shr %data_nodes, %499, %496 : (!llhd.sig<!llhd.array<7xi32>>, !llhd.sig<!llhd.array<7xi32>>, i32) -> !llhd.sig<!llhd.array<7xi32>>
+    %501 = llhd.extract_element %500, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
+    %sel17 = llhd.prb %sel15 : !llhd.sig<i1>
+    %data_i1 = llhd.prb %data_i : !llhd.sig<!llhd.array<8xi32>>
+    %502 = llhd.const 0 : i32
+    %503 = llhd.const 2 : i32
+    %504 = muli %502, %503 : i32
+    %505 = llhd.const 1 : i32
+    %506 = addi %504, %505 : i32
+    %507 = llhd.const 0 : i32
+    %508 = llhd.array_uniform %507 : !llhd.array<8xi32>
+    %509 = llhd.shr %data_i1, %508, %506 : (!llhd.array<8xi32>, !llhd.array<8xi32>, i32) -> !llhd.array<8xi32>
+    %510 = llhd.extract_element %509, 0 : !llhd.array<8xi32> -> i32
+    %data_i2 = llhd.prb %data_i : !llhd.sig<!llhd.array<8xi32>>
+    %511 = llhd.const 0 : i32
+    %512 = llhd.const 2 : i32
+    %513 = muli %511, %512 : i32
+    %514 = llhd.const 0 : i32
+    %515 = llhd.array_uniform %514 : !llhd.array<8xi32>
+    %516 = llhd.shr %data_i2, %515, %513 : (!llhd.array<8xi32>, !llhd.array<8xi32>, i32) -> !llhd.array<8xi32>
+    %517 = llhd.extract_element %516, 0 : !llhd.array<8xi32> -> i32
+    %518 = llhd.array %517, %510 : !llhd.array<2xi32>
+    %519 = llhd.dyn_extract_element %518, %sel17 : (!llhd.array<2xi32>, i1) -> i32
+    %520 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %501, %519 after %520 : !llhd.sig<i32>
+    %521 = llhd.const 0 : i32
+    %522 = llhd.const 2 : i32
+    %523 = muli %521, %522 : i32
+    %524 = llhd.const 0 : i8
+    %525 = llhd.sig "525" %524 : i8
+    %526 = llhd.shr %gnt_o, %525, %523 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
+    %527 = llhd.extract_slice %526, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
+    %gnt_nodes7 = llhd.prb %gnt_nodes : !llhd.sig<i7>
+    %528 = llhd.const 3 : i32
+    %529 = llhd.const 0 : i7
+    %530 = llhd.shr %gnt_nodes7, %529, %528 : (i7, i7, i32) -> i7
+    %531 = llhd.extract_slice %530, 0 : i7 -> i1
+    %532 = llhd.const 0 : i1
+    %req_d5 = llhd.prb %req_d : !llhd.sig<i8>
+    %533 = llhd.const 0 : i32
+    %534 = llhd.const 2 : i32
+    %535 = muli %533, %534 : i32
+    %536 = llhd.const 0 : i8
+    %537 = llhd.shr %req_d5, %536, %535 : (i8, i8, i32) -> i8
+    %538 = llhd.extract_slice %537, 0 : i8 -> i1
+    %539 = llhd.or %532, %538 : i1
+    %540 = llhd.and %531, %539 : i1
+    %sel18 = llhd.prb %sel15 : !llhd.sig<i1>
+    %541 = llhd.not %sel18 : i1
+    %542 = llhd.and %540, %541 : i1
+    %543 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %527, %542 after %543 : !llhd.sig<i1>
+    %544 = llhd.const 0 : i32
+    %545 = llhd.const 2 : i32
+    %546 = muli %544, %545 : i32
+    %547 = llhd.const 1 : i32
+    %548 = addi %546, %547 : i32
+    %549 = llhd.const 0 : i8
+    %550 = llhd.sig "550" %549 : i8
+    %551 = llhd.shr %gnt_o, %550, %548 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
+    %552 = llhd.extract_slice %551, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
+    %gnt_nodes8 = llhd.prb %gnt_nodes : !llhd.sig<i7>
+    %553 = llhd.const 3 : i32
+    %554 = llhd.const 0 : i7
+    %555 = llhd.shr %gnt_nodes8, %554, %553 : (i7, i7, i32) -> i7
+    %556 = llhd.extract_slice %555, 0 : i7 -> i1
+    %557 = llhd.const 0 : i1
+    %req_d6 = llhd.prb %req_d : !llhd.sig<i8>
+    %558 = llhd.const 0 : i32
+    %559 = llhd.const 2 : i32
+    %560 = muli %558, %559 : i32
+    %561 = llhd.const 1 : i32
+    %562 = addi %560, %561 : i32
+    %563 = llhd.const 0 : i8
+    %564 = llhd.shr %req_d6, %563, %562 : (i8, i8, i32) -> i8
+    %565 = llhd.extract_slice %564, 0 : i8 -> i1
+    %566 = llhd.or %557, %565 : i1
+    %567 = llhd.and %556, %566 : i1
+    %sel19 = llhd.prb %sel15 : !llhd.sig<i1>
+    %568 = llhd.and %567, %sel19 : i1
+    %569 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %552, %568 after %569 : !llhd.sig<i1>
+    %570 = llhd.const 0 : i1
+    %sel20 = llhd.sig "sel20" %570 : i1
+    %571 = llhd.const 4 : i32
+    %572 = llhd.const 0 : i7
+    %573 = llhd.sig "573" %572 : i7
+    %574 = llhd.shr %req_nodes, %573, %571 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %575 = llhd.extract_slice %574, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %req_d7 = llhd.prb %req_d : !llhd.sig<i8>
+    %576 = llhd.const 1 : i32
+    %577 = llhd.const 2 : i32
+    %578 = muli %576, %577 : i32
+    %579 = llhd.const 0 : i8
+    %580 = llhd.shr %req_d7, %579, %578 : (i8, i8, i32) -> i8
+    %581 = llhd.extract_slice %580, 0 : i8 -> i1
+    %req_d8 = llhd.prb %req_d : !llhd.sig<i8>
+    %582 = llhd.const 1 : i32
+    %583 = llhd.const 2 : i32
+    %584 = muli %582, %583 : i32
+    %585 = llhd.const 1 : i32
+    %586 = addi %584, %585 : i32
+    %587 = llhd.const 0 : i8
+    %588 = llhd.shr %req_d8, %587, %586 : (i8, i8, i32) -> i8
+    %589 = llhd.extract_slice %588, 0 : i8 -> i1
+    %590 = llhd.or %581, %589 : i1
+    %591 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %575, %590 after %591 : !llhd.sig<i1>
+    %req_d9 = llhd.prb %req_d : !llhd.sig<i8>
+    %592 = llhd.const 1 : i32
+    %593 = llhd.const 2 : i32
+    %594 = muli %592, %593 : i32
+    %595 = llhd.const 0 : i8
+    %596 = llhd.shr %req_d9, %595, %594 : (i8, i8, i32) -> i8
+    %597 = llhd.extract_slice %596, 0 : i8 -> i1
+    %598 = llhd.not %597 : i1
+    %req_d10 = llhd.prb %req_d : !llhd.sig<i8>
+    %599 = llhd.const 1 : i32
+    %600 = llhd.const 2 : i32
+    %601 = muli %599, %600 : i32
+    %602 = llhd.const 1 : i32
+    %603 = addi %601, %602 : i32
+    %604 = llhd.const 0 : i8
+    %605 = llhd.shr %req_d10, %604, %603 : (i8, i8, i32) -> i8
+    %606 = llhd.extract_slice %605, 0 : i8 -> i1
+    %rr_q8 = llhd.prb %rr_q : !llhd.sig<i3>
+    %607 = llhd.const 3 : i32
+    %608 = llhd.const 1 : i32
+    %609 = subi %607, %608 : i32
+    %610 = llhd.const 2 : i32
+    %611 = subi %609, %610 : i32
+    %612 = llhd.const 0 : i3
+    %613 = llhd.shr %rr_q8, %612, %611 : (i3, i3, i32) -> i3
+    %614 = llhd.extract_slice %613, 0 : i3 -> i1
+    %615 = llhd.and %606, %614 : i1
+    %616 = llhd.or %598, %615 : i1
+    %617 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %sel20, %616 after %617 : !llhd.sig<i1>
+    %618 = llhd.const 4 : i32
+    %619 = llhd.const 0 : i3
+    %620 = llhd.array_uniform %619 : !llhd.array<7xi3>
+    %621 = llhd.sig "621" %620 : !llhd.array<7xi3>
+    %622 = llhd.shr %index_nodes, %621, %618 : (!llhd.sig<!llhd.array<7xi3>>, !llhd.sig<!llhd.array<7xi3>>, i32) -> !llhd.sig<!llhd.array<7xi3>>
+    %623 = llhd.extract_element %622, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
+    %624 = llhd.const 0 : i3
+    %sel21 = llhd.prb %sel20 : !llhd.sig<i1>
+    %625 = llhd.insert_slice %624, %sel21, 0 : i3, i1
+    %626 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %623, %625 after %626 : !llhd.sig<i3>
+    %627 = llhd.const 4 : i32
+    %628 = llhd.const 0 : i32
+    %629 = llhd.array_uniform %628 : !llhd.array<7xi32>
+    %630 = llhd.sig "630" %629 : !llhd.array<7xi32>
+    %631 = llhd.shr %data_nodes, %630, %627 : (!llhd.sig<!llhd.array<7xi32>>, !llhd.sig<!llhd.array<7xi32>>, i32) -> !llhd.sig<!llhd.array<7xi32>>
+    %632 = llhd.extract_element %631, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
+    %sel22 = llhd.prb %sel20 : !llhd.sig<i1>
+    %data_i3 = llhd.prb %data_i : !llhd.sig<!llhd.array<8xi32>>
+    %633 = llhd.const 1 : i32
+    %634 = llhd.const 2 : i32
+    %635 = muli %633, %634 : i32
+    %636 = llhd.const 1 : i32
+    %637 = addi %635, %636 : i32
+    %638 = llhd.const 0 : i32
+    %639 = llhd.array_uniform %638 : !llhd.array<8xi32>
+    %640 = llhd.shr %data_i3, %639, %637 : (!llhd.array<8xi32>, !llhd.array<8xi32>, i32) -> !llhd.array<8xi32>
+    %641 = llhd.extract_element %640, 0 : !llhd.array<8xi32> -> i32
+    %data_i4 = llhd.prb %data_i : !llhd.sig<!llhd.array<8xi32>>
+    %642 = llhd.const 1 : i32
+    %643 = llhd.const 2 : i32
+    %644 = muli %642, %643 : i32
+    %645 = llhd.const 0 : i32
+    %646 = llhd.array_uniform %645 : !llhd.array<8xi32>
+    %647 = llhd.shr %data_i4, %646, %644 : (!llhd.array<8xi32>, !llhd.array<8xi32>, i32) -> !llhd.array<8xi32>
+    %648 = llhd.extract_element %647, 0 : !llhd.array<8xi32> -> i32
+    %649 = llhd.array %648, %641 : !llhd.array<2xi32>
+    %650 = llhd.dyn_extract_element %649, %sel22 : (!llhd.array<2xi32>, i1) -> i32
+    %651 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %632, %650 after %651 : !llhd.sig<i32>
+    %652 = llhd.const 1 : i32
+    %653 = llhd.const 2 : i32
+    %654 = muli %652, %653 : i32
+    %655 = llhd.const 0 : i8
+    %656 = llhd.sig "656" %655 : i8
+    %657 = llhd.shr %gnt_o, %656, %654 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
+    %658 = llhd.extract_slice %657, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
+    %gnt_nodes9 = llhd.prb %gnt_nodes : !llhd.sig<i7>
+    %659 = llhd.const 4 : i32
+    %660 = llhd.const 0 : i7
+    %661 = llhd.shr %gnt_nodes9, %660, %659 : (i7, i7, i32) -> i7
+    %662 = llhd.extract_slice %661, 0 : i7 -> i1
+    %663 = llhd.const 0 : i1
+    %req_d11 = llhd.prb %req_d : !llhd.sig<i8>
+    %664 = llhd.const 1 : i32
+    %665 = llhd.const 2 : i32
+    %666 = muli %664, %665 : i32
+    %667 = llhd.const 0 : i8
+    %668 = llhd.shr %req_d11, %667, %666 : (i8, i8, i32) -> i8
+    %669 = llhd.extract_slice %668, 0 : i8 -> i1
+    %670 = llhd.or %663, %669 : i1
+    %671 = llhd.and %662, %670 : i1
+    %sel23 = llhd.prb %sel20 : !llhd.sig<i1>
+    %672 = llhd.not %sel23 : i1
+    %673 = llhd.and %671, %672 : i1
+    %674 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %658, %673 after %674 : !llhd.sig<i1>
+    %675 = llhd.const 1 : i32
+    %676 = llhd.const 2 : i32
+    %677 = muli %675, %676 : i32
+    %678 = llhd.const 1 : i32
+    %679 = addi %677, %678 : i32
+    %680 = llhd.const 0 : i8
+    %681 = llhd.sig "681" %680 : i8
+    %682 = llhd.shr %gnt_o, %681, %679 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
+    %683 = llhd.extract_slice %682, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
+    %gnt_nodes10 = llhd.prb %gnt_nodes : !llhd.sig<i7>
+    %684 = llhd.const 4 : i32
+    %685 = llhd.const 0 : i7
+    %686 = llhd.shr %gnt_nodes10, %685, %684 : (i7, i7, i32) -> i7
+    %687 = llhd.extract_slice %686, 0 : i7 -> i1
+    %688 = llhd.const 0 : i1
+    %req_d12 = llhd.prb %req_d : !llhd.sig<i8>
+    %689 = llhd.const 1 : i32
+    %690 = llhd.const 2 : i32
+    %691 = muli %689, %690 : i32
+    %692 = llhd.const 1 : i32
+    %693 = addi %691, %692 : i32
+    %694 = llhd.const 0 : i8
+    %695 = llhd.shr %req_d12, %694, %693 : (i8, i8, i32) -> i8
+    %696 = llhd.extract_slice %695, 0 : i8 -> i1
+    %697 = llhd.or %688, %696 : i1
+    %698 = llhd.and %687, %697 : i1
+    %sel24 = llhd.prb %sel20 : !llhd.sig<i1>
+    %699 = llhd.and %698, %sel24 : i1
+    %700 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %683, %699 after %700 : !llhd.sig<i1>
+    %701 = llhd.const 0 : i1
+    %sel25 = llhd.sig "sel25" %701 : i1
+    %702 = llhd.const 5 : i32
+    %703 = llhd.const 0 : i7
+    %704 = llhd.sig "704" %703 : i7
+    %705 = llhd.shr %req_nodes, %704, %702 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %706 = llhd.extract_slice %705, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %req_d13 = llhd.prb %req_d : !llhd.sig<i8>
+    %707 = llhd.const 2 : i32
+    %708 = llhd.const 2 : i32
+    %709 = muli %707, %708 : i32
+    %710 = llhd.const 0 : i8
+    %711 = llhd.shr %req_d13, %710, %709 : (i8, i8, i32) -> i8
+    %712 = llhd.extract_slice %711, 0 : i8 -> i1
+    %req_d14 = llhd.prb %req_d : !llhd.sig<i8>
+    %713 = llhd.const 2 : i32
+    %714 = llhd.const 2 : i32
+    %715 = muli %713, %714 : i32
+    %716 = llhd.const 1 : i32
+    %717 = addi %715, %716 : i32
+    %718 = llhd.const 0 : i8
+    %719 = llhd.shr %req_d14, %718, %717 : (i8, i8, i32) -> i8
+    %720 = llhd.extract_slice %719, 0 : i8 -> i1
+    %721 = llhd.or %712, %720 : i1
+    %722 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %706, %721 after %722 : !llhd.sig<i1>
+    %req_d15 = llhd.prb %req_d : !llhd.sig<i8>
+    %723 = llhd.const 2 : i32
+    %724 = llhd.const 2 : i32
+    %725 = muli %723, %724 : i32
+    %726 = llhd.const 0 : i8
+    %727 = llhd.shr %req_d15, %726, %725 : (i8, i8, i32) -> i8
+    %728 = llhd.extract_slice %727, 0 : i8 -> i1
+    %729 = llhd.not %728 : i1
+    %req_d16 = llhd.prb %req_d : !llhd.sig<i8>
+    %730 = llhd.const 2 : i32
+    %731 = llhd.const 2 : i32
+    %732 = muli %730, %731 : i32
+    %733 = llhd.const 1 : i32
+    %734 = addi %732, %733 : i32
+    %735 = llhd.const 0 : i8
+    %736 = llhd.shr %req_d16, %735, %734 : (i8, i8, i32) -> i8
+    %737 = llhd.extract_slice %736, 0 : i8 -> i1
+    %rr_q9 = llhd.prb %rr_q : !llhd.sig<i3>
+    %738 = llhd.const 3 : i32
+    %739 = llhd.const 1 : i32
+    %740 = subi %738, %739 : i32
+    %741 = llhd.const 2 : i32
+    %742 = subi %740, %741 : i32
+    %743 = llhd.const 0 : i3
+    %744 = llhd.shr %rr_q9, %743, %742 : (i3, i3, i32) -> i3
+    %745 = llhd.extract_slice %744, 0 : i3 -> i1
+    %746 = llhd.and %737, %745 : i1
+    %747 = llhd.or %729, %746 : i1
+    %748 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %sel25, %747 after %748 : !llhd.sig<i1>
+    %749 = llhd.const 5 : i32
+    %750 = llhd.const 0 : i3
+    %751 = llhd.array_uniform %750 : !llhd.array<7xi3>
+    %752 = llhd.sig "752" %751 : !llhd.array<7xi3>
+    %753 = llhd.shr %index_nodes, %752, %749 : (!llhd.sig<!llhd.array<7xi3>>, !llhd.sig<!llhd.array<7xi3>>, i32) -> !llhd.sig<!llhd.array<7xi3>>
+    %754 = llhd.extract_element %753, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
+    %755 = llhd.const 0 : i3
+    %sel26 = llhd.prb %sel25 : !llhd.sig<i1>
+    %756 = llhd.insert_slice %755, %sel26, 0 : i3, i1
+    %757 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %754, %756 after %757 : !llhd.sig<i3>
+    %758 = llhd.const 5 : i32
+    %759 = llhd.const 0 : i32
+    %760 = llhd.array_uniform %759 : !llhd.array<7xi32>
+    %761 = llhd.sig "761" %760 : !llhd.array<7xi32>
+    %762 = llhd.shr %data_nodes, %761, %758 : (!llhd.sig<!llhd.array<7xi32>>, !llhd.sig<!llhd.array<7xi32>>, i32) -> !llhd.sig<!llhd.array<7xi32>>
+    %763 = llhd.extract_element %762, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
+    %sel27 = llhd.prb %sel25 : !llhd.sig<i1>
+    %data_i5 = llhd.prb %data_i : !llhd.sig<!llhd.array<8xi32>>
+    %764 = llhd.const 2 : i32
+    %765 = llhd.const 2 : i32
+    %766 = muli %764, %765 : i32
+    %767 = llhd.const 1 : i32
+    %768 = addi %766, %767 : i32
+    %769 = llhd.const 0 : i32
+    %770 = llhd.array_uniform %769 : !llhd.array<8xi32>
+    %771 = llhd.shr %data_i5, %770, %768 : (!llhd.array<8xi32>, !llhd.array<8xi32>, i32) -> !llhd.array<8xi32>
+    %772 = llhd.extract_element %771, 0 : !llhd.array<8xi32> -> i32
+    %data_i6 = llhd.prb %data_i : !llhd.sig<!llhd.array<8xi32>>
+    %773 = llhd.const 2 : i32
+    %774 = llhd.const 2 : i32
+    %775 = muli %773, %774 : i32
+    %776 = llhd.const 0 : i32
+    %777 = llhd.array_uniform %776 : !llhd.array<8xi32>
+    %778 = llhd.shr %data_i6, %777, %775 : (!llhd.array<8xi32>, !llhd.array<8xi32>, i32) -> !llhd.array<8xi32>
+    %779 = llhd.extract_element %778, 0 : !llhd.array<8xi32> -> i32
+    %780 = llhd.array %779, %772 : !llhd.array<2xi32>
+    %781 = llhd.dyn_extract_element %780, %sel27 : (!llhd.array<2xi32>, i1) -> i32
+    %782 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %763, %781 after %782 : !llhd.sig<i32>
+    %783 = llhd.const 2 : i32
+    %784 = llhd.const 2 : i32
+    %785 = muli %783, %784 : i32
+    %786 = llhd.const 0 : i8
+    %787 = llhd.sig "787" %786 : i8
+    %788 = llhd.shr %gnt_o, %787, %785 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
+    %789 = llhd.extract_slice %788, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
+    %gnt_nodes11 = llhd.prb %gnt_nodes : !llhd.sig<i7>
+    %790 = llhd.const 5 : i32
+    %791 = llhd.const 0 : i7
+    %792 = llhd.shr %gnt_nodes11, %791, %790 : (i7, i7, i32) -> i7
+    %793 = llhd.extract_slice %792, 0 : i7 -> i1
+    %794 = llhd.const 0 : i1
+    %req_d17 = llhd.prb %req_d : !llhd.sig<i8>
+    %795 = llhd.const 2 : i32
+    %796 = llhd.const 2 : i32
+    %797 = muli %795, %796 : i32
+    %798 = llhd.const 0 : i8
+    %799 = llhd.shr %req_d17, %798, %797 : (i8, i8, i32) -> i8
+    %800 = llhd.extract_slice %799, 0 : i8 -> i1
+    %801 = llhd.or %794, %800 : i1
+    %802 = llhd.and %793, %801 : i1
+    %sel28 = llhd.prb %sel25 : !llhd.sig<i1>
+    %803 = llhd.not %sel28 : i1
+    %804 = llhd.and %802, %803 : i1
+    %805 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %789, %804 after %805 : !llhd.sig<i1>
+    %806 = llhd.const 2 : i32
+    %807 = llhd.const 2 : i32
+    %808 = muli %806, %807 : i32
+    %809 = llhd.const 1 : i32
+    %810 = addi %808, %809 : i32
+    %811 = llhd.const 0 : i8
+    %812 = llhd.sig "812" %811 : i8
+    %813 = llhd.shr %gnt_o, %812, %810 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
+    %814 = llhd.extract_slice %813, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
+    %gnt_nodes12 = llhd.prb %gnt_nodes : !llhd.sig<i7>
+    %815 = llhd.const 5 : i32
+    %816 = llhd.const 0 : i7
+    %817 = llhd.shr %gnt_nodes12, %816, %815 : (i7, i7, i32) -> i7
+    %818 = llhd.extract_slice %817, 0 : i7 -> i1
+    %819 = llhd.const 0 : i1
+    %req_d18 = llhd.prb %req_d : !llhd.sig<i8>
+    %820 = llhd.const 2 : i32
+    %821 = llhd.const 2 : i32
+    %822 = muli %820, %821 : i32
+    %823 = llhd.const 1 : i32
+    %824 = addi %822, %823 : i32
+    %825 = llhd.const 0 : i8
+    %826 = llhd.shr %req_d18, %825, %824 : (i8, i8, i32) -> i8
+    %827 = llhd.extract_slice %826, 0 : i8 -> i1
+    %828 = llhd.or %819, %827 : i1
+    %829 = llhd.and %818, %828 : i1
+    %sel29 = llhd.prb %sel25 : !llhd.sig<i1>
+    %830 = llhd.and %829, %sel29 : i1
+    %831 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %814, %830 after %831 : !llhd.sig<i1>
+    %832 = llhd.const 0 : i1
+    %sel30 = llhd.sig "sel30" %832 : i1
+    %833 = llhd.const 6 : i32
+    %834 = llhd.const 0 : i7
+    %835 = llhd.sig "835" %834 : i7
+    %836 = llhd.shr %req_nodes, %835, %833 : (!llhd.sig<i7>, !llhd.sig<i7>, i32) -> !llhd.sig<i7>
+    %837 = llhd.extract_slice %836, 0 : !llhd.sig<i7> -> !llhd.sig<i1>
+    %req_d19 = llhd.prb %req_d : !llhd.sig<i8>
+    %838 = llhd.const 3 : i32
+    %839 = llhd.const 2 : i32
+    %840 = muli %838, %839 : i32
+    %841 = llhd.const 0 : i8
+    %842 = llhd.shr %req_d19, %841, %840 : (i8, i8, i32) -> i8
+    %843 = llhd.extract_slice %842, 0 : i8 -> i1
+    %req_d20 = llhd.prb %req_d : !llhd.sig<i8>
+    %844 = llhd.const 3 : i32
+    %845 = llhd.const 2 : i32
+    %846 = muli %844, %845 : i32
+    %847 = llhd.const 1 : i32
+    %848 = addi %846, %847 : i32
+    %849 = llhd.const 0 : i8
+    %850 = llhd.shr %req_d20, %849, %848 : (i8, i8, i32) -> i8
+    %851 = llhd.extract_slice %850, 0 : i8 -> i1
+    %852 = llhd.or %843, %851 : i1
+    %853 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %837, %852 after %853 : !llhd.sig<i1>
+    %req_d21 = llhd.prb %req_d : !llhd.sig<i8>
+    %854 = llhd.const 3 : i32
+    %855 = llhd.const 2 : i32
+    %856 = muli %854, %855 : i32
+    %857 = llhd.const 0 : i8
+    %858 = llhd.shr %req_d21, %857, %856 : (i8, i8, i32) -> i8
+    %859 = llhd.extract_slice %858, 0 : i8 -> i1
+    %860 = llhd.not %859 : i1
+    %req_d22 = llhd.prb %req_d : !llhd.sig<i8>
+    %861 = llhd.const 3 : i32
+    %862 = llhd.const 2 : i32
+    %863 = muli %861, %862 : i32
+    %864 = llhd.const 1 : i32
+    %865 = addi %863, %864 : i32
+    %866 = llhd.const 0 : i8
+    %867 = llhd.shr %req_d22, %866, %865 : (i8, i8, i32) -> i8
+    %868 = llhd.extract_slice %867, 0 : i8 -> i1
+    %rr_q10 = llhd.prb %rr_q : !llhd.sig<i3>
+    %869 = llhd.const 3 : i32
+    %870 = llhd.const 1 : i32
+    %871 = subi %869, %870 : i32
+    %872 = llhd.const 2 : i32
+    %873 = subi %871, %872 : i32
+    %874 = llhd.const 0 : i3
+    %875 = llhd.shr %rr_q10, %874, %873 : (i3, i3, i32) -> i3
+    %876 = llhd.extract_slice %875, 0 : i3 -> i1
+    %877 = llhd.and %868, %876 : i1
+    %878 = llhd.or %860, %877 : i1
+    %879 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %sel30, %878 after %879 : !llhd.sig<i1>
+    %880 = llhd.const 6 : i32
+    %881 = llhd.const 0 : i3
+    %882 = llhd.array_uniform %881 : !llhd.array<7xi3>
+    %883 = llhd.sig "883" %882 : !llhd.array<7xi3>
+    %884 = llhd.shr %index_nodes, %883, %880 : (!llhd.sig<!llhd.array<7xi3>>, !llhd.sig<!llhd.array<7xi3>>, i32) -> !llhd.sig<!llhd.array<7xi3>>
+    %885 = llhd.extract_element %884, 0 : !llhd.sig<!llhd.array<7xi3>> -> !llhd.sig<i3>
+    %886 = llhd.const 0 : i3
+    %sel31 = llhd.prb %sel30 : !llhd.sig<i1>
+    %887 = llhd.insert_slice %886, %sel31, 0 : i3, i1
+    %888 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %885, %887 after %888 : !llhd.sig<i3>
+    %889 = llhd.const 6 : i32
+    %890 = llhd.const 0 : i32
+    %891 = llhd.array_uniform %890 : !llhd.array<7xi32>
+    %892 = llhd.sig "892" %891 : !llhd.array<7xi32>
+    %893 = llhd.shr %data_nodes, %892, %889 : (!llhd.sig<!llhd.array<7xi32>>, !llhd.sig<!llhd.array<7xi32>>, i32) -> !llhd.sig<!llhd.array<7xi32>>
+    %894 = llhd.extract_element %893, 0 : !llhd.sig<!llhd.array<7xi32>> -> !llhd.sig<i32>
+    %sel32 = llhd.prb %sel30 : !llhd.sig<i1>
+    %data_i7 = llhd.prb %data_i : !llhd.sig<!llhd.array<8xi32>>
+    %895 = llhd.const 3 : i32
+    %896 = llhd.const 2 : i32
+    %897 = muli %895, %896 : i32
+    %898 = llhd.const 1 : i32
+    %899 = addi %897, %898 : i32
+    %900 = llhd.const 0 : i32
+    %901 = llhd.array_uniform %900 : !llhd.array<8xi32>
+    %902 = llhd.shr %data_i7, %901, %899 : (!llhd.array<8xi32>, !llhd.array<8xi32>, i32) -> !llhd.array<8xi32>
+    %903 = llhd.extract_element %902, 0 : !llhd.array<8xi32> -> i32
+    %data_i8 = llhd.prb %data_i : !llhd.sig<!llhd.array<8xi32>>
+    %904 = llhd.const 3 : i32
+    %905 = llhd.const 2 : i32
+    %906 = muli %904, %905 : i32
+    %907 = llhd.const 0 : i32
+    %908 = llhd.array_uniform %907 : !llhd.array<8xi32>
+    %909 = llhd.shr %data_i8, %908, %906 : (!llhd.array<8xi32>, !llhd.array<8xi32>, i32) -> !llhd.array<8xi32>
+    %910 = llhd.extract_element %909, 0 : !llhd.array<8xi32> -> i32
+    %911 = llhd.array %910, %903 : !llhd.array<2xi32>
+    %912 = llhd.dyn_extract_element %911, %sel32 : (!llhd.array<2xi32>, i1) -> i32
+    %913 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %894, %912 after %913 : !llhd.sig<i32>
+    %914 = llhd.const 3 : i32
+    %915 = llhd.const 2 : i32
+    %916 = muli %914, %915 : i32
+    %917 = llhd.const 0 : i8
+    %918 = llhd.sig "918" %917 : i8
+    %919 = llhd.shr %gnt_o, %918, %916 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
+    %920 = llhd.extract_slice %919, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
+    %gnt_nodes13 = llhd.prb %gnt_nodes : !llhd.sig<i7>
+    %921 = llhd.const 6 : i32
+    %922 = llhd.const 0 : i7
+    %923 = llhd.shr %gnt_nodes13, %922, %921 : (i7, i7, i32) -> i7
+    %924 = llhd.extract_slice %923, 0 : i7 -> i1
+    %925 = llhd.const 0 : i1
+    %req_d23 = llhd.prb %req_d : !llhd.sig<i8>
+    %926 = llhd.const 3 : i32
+    %927 = llhd.const 2 : i32
+    %928 = muli %926, %927 : i32
+    %929 = llhd.const 0 : i8
+    %930 = llhd.shr %req_d23, %929, %928 : (i8, i8, i32) -> i8
+    %931 = llhd.extract_slice %930, 0 : i8 -> i1
+    %932 = llhd.or %925, %931 : i1
+    %933 = llhd.and %924, %932 : i1
+    %sel33 = llhd.prb %sel30 : !llhd.sig<i1>
+    %934 = llhd.not %sel33 : i1
+    %935 = llhd.and %933, %934 : i1
+    %936 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %920, %935 after %936 : !llhd.sig<i1>
+    %937 = llhd.const 3 : i32
+    %938 = llhd.const 2 : i32
+    %939 = muli %937, %938 : i32
+    %940 = llhd.const 1 : i32
+    %941 = addi %939, %940 : i32
+    %942 = llhd.const 0 : i8
+    %943 = llhd.sig "943" %942 : i8
+    %944 = llhd.shr %gnt_o, %943, %941 : (!llhd.sig<i8>, !llhd.sig<i8>, i32) -> !llhd.sig<i8>
+    %945 = llhd.extract_slice %944, 0 : !llhd.sig<i8> -> !llhd.sig<i1>
+    %gnt_nodes14 = llhd.prb %gnt_nodes : !llhd.sig<i7>
+    %946 = llhd.const 6 : i32
+    %947 = llhd.const 0 : i7
+    %948 = llhd.shr %gnt_nodes14, %947, %946 : (i7, i7, i32) -> i7
+    %949 = llhd.extract_slice %948, 0 : i7 -> i1
+    %950 = llhd.const 0 : i1
+    %req_d24 = llhd.prb %req_d : !llhd.sig<i8>
+    %951 = llhd.const 3 : i32
+    %952 = llhd.const 2 : i32
+    %953 = muli %951, %952 : i32
+    %954 = llhd.const 1 : i32
+    %955 = addi %953, %954 : i32
+    %956 = llhd.const 0 : i8
+    %957 = llhd.shr %req_d24, %956, %955 : (i8, i8, i32) -> i8
+    %958 = llhd.extract_slice %957, 0 : i8 -> i1
+    %959 = llhd.or %950, %958 : i1
+    %960 = llhd.and %949, %959 : i1
+    %sel34 = llhd.prb %sel30 : !llhd.sig<i1>
+    %961 = llhd.and %960, %sel34 : i1
+    %962 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %945, %961 after %962 : !llhd.sig<i1>
+    llhd.inst "inst1" @rr_arb_tree.param1.initial.396.1() -> () : () -> ()
+    // %963 = llhd.const 0 : i8
+    // %964 = llhd.const #llhd.time<0s, 0d, 0e> : !llhd.time
+    // llhd.drv %gnt_o, %963 after %964 : !llhd.sig<i8>
 }
 
-llhd.proc @rr_arb_tree_tb.initial.1815.0() -> (%clk_i: !llhd.sig<i1> , %rst_ni: !llhd.sig<i1> ) {
+llhd.proc @rr_arb_tree_tb.initial.250.0() -> (%clk_i: !llhd.sig<i1> , %rst_ni: !llhd.sig<i1> ) {
     br ^0
 ^0:
-    %1 = llhd.const 0 : i1
-    %2 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
-    llhd.drv %rst_ni, %1 after %2 : !llhd.sig<i1>
-    %3 = llhd.const 1 : i1
-    %4 = llhd.const #llhd.time<2ns, 0d, 0e> : !llhd.time
-    llhd.drv %rst_ni, %3 after %4 : !llhd.sig<i1>
-    %5 = llhd.const #llhd.time<4ns, 0d, 0e> : !llhd.time
-    llhd.wait  for %5, ^6
-^6:
-    %7 = llhd.const 5000000 : i32
-    br ^loop_body(%7: i32)
-^loop_body(%8: i32):
-    %9 = llhd.const 0 : i32
-    %10 = cmpi "ne", %8, %9 : i32
-    cond_br %10, ^loop_continue, ^loop_exit
-^11:
-    %12 = llhd.const 1 : i32
-    %13 = subi %8, %12 : i32
-    br ^loop_body(%13: i32)
+    %1 = llhd.const 0 : i32
+    %2 = llhd.extract_slice %1, 0 : i32 -> i1
+    %3 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
+    llhd.drv %rst_ni, %2 after %3 : !llhd.sig<i1>
+    %4 = llhd.const 1 : i32
+    %5 = llhd.extract_slice %4, 0 : i32 -> i1
+    %6 = llhd.const #llhd.time<2ns, 0d, 0e> : !llhd.time
+    llhd.drv %rst_ni, %5 after %6 : !llhd.sig<i1>
+    %7 = llhd.const #llhd.time<4ns, 0d, 0e> : !llhd.time
+    llhd.wait  for %7, ^8
+^8:
+    %9 = llhd.const 5000000 : i32
+    %loop_count = llhd.var %9 : i32
+    br ^loop_body
+^loop_body:
+    %10 = llhd.load %loop_count : !llhd.ptr<i32>
+    %11 = llhd.const 0 : i32
+    %12 = llhd.neq %10, %11 : i32
+    cond_br %12, ^loop_continue, ^loop_exit
 ^loop_exit:
     llhd.halt
 ^loop_continue:
-    %14 = llhd.const 1 : i1
+    %13 = llhd.const 1 : i32
+    %14 = llhd.extract_slice %13, 0 : i32 -> i1
     %15 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
     llhd.drv %clk_i, %14 after %15 : !llhd.sig<i1>
-    %16 = llhd.const 0 : i1
-    %17 = llhd.const #llhd.time<2ns, 0d, 0e> : !llhd.time
-    llhd.drv %clk_i, %16 after %17 : !llhd.sig<i1>
-    llhd.wait  for %17, ^11
+    %16 = llhd.const 0 : i32
+    %17 = llhd.extract_slice %16, 0 : i32 -> i1
+    %18 = llhd.const #llhd.time<2ns, 0d, 0e> : !llhd.time
+    llhd.drv %clk_i, %17 after %18 : !llhd.sig<i1>
+    %19 = llhd.const #llhd.time<2ns, 0d, 0e> : !llhd.time
+    llhd.wait  for %19, ^20
+^20:
+    %21 = llhd.load %loop_count : !llhd.ptr<i32>
+    %22 = llhd.const 1 : i32
+    %23 = subi %21, %22 : i32
+    llhd.store %loop_count, %23 : !llhd.ptr<i32>
+    br ^loop_body
 }
 
 llhd.entity @rr_arb_tree_tb() -> () {
@@ -574,46 +1253,76 @@ llhd.entity @rr_arb_tree_tb() -> () {
     %clk_i = llhd.sig "clk_i" %0 : i1
     %1 = llhd.const 1 : i1
     %rst_ni = llhd.sig "rst_ni" %1 : i1
-    %flush_i = llhd.sig "flush_i" %0 : i1
-    %2 = llhd.const 0 : i3
-    %rr_i = llhd.sig "rr_i" %2 : i3
-    %3 = llhd.const 0 : i8
-    %req_i = llhd.sig "req_i" %3 : i8
-    %gnt_o = llhd.sig "gnt_o" %3 : i8
-    %4 = llhd.const 0 : i32
-    %5 = llhd.array %4, %4, %4, %4, %4, %4, %4, %4 : !llhd.array<8xi32>
-    %data_i = llhd.sig "data_i" %5 : !llhd.array<8xi32>
-    %gnt_i = llhd.sig "gnt_i" %0 : i1
-    %req_o = llhd.sig "req_o" %0 : i1
-    %data_o = llhd.sig "data_o" %4 : i32
-    %idx_o = llhd.sig "idx_o" %2 : i3
-    %6 = llhd.const 255 : i8
-    %7 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
-    llhd.drv %req_i, %6 after %7 : !llhd.sig<i8>
+    %2 = llhd.const 0 : i1
+    %flush_i = llhd.sig "flush_i" %2 : i1
+    %3 = llhd.const 0 : i3
+    %rr_i = llhd.sig "rr_i" %3 : i3
+    %4 = llhd.const 0 : i8
+    %req_i = llhd.sig "req_i" %4 : i8
+    %5 = llhd.const 0 : i8
+    %gnt_o = llhd.sig "gnt_o" %5 : i8
+    %6 = llhd.const 0 : i32
+    %7 = llhd.const 0 : i32
+    %8 = llhd.const 0 : i32
+    %9 = llhd.const 0 : i32
+    %10 = llhd.const 0 : i32
+    %11 = llhd.const 0 : i32
+    %12 = llhd.const 0 : i32
+    %13 = llhd.const 0 : i32
+    %14 = llhd.array %6, %7, %8, %9, %10, %11, %12, %13 : !llhd.array<8xi32>
+    %data_i = llhd.sig "data_i" %14 : !llhd.array<8xi32>
+    %15 = llhd.const 0 : i1
+    %gnt_i = llhd.sig "gnt_i" %15 : i1
+    %16 = llhd.const 0 : i1
+    %req_o = llhd.sig "req_o" %16 : i1
+    %17 = llhd.const 0 : i32
+    %data_o = llhd.sig "data_o" %17 : i32
+    %18 = llhd.const 0 : i3
+    %idx_o = llhd.sig "idx_o" %18 : i3
+    %19 = llhd.const 1 : i32
+    %20 = llhd.neg %19 : i32
+    %21 = llhd.extract_slice %20, 0 : i32 -> i8
+    %22 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %req_i, %21 after %22 : !llhd.sig<i8>
     %req_o1 = llhd.prb %req_o : !llhd.sig<i1>
-    llhd.drv %gnt_i, %req_o1 after %7 : !llhd.sig<i1>
+    %23 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %gnt_i, %req_o1 after %23 : !llhd.sig<i1>
     %clk_i1 = llhd.prb %clk_i : !llhd.sig<i1>
-    %8 = llhd.sig "sig11" %0 : i1
-    llhd.drv %8, %clk_i1 after %7 : !llhd.sig<i1>
+    %24 = llhd.const 0 : i1
+    %25 = llhd.sig "25" %24 : i1
+    %26 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %25, %clk_i1 after %26 : !llhd.sig<i1>
     %rst_ni1 = llhd.prb %rst_ni : !llhd.sig<i1>
-    %9 = llhd.sig "sig12" %0 : i1
-    llhd.drv %9, %rst_ni1 after %7 : !llhd.sig<i1>
+    %27 = llhd.const 0 : i1
+    %28 = llhd.sig "28" %27 : i1
+    %29 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %28, %rst_ni1 after %29 : !llhd.sig<i1>
     %flush_i1 = llhd.prb %flush_i : !llhd.sig<i1>
-    %10 = llhd.sig "sig13" %0 : i1
-    llhd.drv %10, %flush_i1 after %7 : !llhd.sig<i1>
+    %30 = llhd.const 0 : i1
+    %31 = llhd.sig "31" %30 : i1
+    %32 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %31, %flush_i1 after %32 : !llhd.sig<i1>
     %rr_i1 = llhd.prb %rr_i : !llhd.sig<i3>
-    %11 = llhd.sig "sig14" %2 : i3
-    llhd.drv %11, %rr_i1 after %7 : !llhd.sig<i3>
+    %33 = llhd.const 0 : i3
+    %34 = llhd.sig "34" %33 : i3
+    %35 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %34, %rr_i1 after %35 : !llhd.sig<i3>
     %req_i1 = llhd.prb %req_i : !llhd.sig<i8>
-    %12 = llhd.sig "sig15" %3 : i8
-    llhd.drv %12, %req_i1 after %7 : !llhd.sig<i8>
+    %36 = llhd.const 0 : i8
+    %37 = llhd.sig "37" %36 : i8
+    %38 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %37, %req_i1 after %38 : !llhd.sig<i8>
     %data_i1 = llhd.prb %data_i : !llhd.sig<!llhd.array<8xi32>>
-    %13 = llhd.array_uniform %4 : !llhd.array<8xi32>
-    %14 = llhd.sig "sig16" %13 : !llhd.array<8xi32>
-    llhd.drv %14, %data_i1 after %7 : !llhd.sig<!llhd.array<8xi32>>
+    %39 = llhd.const 0 : i32
+    %40 = llhd.array_uniform %39 : !llhd.array<8xi32>
+    %41 = llhd.sig "41" %40 : !llhd.array<8xi32>
+    %42 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %41, %data_i1 after %42 : !llhd.sig<!llhd.array<8xi32>>
     %gnt_i1 = llhd.prb %gnt_i : !llhd.sig<i1>
-    %15 = llhd.sig "sig17" %0 : i1
-    llhd.drv %15, %gnt_i1 after %7 : !llhd.sig<i1>
-    llhd.inst "inst" @rr_arb_tree.param1(%8, %9, %10, %11, %12, %14, %15) -> (%gnt_o, %req_o, %data_o, %idx_o) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i3>, !llhd.sig<i8>, !llhd.sig<!llhd.array<8xi32>>, !llhd.sig<i1>) -> (!llhd.sig<i8>, !llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i3>)
-    llhd.inst "inst1" @rr_arb_tree_tb.initial.1815.0() -> (%clk_i, %rst_ni) : () -> (!llhd.sig<i1>, !llhd.sig<i1>)
+    %43 = llhd.const 0 : i1
+    %44 = llhd.sig "44" %43 : i1
+    %45 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %44, %gnt_i1 after %45 : !llhd.sig<i1>
+    llhd.inst "inst" @rr_arb_tree.param1(%25, %28, %31, %34, %37, %41, %44) -> (%gnt_o, %req_o, %data_o, %idx_o) : (!llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i1>, !llhd.sig<i3>, !llhd.sig<i8>, !llhd.sig<!llhd.array<8xi32>>, !llhd.sig<i1>) -> (!llhd.sig<i8>, !llhd.sig<i1>, !llhd.sig<i32>, !llhd.sig<i3>)
+    llhd.inst "inst1" @rr_arb_tree_tb.initial.250.0() -> (%clk_i, %rst_ni) : () -> (!llhd.sig<i1>, !llhd.sig<i1>)
 }

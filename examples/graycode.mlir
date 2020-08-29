@@ -1,4 +1,4 @@
-llhd.entity @binary_to_gray.param2 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>) {
+llhd.entity @binary_to_gray.param2(%A: !llhd.sig<i20>) -> (%Z: !llhd.sig<i20> ) {
     %A1 = llhd.prb %A : !llhd.sig<i20>
     %A2 = llhd.prb %A : !llhd.sig<i20>
     %0 = llhd.const 1 : i32
@@ -9,10 +9,10 @@ llhd.entity @binary_to_gray.param2 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     llhd.drv %Z, %3 after %4 : !llhd.sig<i20>
 }
 
-llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>) {
+llhd.entity @gray_to_binary.param3(%A: !llhd.sig<i20>) -> (%Z: !llhd.sig<i20> ) {
     %0 = llhd.const 0 : i32
     %1 = llhd.const 0 : i20
-    %2 = llhd.sig "s0" %1 : i20
+    %2 = llhd.sig "2" %1 : i20
     %3 = llhd.shr %Z, %2, %0 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %4 = llhd.extract_slice %3, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A1 = llhd.prb %A : !llhd.sig<i20>
@@ -59,11 +59,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %45 = llhd.xor %43, %44 : i1
     %46 = llhd.extract_slice %8, 19 : i20 -> i1
     %47 = llhd.xor %45, %46 : i1
-    %48 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %48 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %4, %47 after %48 : !llhd.sig<i1>
     %49 = llhd.const 1 : i32
     %50 = llhd.const 0 : i20
-    %51 = llhd.sig "s1" %50 : i20
+    %51 = llhd.sig "51" %50 : i20
     %52 = llhd.shr %Z, %51, %49 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %53 = llhd.extract_slice %52, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A2 = llhd.prb %A : !llhd.sig<i20>
@@ -112,7 +112,7 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     llhd.drv %53, %94 after %95 : !llhd.sig<i1>
     %96 = llhd.const 2 : i32
     %97 = llhd.const 0 : i20
-    %98 = llhd.sig "s2" %97 : i20
+    %98 = llhd.sig "98" %97 : i20
     %99 = llhd.shr %Z, %98, %96 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %100 = llhd.extract_slice %99, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A3 = llhd.prb %A : !llhd.sig<i20>
@@ -122,51 +122,51 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %104 = llhd.extract_slice %103, 0 : i20 -> i18
     %105 = llhd.extract_slice %104, 0 : i18 -> i1
     %106 = llhd.extract_slice %104, 1 : i18 -> i1
-    %107 = xor %105, %106 : i1
+    %107 = llhd.xor %105, %106 : i1
     %108 = llhd.extract_slice %104, 2 : i18 -> i1
-    %109 = xor %107, %108 : i1
+    %109 = llhd.xor %107, %108 : i1
     %110 = llhd.extract_slice %104, 3 : i18 -> i1
-    %111 = xor %109, %110 : i1
+    %111 = llhd.xor %109, %110 : i1
     %112 = llhd.extract_slice %104, 4 : i18 -> i1
-    %113 = xor %111, %112 : i1
+    %113 = llhd.xor %111, %112 : i1
     %114 = llhd.extract_slice %104, 5 : i18 -> i1
-    %115 = xor %113, %114 : i1
+    %115 = llhd.xor %113, %114 : i1
     %116 = llhd.extract_slice %104, 6 : i18 -> i1
-    %117 = xor %115, %116 : i1
+    %117 = llhd.xor %115, %116 : i1
     %118 = llhd.extract_slice %104, 7 : i18 -> i1
-    %119 = xor %117, %118 : i1
+    %119 = llhd.xor %117, %118 : i1
     %120 = llhd.extract_slice %104, 8 : i18 -> i1
-    %121 = xor %119, %120 : i1
+    %121 = llhd.xor %119, %120 : i1
     %122 = llhd.extract_slice %104, 9 : i18 -> i1
-    %123 = xor %121, %122 : i1
+    %123 = llhd.xor %121, %122 : i1
     %124 = llhd.extract_slice %104, 10 : i18 -> i1
-    %125 = xor %123, %124 : i1
+    %125 = llhd.xor %123, %124 : i1
     %126 = llhd.extract_slice %104, 11 : i18 -> i1
-    %127 = xor %125, %126 : i1
+    %127 = llhd.xor %125, %126 : i1
     %128 = llhd.extract_slice %104, 12 : i18 -> i1
-    %129 = xor %127, %128 : i1
+    %129 = llhd.xor %127, %128 : i1
     %130 = llhd.extract_slice %104, 13 : i18 -> i1
-    %131 = xor %129, %130 : i1
+    %131 = llhd.xor %129, %130 : i1
     %132 = llhd.extract_slice %104, 14 : i18 -> i1
-    %133 = xor %131, %132 : i1
+    %133 = llhd.xor %131, %132 : i1
     %134 = llhd.extract_slice %104, 15 : i18 -> i1
-    %135 = xor %133, %134 : i1
+    %135 = llhd.xor %133, %134 : i1
     %136 = llhd.extract_slice %104, 16 : i18 -> i1
-    %137 = xor %135, %136 : i1
+    %137 = llhd.xor %135, %136 : i1
     %138 = llhd.extract_slice %104, 17 : i18 -> i1
-    %139 = xor %137, %138 : i1
-    %140 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %139 = llhd.xor %137, %138 : i1
+    %140 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %100, %139 after %140 : !llhd.sig<i1>
     %141 = llhd.const 3 : i32
     %142 = llhd.const 0 : i20
-    %143 = llhd.sig "s3" %142 : i20
+    %143 = llhd.sig "143" %142 : i20
     %144 = llhd.shr %Z, %143, %141 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %145 = llhd.extract_slice %144, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A4 = llhd.prb %A : !llhd.sig<i20>
     %146 = llhd.const 3 : i2
     %147 = llhd.const 0 : i20
     %148 = llhd.shr %A4, %147, %146 : (i20, i20, i2) -> i20
-    %149 = llhd.extract_slice  %148, 0 : i20 -> i17
+    %149 = llhd.extract_slice %148, 0 : i20 -> i17
     %150 = llhd.extract_slice %149, 0 : i17 -> i1
     %151 = llhd.extract_slice %149, 1 : i17 -> i1
     %152 = llhd.xor %150, %151 : i1
@@ -200,12 +200,12 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %180 = llhd.xor %178, %179 : i1
     %181 = llhd.extract_slice %149, 16 : i17 -> i1
     %182 = llhd.xor %180, %181 : i1
-    %183 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %183 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %145, %182 after %183 : !llhd.sig<i1>
     %184 = llhd.const 4 : i32
     %185 = llhd.const 0 : i20
-    %186 = llhd.sig "s4" %185 : i20
-    %187 = llhd.shr %Z, %186,  %184 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
+    %186 = llhd.sig "186" %185 : i20
+    %187 = llhd.shr %Z, %186, %184 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %188 = llhd.extract_slice %187, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A5 = llhd.prb %A : !llhd.sig<i20>
     %189 = llhd.const 4 : i3
@@ -243,17 +243,17 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %221 = llhd.xor %219, %220 : i1
     %222 = llhd.extract_slice %192, 15 : i16 -> i1
     %223 = llhd.xor %221, %222 : i1
-    %224 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %224 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %188, %223 after %224 : !llhd.sig<i1>
     %225 = llhd.const 5 : i32
     %226 = llhd.const 0 : i20
-    %227 = llhd.sig "s5" %226 : i20
+    %227 = llhd.sig "227" %226 : i20
     %228 = llhd.shr %Z, %227, %225 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %229 = llhd.extract_slice %228, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A6 = llhd.prb %A : !llhd.sig<i20>
-    %230 = llhd.const 5 : i32
+    %230 = llhd.const 5 : i3
     %231 = llhd.const 0 : i20
-    %232 = llhd.shr %A6, %231, %230 : (i20, i20, i32) -> i20
+    %232 = llhd.shr %A6, %231, %230 : (i20, i20, i3) -> i20
     %233 = llhd.extract_slice %232, 0 : i20 -> i15
     %234 = llhd.extract_slice %233, 0 : i15 -> i1
     %235 = llhd.extract_slice %233, 1 : i15 -> i1
@@ -284,11 +284,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %260 = llhd.xor %258, %259 : i1
     %261 = llhd.extract_slice %233, 14 : i15 -> i1
     %262 = llhd.xor %260, %261 : i1
-    %263 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %263 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %229, %262 after %263 : !llhd.sig<i1>
     %264 = llhd.const 6 : i32
     %265 = llhd.const 0 : i20
-    %266 = llhd.sig "s6" %265 : i20
+    %266 = llhd.sig "266" %265 : i20
     %267 = llhd.shr %Z, %266, %264 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %268 = llhd.extract_slice %267, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A7 = llhd.prb %A : !llhd.sig<i20>
@@ -323,11 +323,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %297 = llhd.xor %295, %296 : i1
     %298 = llhd.extract_slice %272, 13 : i14 -> i1
     %299 = llhd.xor %297, %298 : i1
-    %300 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %300 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %268, %299 after %300 : !llhd.sig<i1>
     %301 = llhd.const 7 : i32
     %302 = llhd.const 0 : i20
-    %303 = llhd.sig "s7" %302 : i20
+    %303 = llhd.sig "303" %302 : i20
     %304 = llhd.shr %Z, %303, %301 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %305 = llhd.extract_slice %304, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A8 = llhd.prb %A : !llhd.sig<i20>
@@ -360,11 +360,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %332 = llhd.xor %330, %331 : i1
     %333 = llhd.extract_slice %309, 12 : i13 -> i1
     %334 = llhd.xor %332, %333 : i1
-    %335 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %335 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %305, %334 after %335 : !llhd.sig<i1>
     %336 = llhd.const 8 : i32
     %337 = llhd.const 0 : i20
-    %338 = llhd.sig "s8" %337 : i20
+    %338 = llhd.sig "338" %337 : i20
     %339 = llhd.shr %Z, %338, %336 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %340 = llhd.extract_slice %339, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A9 = llhd.prb %A : !llhd.sig<i20>
@@ -395,11 +395,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %365 = llhd.xor %363, %364 : i1
     %366 = llhd.extract_slice %344, 11 : i12 -> i1
     %367 = llhd.xor %365, %366 : i1
-    %368 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %368 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %340, %367 after %368 : !llhd.sig<i1>
     %369 = llhd.const 9 : i32
     %370 = llhd.const 0 : i20
-    %371 = llhd.sig "s9" %370 : i20
+    %371 = llhd.sig "371" %370 : i20
     %372 = llhd.shr %Z, %371, %369 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %373 = llhd.extract_slice %372, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A10 = llhd.prb %A : !llhd.sig<i20>
@@ -428,11 +428,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %396 = llhd.xor %394, %395 : i1
     %397 = llhd.extract_slice %377, 10 : i11 -> i1
     %398 = llhd.xor %396, %397 : i1
-    %399 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %399 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %373, %398 after %399 : !llhd.sig<i1>
     %400 = llhd.const 10 : i32
     %401 = llhd.const 0 : i20
-    %402 = llhd.sig "s10" %401 : i20
+    %402 = llhd.sig "402" %401 : i20
     %403 = llhd.shr %Z, %402, %400 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %404 = llhd.extract_slice %403, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A11 = llhd.prb %A : !llhd.sig<i20>
@@ -459,11 +459,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %425 = llhd.xor %423, %424 : i1
     %426 = llhd.extract_slice %408, 9 : i10 -> i1
     %427 = llhd.xor %425, %426 : i1
-    %428 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %428 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %404, %427 after %428 : !llhd.sig<i1>
     %429 = llhd.const 11 : i32
     %430 = llhd.const 0 : i20
-    %431 = llhd.sig "s11" %430 : i20
+    %431 = llhd.sig "431" %430 : i20
     %432 = llhd.shr %Z, %431, %429 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %433 = llhd.extract_slice %432, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A12 = llhd.prb %A : !llhd.sig<i20>
@@ -488,11 +488,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %452 = llhd.xor %450, %451 : i1
     %453 = llhd.extract_slice %437, 8 : i9 -> i1
     %454 = llhd.xor %452, %453 : i1
-    %455 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %455 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %433, %454 after %455 : !llhd.sig<i1>
     %456 = llhd.const 12 : i32
     %457 = llhd.const 0 : i20
-    %458 = llhd.sig "s12" %457 : i20
+    %458 = llhd.sig "458" %457 : i20
     %459 = llhd.shr %Z, %458, %456 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %460 = llhd.extract_slice %459, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A13 = llhd.prb %A : !llhd.sig<i20>
@@ -515,11 +515,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %477 = llhd.xor %475, %476 : i1
     %478 = llhd.extract_slice %464, 7 : i8 -> i1
     %479 = llhd.xor %477, %478 : i1
-    %480 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %480 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %460, %479 after %480 : !llhd.sig<i1>
     %481 = llhd.const 13 : i32
     %482 = llhd.const 0 : i20
-    %483 = llhd.sig "s13" %482 : i20
+    %483 = llhd.sig "483" %482 : i20
     %484 = llhd.shr %Z, %483, %481 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %485 = llhd.extract_slice %484, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A14 = llhd.prb %A : !llhd.sig<i20>
@@ -540,11 +540,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %500 = llhd.xor %498, %499 : i1
     %501 = llhd.extract_slice %489, 6 : i7 -> i1
     %502 = llhd.xor %500, %501 : i1
-    %503 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %503 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %485, %502 after %503 : !llhd.sig<i1>
     %504 = llhd.const 14 : i32
-    %505 = llhd.const 0 :i20
-    %506 = llhd.sig "s14" %505 : i20
+    %505 = llhd.const 0 : i20
+    %506 = llhd.sig "506" %505 : i20
     %507 = llhd.shr %Z, %506, %504 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %508 = llhd.extract_slice %507, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A15 = llhd.prb %A : !llhd.sig<i20>
@@ -563,11 +563,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %521 = llhd.xor %519, %520 : i1
     %522 = llhd.extract_slice %512, 5 : i6 -> i1
     %523 = llhd.xor %521, %522 : i1
-    %524 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %524 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %508, %523 after %524 : !llhd.sig<i1>
     %525 = llhd.const 15 : i32
     %526 = llhd.const 0 : i20
-    %527 = llhd.sig "s15" %526 : i20
+    %527 = llhd.sig "527" %526 : i20
     %528 = llhd.shr %Z, %527, %525 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %529 = llhd.extract_slice %528, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A16 = llhd.prb %A : !llhd.sig<i20>
@@ -584,11 +584,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %540 = llhd.xor %538, %539 : i1
     %541 = llhd.extract_slice %533, 4 : i5 -> i1
     %542 = llhd.xor %540, %541 : i1
-    %543 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %543 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %529, %542 after %543 : !llhd.sig<i1>
     %544 = llhd.const 16 : i32
     %545 = llhd.const 0 : i20
-    %546 = llhd.sig "s16" %545 : i20
+    %546 = llhd.sig "546" %545 : i20
     %547 = llhd.shr %Z, %546, %544 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %548 = llhd.extract_slice %547, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A17 = llhd.prb %A : !llhd.sig<i20>
@@ -603,11 +603,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %557 = llhd.xor %555, %556 : i1
     %558 = llhd.extract_slice %552, 3 : i4 -> i1
     %559 = llhd.xor %557, %558 : i1
-    %560 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %560 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %548, %559 after %560 : !llhd.sig<i1>
     %561 = llhd.const 17 : i32
     %562 = llhd.const 0 : i20
-    %563 = llhd.sig "s17" %562 : i20
+    %563 = llhd.sig "563" %562 : i20
     %564 = llhd.shr %Z, %563, %561 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %565 = llhd.extract_slice %564, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A18 = llhd.prb %A : !llhd.sig<i20>
@@ -620,11 +620,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %572 = llhd.xor %570, %571 : i1
     %573 = llhd.extract_slice %569, 2 : i3 -> i1
     %574 = llhd.xor %572, %573 : i1
-    %575 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %575 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %565, %574 after %575 : !llhd.sig<i1>
     %576 = llhd.const 18 : i32
     %577 = llhd.const 0 : i20
-    %578 = llhd.sig "s18" %577 : i20
+    %578 = llhd.sig "578" %577 : i20
     %579 = llhd.shr %Z, %578, %576 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %580 = llhd.extract_slice %579, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A19 = llhd.prb %A : !llhd.sig<i20>
@@ -635,11 +635,11 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %585 = llhd.extract_slice %584, 0 : i2 -> i1
     %586 = llhd.extract_slice %584, 1 : i2 -> i1
     %587 = llhd.xor %585, %586 : i1
-    %588 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %588 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %580, %587 after %588 : !llhd.sig<i1>
     %589 = llhd.const 19 : i32
     %590 = llhd.const 0 : i20
-    %591 = llhd.sig "s19" %590 : i20
+    %591 = llhd.sig "591" %590 : i20
     %592 = llhd.shr %Z, %591, %589 : (!llhd.sig<i20>, !llhd.sig<i20>, i32) -> !llhd.sig<i20>
     %593 = llhd.extract_slice %592, 0 : !llhd.sig<i20> -> !llhd.sig<i1>
     %A20 = llhd.prb %A : !llhd.sig<i20>
@@ -648,29 +648,29 @@ llhd.entity @gray_to_binary.param3 (%A : !llhd.sig<i20>) -> (%Z : !llhd.sig<i20>
     %596 = llhd.shr %A20, %595, %594 : (i20, i20, i5) -> i20
     %597 = llhd.extract_slice %596, 0 : i20 -> i1
     %598 = llhd.extract_slice %597, 0 : i1 -> i1
-    %599 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %599 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %593, %598 after %599 : !llhd.sig<i1>
     // %600 = llhd.const 0 : i20
-    // %601 = llhd.const #llhd.time<0ns, 1d, 0e> : !llhd.time
+    // %601 = llhd.const #llhd.time<0s, 0d, 0e> : !llhd.time
     // llhd.drv %Z, %600 after %601 : !llhd.sig<i20>
 }
 
-llhd.entity @graycode.param1 (%A : !llhd.sig<i20>) -> (%G : !llhd.sig<i20>, %Z : !llhd.sig<i20>) {
+llhd.entity @graycode.param1(%A: !llhd.sig<i20>) -> (%G: !llhd.sig<i20> , %Z: !llhd.sig<i20> ) {
     %A1 = llhd.prb %A : !llhd.sig<i20>
     %0 = llhd.const 0 : i20
-    %1 = llhd.sig "sig_0" %0 : i20
+    %1 = llhd.sig "1" %0 : i20
     %2 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
-    llhd.drv %1, %A1 after %2  : !llhd.sig<i20>
-    llhd.inst "binary_to_gray" @binary_to_gray.param2 (%1) -> (%G) : (!llhd.sig<i20>) -> (!llhd.sig<i20>)
+    llhd.drv %1, %A1 after %2 : !llhd.sig<i20>
+    llhd.inst "inst" @binary_to_gray.param2(%1) -> (%G) : (!llhd.sig<i20>) -> (!llhd.sig<i20>)
     %G1 = llhd.prb %G : !llhd.sig<i20>
     %3 = llhd.const 0 : i20
-    %4 = llhd.sig "sig_1" %3 : i20
-    %5 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %4 = llhd.sig "4" %3 : i20
+    %5 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %4, %G1 after %5 : !llhd.sig<i20>
-    llhd.inst "gray_to_binary" @gray_to_binary.param3 (%4) -> (%Z) : (!llhd.sig<i20>) -> (!llhd.sig<i20>)
+    llhd.inst "inst1" @gray_to_binary.param3(%4) -> (%Z) : (!llhd.sig<i20>) -> (!llhd.sig<i20>)
 }
 
-llhd.proc @graycode_tb.initial.232.0 (%b : !llhd.sig<i20>) -> (%a : !llhd.sig<i20>, %bp : !llhd.sig<i20>) {
+llhd.proc @graycode_tb.initial.232.0(%b: !llhd.sig<i20>) -> (%a: !llhd.sig<i20> , %bp: !llhd.sig<i20> ) {
     br ^0
 ^0:
     %1 = llhd.const 0 : i21
@@ -678,7 +678,7 @@ llhd.proc @graycode_tb.initial.232.0 (%b : !llhd.sig<i20>) -> (%a : !llhd.sig<i2
     %2 = llhd.const 0 : i20
     %3 = llhd.const 0 : i1
     %4 = llhd.insert_slice %2, %3, 0 : i20, i1
-    %5 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %5 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %bp, %4 after %5 : !llhd.sig<i20>
     %6 = llhd.const 2 : i32
     %loop_count = llhd.var %6 : i32
@@ -686,7 +686,7 @@ llhd.proc @graycode_tb.initial.232.0 (%b : !llhd.sig<i20>) -> (%a : !llhd.sig<i2
 ^loop_body:
     %7 = llhd.load %loop_count : !llhd.ptr<i32>
     %8 = llhd.const 0 : i32
-    %9 = cmpi "ne", %7, %8 : i32
+    %9 = llhd.neq %7, %8 : i32
     cond_br %9, ^loop_continue, ^loop_exit
 ^loop_exit:
     %10 = llhd.const 0 : i32
@@ -698,51 +698,51 @@ llhd.proc @graycode_tb.initial.232.0 (%b : !llhd.sig<i20>) -> (%a : !llhd.sig<i2
     %13 = llhd.extract_slice %12, 0 : i32 -> i21
     llhd.store %i, %13 : !llhd.ptr<i21>
     br ^loop_body2
-^loop_body2:
+^loop_body1:
     %14 = llhd.const 0 : i32
-    %i1 = llhd.load %i : !llhd.ptr<i21>
-    %15 = llhd.insert_slice %14, %i1, 0 : i32, i21
+    %i5 = llhd.load %i : !llhd.ptr<i21>
+    %15 = llhd.insert_slice %14, %i5, 0 : i32, i21
     %16 = llhd.const 1 : i32
     %17 = llhd.const 20 : i32
     %18 = llhd.const 0 : i32
     %19 = llhd.shl %16, %18, %17 : (i32, i32, i32) -> i32
     %20 = cmpi "ult", %15, %19 : i32
-    cond_br %20, ^loop_continue1, ^loop_exit1
+    cond_br %20, ^loop_continue2, ^loop_exit2
+^loop_body2:
+    %21 = llhd.const 0 : i32
+    %i1 = llhd.load %i : !llhd.ptr<i21>
+    %22 = llhd.insert_slice %21, %i1, 0 : i32, i21
+    %23 = llhd.const 1 : i32
+    %24 = llhd.const 20 : i32
+    %25 = llhd.const 0 : i32
+    %26 = llhd.shl %23, %25, %24 : (i32, i32, i32) -> i32
+    %27 = cmpi "ult", %22, %26 : i32
+    cond_br %27, ^loop_continue1, ^loop_exit1
 ^loop_exit1:
-    %21 = llhd.load %loop_count : !llhd.ptr<i32>
-    %22 = llhd.const 1 : i32
-    %23 = subi %21, %22 : i32
-    llhd.store %loop_count, %23 : !llhd.ptr<i32>
+    %28 = llhd.load %loop_count : !llhd.ptr<i32>
+    %29 = llhd.const 1 : i32
+    %30 = subi %28, %29 : i32
+    llhd.store %loop_count, %30 : !llhd.ptr<i32>
     br ^loop_body
 ^loop_continue1:
     %i2 = llhd.load %i : !llhd.ptr<i21>
-    %24 = llhd.extract_slice %i2, 0 : i21 -> i20
-    %25 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
-    llhd.drv %a, %24 after %25 : !llhd.sig<i20>
-    %26 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
-    llhd.wait for %26, ^27
-^27:
+    %31 = llhd.extract_slice %i2, 0 : i21 -> i20
+    %32 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %a, %31 after %32 : !llhd.sig<i20>
+    %33 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
+    llhd.wait  for %33, ^34
+^34:
     %b1 = llhd.prb %b : !llhd.sig<i20>
-    %28 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
-    llhd.drv %bp, %b1 after %28 : !llhd.sig<i20>
+    %35 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
+    llhd.drv %bp, %b1 after %35 : !llhd.sig<i20>
     %i3 = llhd.load %i : !llhd.ptr<i21>
-    %29 = llhd.const 1 : i21
-    %30 = addi %i3, %29 : i21
-    llhd.store %i, %30 : !llhd.ptr<i21>
+    %36 = llhd.const 1 : i21
+    %37 = addi %i3, %36 : i21
+    llhd.store %i, %37 : !llhd.ptr<i21>
     %i4 = llhd.load %i : !llhd.ptr<i21>
-    %31 = llhd.const 0 : i21
-    %32 = cmpi "ne", %i4, %31 : i21
+    %38 = llhd.const 0 : i21
+    %39 = llhd.neq %i4, %38 : i21
     br ^loop_body2
-^loop_body1:
-    %33 = llhd.const 0 : i32
-    %i5 = llhd.load %i : !llhd.ptr<i21>
-    %34 = llhd.insert_slice %33, %i5, 0 : i32, i21
-    %35 = llhd.const 1 : i32
-    %36 = llhd.const 20 : i32
-    %37 = llhd.const 0 : i32
-    %38 = llhd.shl %35, %37, %36 : (i32, i32, i32) -> i32
-    %39 = cmpi "ult", %34, %38 : i32
-    cond_br %39, ^loop_continue2, ^loop_exit2
 ^loop_exit2:
     llhd.halt
 ^loop_continue2:
@@ -757,10 +757,10 @@ llhd.proc @graycode_tb.initial.232.0 (%b : !llhd.sig<i20>) -> (%a : !llhd.sig<i2
     %47 = llhd.const 1 : i32
     %48 = subi %46, %47 : i32
     %49 = llhd.extract_slice %48, 0 : i32 -> i20
-    %50 = llhd.const #llhd.time<0ns, 0d, 1e> : !llhd.time
+    %50 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %a, %49 after %50 : !llhd.sig<i20>
     %51 = llhd.const #llhd.time<1ns, 0d, 0e> : !llhd.time
-    llhd.wait for %51, ^52
+    llhd.wait  for %51, ^52
 ^52:
     %b2 = llhd.prb %b : !llhd.sig<i20>
     %53 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
@@ -771,11 +771,11 @@ llhd.proc @graycode_tb.initial.232.0 (%b : !llhd.sig<i20>) -> (%a : !llhd.sig<i2
     llhd.store %i, %55 : !llhd.ptr<i21>
     %i8 = llhd.load %i : !llhd.ptr<i21>
     %56 = llhd.const 0 : i21
-    %57 = cmpi "ne", %i8, %56 : i21
+    %57 = llhd.neq %i8, %56 : i21
     br ^loop_body1
 }
 
-llhd.entity @graycode_tb () -> () {
+llhd.entity @graycode_tb() -> () {
     %0 = llhd.const 0 : i20
     %a = llhd.sig "a" %0 : i20
     %1 = llhd.const 0 : i20
@@ -786,9 +786,9 @@ llhd.entity @graycode_tb () -> () {
     %bp = llhd.sig "bp" %3 : i20
     %a1 = llhd.prb %a : !llhd.sig<i20>
     %4 = llhd.const 0 : i20
-    %5 = llhd.sig "sig1" %4 : i20
+    %5 = llhd.sig "5" %4 : i20
     %6 = llhd.const #llhd.time<0s, 0d, 1e> : !llhd.time
     llhd.drv %5, %a1 after %6 : !llhd.sig<i20>
-    llhd.inst "inst" @graycode.param1 (%5) -> (%b, %c) : (!llhd.sig<i20>) -> (!llhd.sig<i20>, !llhd.sig<i20>)
-    llhd.inst "inst1" @graycode_tb.initial.232.0 (%b) -> (%a, %bp) : (!llhd.sig<i20>) -> (!llhd.sig<i20>, !llhd.sig<i20>)
+    llhd.inst "inst" @graycode.param1(%5) -> (%b, %c) : (!llhd.sig<i20>) -> (!llhd.sig<i20>, !llhd.sig<i20>)
+    llhd.inst "inst1" @graycode_tb.initial.232.0(%b) -> (%a, %bp) : (!llhd.sig<i20>) -> (!llhd.sig<i20>, !llhd.sig<i20>)
 }

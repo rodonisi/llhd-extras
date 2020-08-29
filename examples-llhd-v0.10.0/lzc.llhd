@@ -10,7 +10,7 @@ body:
 check:
     wait %body, %in_i
 loop_body:
-    %i.ld = phi i32 [%1, %loop_continue], [%0, %body]
+    %i.ld = phi i32 [%0, %body], [%1, %loop_continue]
     %2 = const i32 16
     %3 = ult i32 %i.ld, %2
     br %3, %check, %loop_continue
@@ -684,20 +684,21 @@ proc %lzc_tb.initial.1083.0 () -> (i1$ %clk_i, i1$ %rst_ni) {
     %7 = const i32 1000000
     br %loop_body
 loop_body:
-    %8 = phi i32 [%8, %9], [%7, %6]
-    %10 = const i32 0
-    %11 = neq i32 %8, %10
-    br %11, %loop_exit, %loop_continue
+    %8 = phi i32 [%7, %6], [%8, %9]
+    %10 = phi i32 [%7, %6], [%10, %9]
+    %11 = const i32 0
+    %12 = neq i32 %8, %11
+    br %12, %loop_exit, %loop_continue
 loop_exit:
     halt
 loop_continue:
-    %12 = const i1 1
-    %13 = const time 1ns
-    drv i1$ %clk_i, %12, %13
-    %14 = const i1 0
-    %15 = const time 2ns
-    drv i1$ %clk_i, %14, %15
-    wait %9 for %15
+    %13 = const i1 1
+    %14 = const time 1ns
+    drv i1$ %clk_i, %13, %14
+    %15 = const i1 0
+    %16 = const time 2ns
+    drv i1$ %clk_i, %15, %16
+    wait %9 for %16
 9:
     br %loop_body
 }
