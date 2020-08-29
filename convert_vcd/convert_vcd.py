@@ -1,4 +1,4 @@
-#! /Users/simon/.pyenv/shims/python
+#!/usr/bin/python
 from vcdvcd import VCDVCD
 import math
 import re
@@ -9,7 +9,7 @@ from pprint import PrettyPrinter
 p = PrettyPrinter()
 
 # Construct the argument parser
-ap = argparse.ArgumentParser()
+ap = argparse.ArgumentParser(description='Convert a VCD file into a diff-able textual format.')
 
 # Add the arguments to the parser
 ap.add_argument('input', metavar='<input-file>', type=str,
