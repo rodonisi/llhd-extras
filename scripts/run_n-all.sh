@@ -32,16 +32,16 @@ END=$1
 echo "" > time.txt
 
 for example in "${examples[@]}"; do
-    echo '==----------------------------------------------------==' >> diff.txt
+    echo '==----------------------------------------------------==' >> time.txt
     echo '== '$example >> time.txt
-    echo '==----------------------------------------------------==' >> diff.txt
+    echo '==----------------------------------------------------==' >> time.txt
     eval example_path="\${$example}"
     echo "Running $example"
     for i in {1..$END}
     do
         echo "iteration "$i"..."
-        echo "===--------------------------------------------------------------" >> diff.txt
-	{ time $bin $example_path --root=$example --trace-format=no-trace --report-timing ; } 2>> time.txt
+        echo "===--------------------------------------------------------------" >> time.txt
+	{ time $bin $example_path --root=$example --trace-format=no-trace ; } 2>> time.txt
         echo "\n" >> time.txt
     done
 
