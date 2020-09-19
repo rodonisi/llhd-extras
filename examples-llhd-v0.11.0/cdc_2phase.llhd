@@ -1,0 +1,439 @@
+proc %cdc_2phase_src.param2.always_ff.287.2 (i1$ %rst_ni, i1$ %clk_i, i32$ %data_i, i1$ %valid_i, i1$ %ready_o) -> (i1$ %req_src_q, i32$ %data_src_q) {
+0:
+    %1 = prb i1$ %req_src_q
+    %req_src_q.shadow = var i1 %1
+    br %init
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    %rst_ni.prb = prb i1$ %rst_ni
+    wait %check, %clk_i, %rst_ni
+check:
+    %2 = prb i1$ %req_src_q
+    st i1* %req_src_q.shadow, %2
+    %clk_i.prb1 = prb i1$ %clk_i
+    %3 = const i1 0
+    %4 = eq i1 %clk_i.prb, %3
+    %5 = neq i1 %clk_i.prb1, %3
+    %posedge = and i1 %4, %5
+    %rst_ni.prb1 = prb i1$ %rst_ni
+    %6 = neq i1 %rst_ni.prb, %3
+    %7 = eq i1 %rst_ni.prb1, %3
+    %negedge = and i1 %7, %6
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %8 = neq i1 %rst_ni.prb1, %3
+    %9 = not i1 %8
+    %10 = neq i1 %9, %3
+    %11 = const time 0s 1d
+    br %10, %if_false, %if_true
+if_true:
+    drv i1$ %req_src_q, %3, %11
+    %12 = const i32 0
+    drv i32$ %data_src_q, %12, %11
+    br %0
+if_false:
+    %valid_i.prb = prb i1$ %valid_i
+    %13 = neq i1 %valid_i.prb, %3
+    %ready_o.prb = prb i1$ %ready_o
+    %14 = neq i1 %ready_o.prb, %3
+    %15 = and i1 %13, %14
+    %16 = neq i1 %15, %3
+    br %16, %0, %if_true1
+if_true1:
+    %req_src_q.shadow.ld = ld i1* %req_src_q.shadow
+    %17 = not i1 %req_src_q.shadow.ld
+    drv i1$ %req_src_q, %17, %11
+    %data_i.prb = prb i32$ %data_i
+    drv i32$ %data_src_q, %data_i.prb, %11
+    br %0
+}
+
+proc %cdc_2phase_src.param2.always_ff.348.2 (i1$ %rst_ni, i1$ %clk_i, i1$ %async_ack_i) -> (i1$ %ack_src_q, i1$ %ack_q) {
+0:
+    %1 = prb i1$ %ack_src_q
+    %ack_src_q.shadow = var i1 %1
+    br %init
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    %rst_ni.prb = prb i1$ %rst_ni
+    wait %check, %clk_i, %rst_ni
+check:
+    %2 = prb i1$ %ack_src_q
+    st i1* %ack_src_q.shadow, %2
+    %clk_i.prb1 = prb i1$ %clk_i
+    %3 = const i1 0
+    %4 = eq i1 %clk_i.prb, %3
+    %5 = neq i1 %clk_i.prb1, %3
+    %posedge = and i1 %4, %5
+    %rst_ni.prb1 = prb i1$ %rst_ni
+    %6 = neq i1 %rst_ni.prb, %3
+    %7 = eq i1 %rst_ni.prb1, %3
+    %negedge = and i1 %7, %6
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %8 = neq i1 %rst_ni.prb1, %3
+    %9 = not i1 %8
+    %10 = neq i1 %9, %3
+    %11 = const time 0s 1d
+    br %10, %if_false, %if_true
+if_true:
+    drv i1$ %ack_src_q, %3, %11
+    drv i1$ %ack_q, %3, %11
+    br %0
+if_false:
+    %async_ack_i.prb = prb i1$ %async_ack_i
+    drv i1$ %ack_src_q, %async_ack_i.prb, %11
+    %ack_src_q.shadow.ld = ld i1* %ack_src_q.shadow
+    drv i1$ %ack_q, %ack_src_q.shadow.ld, %11
+    br %0
+}
+
+entity @cdc_2phase_src.param2 (i1$ %rst_ni, i1$ %clk_i, i32$ %data_i, i1$ %valid_i, i1$ %async_ack_i) -> (i1$ %ready_o, i1$ %async_req_o, i32$ %async_data_o) {
+    %0 = const i1 0
+    %req_src_q = sig i1 %0
+    %ack_src_q = sig i1 %0
+    %ack_q = sig i1 %0
+    %1 = const i32 0
+    %data_src_q = sig i32 %1
+    %req_src_q.prb = prb i1$ %req_src_q
+    %ack_q.prb = prb i1$ %ack_q
+    %2 = eq i1 %req_src_q.prb, %ack_q.prb
+    %3 = const time 0s 1e
+    drv i1$ %ready_o, %2, %3
+    drv i1$ %async_req_o, %req_src_q.prb, %3
+    %data_src_q.prb = prb i32$ %data_src_q
+    drv i32$ %async_data_o, %data_src_q.prb, %3
+    inst %cdc_2phase_src.param2.always_ff.287.2 (i1$ %rst_ni, i1$ %clk_i, i32$ %data_i, i1$ %valid_i, i1$ %ready_o) -> (i1$ %req_src_q, i32$ %data_src_q)
+    inst %cdc_2phase_src.param2.always_ff.348.2 (i1$ %rst_ni, i1$ %clk_i, i1$ %async_ack_i) -> (i1$ %ack_src_q, i1$ %ack_q)
+}
+
+proc %cdc_2phase_dst.param3.always_ff.483.3 (i1$ %rst_ni, i1$ %clk_i, i1$ %valid_o, i1$ %ready_i) -> (i1$ %ack_dst_q) {
+0:
+    %1 = prb i1$ %ack_dst_q
+    %ack_dst_q.shadow = var i1 %1
+    br %init
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    %rst_ni.prb = prb i1$ %rst_ni
+    wait %check, %clk_i, %rst_ni
+check:
+    %2 = prb i1$ %ack_dst_q
+    st i1* %ack_dst_q.shadow, %2
+    %clk_i.prb1 = prb i1$ %clk_i
+    %3 = const i1 0
+    %4 = eq i1 %clk_i.prb, %3
+    %5 = neq i1 %clk_i.prb1, %3
+    %posedge = and i1 %4, %5
+    %rst_ni.prb1 = prb i1$ %rst_ni
+    %6 = neq i1 %rst_ni.prb, %3
+    %7 = eq i1 %rst_ni.prb1, %3
+    %negedge = and i1 %7, %6
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %8 = neq i1 %rst_ni.prb1, %3
+    %9 = not i1 %8
+    %10 = neq i1 %9, %3
+    %11 = const time 0s 1d
+    br %10, %if_false, %if_true
+if_true:
+    drv i1$ %ack_dst_q, %3, %11
+    br %0
+if_false:
+    %valid_o.prb = prb i1$ %valid_o
+    %12 = neq i1 %valid_o.prb, %3
+    %ready_i.prb = prb i1$ %ready_i
+    %13 = neq i1 %ready_i.prb, %3
+    %14 = and i1 %12, %13
+    %15 = neq i1 %14, %3
+    br %15, %0, %if_true1
+if_true1:
+    %ack_dst_q.shadow.ld = ld i1* %ack_dst_q.shadow
+    %16 = not i1 %ack_dst_q.shadow.ld
+    drv i1$ %ack_dst_q, %16, %11
+    br %0
+}
+
+proc %cdc_2phase_dst.param3.always_ff.535.3 (i1$ %rst_ni, i1$ %clk_i, i1$ %valid_o, i32$ %async_data_i, i1$ %req_q0, i1$ %req_q1) -> (i32$ %data_dst_q) {
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    %rst_ni.prb = prb i1$ %rst_ni
+    wait %check, %clk_i, %rst_ni
+check:
+    %clk_i.prb1 = prb i1$ %clk_i
+    %0 = const i1 0
+    %1 = eq i1 %clk_i.prb, %0
+    %2 = neq i1 %clk_i.prb1, %0
+    %posedge = and i1 %1, %2
+    %rst_ni.prb1 = prb i1$ %rst_ni
+    %3 = neq i1 %rst_ni.prb, %0
+    %4 = eq i1 %rst_ni.prb1, %0
+    %negedge = and i1 %4, %3
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %5 = neq i1 %rst_ni.prb1, %0
+    %6 = not i1 %5
+    %7 = neq i1 %6, %0
+    %8 = const time 0s 1d
+    br %7, %if_false, %if_true
+if_true:
+    %9 = const i32 0
+    drv i32$ %data_dst_q, %9, %8
+    br %init
+if_false:
+    %req_q0.prb = prb i1$ %req_q0
+    %req_q1.prb = prb i1$ %req_q1
+    %10 = neq i1 %req_q0.prb, %req_q1.prb
+    %11 = neq i1 %10, %0
+    %valid_o.prb = prb i1$ %valid_o
+    %12 = neq i1 %valid_o.prb, %0
+    %13 = not i1 %12
+    %14 = neq i1 %13, %0
+    %15 = and i1 %11, %14
+    %16 = neq i1 %15, %0
+    br %16, %init, %if_true1
+if_true1:
+    %async_data_i.prb = prb i32$ %async_data_i
+    drv i32$ %data_dst_q, %async_data_i.prb, %8
+    br %init
+}
+
+proc %cdc_2phase_dst.param3.always_ff.618.3 (i1$ %rst_ni, i1$ %clk_i, i1$ %async_req_i) -> (i1$ %req_dst_q, i1$ %req_q0, i1$ %req_q1) {
+0:
+    %1 = prb i1$ %req_q0
+    %req_q0.shadow = var i1 %1
+    %2 = prb i1$ %req_dst_q
+    %req_dst_q.shadow = var i1 %2
+    br %init
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    %rst_ni.prb = prb i1$ %rst_ni
+    wait %check, %clk_i, %rst_ni
+check:
+    %3 = prb i1$ %req_q0
+    st i1* %req_q0.shadow, %3
+    %4 = prb i1$ %req_dst_q
+    st i1* %req_dst_q.shadow, %4
+    %clk_i.prb1 = prb i1$ %clk_i
+    %5 = const i1 0
+    %6 = eq i1 %clk_i.prb, %5
+    %7 = neq i1 %clk_i.prb1, %5
+    %posedge = and i1 %6, %7
+    %rst_ni.prb1 = prb i1$ %rst_ni
+    %8 = neq i1 %rst_ni.prb, %5
+    %9 = eq i1 %rst_ni.prb1, %5
+    %negedge = and i1 %9, %8
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %10 = neq i1 %rst_ni.prb1, %5
+    %11 = not i1 %10
+    %12 = neq i1 %11, %5
+    %13 = const time 0s 1d
+    br %12, %if_false, %if_true
+if_true:
+    drv i1$ %req_dst_q, %5, %13
+    drv i1$ %req_q0, %5, %13
+    drv i1$ %req_q1, %5, %13
+    br %0
+if_false:
+    %async_req_i.prb = prb i1$ %async_req_i
+    drv i1$ %req_dst_q, %async_req_i.prb, %13
+    %req_dst_q.shadow.ld = ld i1* %req_dst_q.shadow
+    drv i1$ %req_q0, %req_dst_q.shadow.ld, %13
+    %req_q0.shadow.ld = ld i1* %req_q0.shadow
+    drv i1$ %req_q1, %req_q0.shadow.ld, %13
+    br %0
+}
+
+entity @cdc_2phase_dst.param3 (i1$ %rst_ni, i1$ %clk_i, i1$ %ready_i, i1$ %async_req_i, i32$ %async_data_i) -> (i32$ %data_o, i1$ %valid_o, i1$ %async_ack_o) {
+    %0 = const i1 0
+    %req_dst_q = sig i1 %0
+    %req_q0 = sig i1 %0
+    %req_q1 = sig i1 %0
+    %ack_dst_q = sig i1 %0
+    %1 = const i32 0
+    %data_dst_q = sig i32 %1
+    %ack_dst_q.prb = prb i1$ %ack_dst_q
+    %req_q1.prb = prb i1$ %req_q1
+    %2 = neq i1 %ack_dst_q.prb, %req_q1.prb
+    %3 = const time 0s 1e
+    drv i1$ %valid_o, %2, %3
+    %data_dst_q.prb = prb i32$ %data_dst_q
+    drv i32$ %data_o, %data_dst_q.prb, %3
+    drv i1$ %async_ack_o, %ack_dst_q.prb, %3
+    inst %cdc_2phase_dst.param3.always_ff.483.3 (i1$ %rst_ni, i1$ %clk_i, i1$ %valid_o, i1$ %ready_i) -> (i1$ %ack_dst_q)
+    inst %cdc_2phase_dst.param3.always_ff.535.3 (i1$ %rst_ni, i1$ %clk_i, i1$ %valid_o, i32$ %async_data_i, i1$ %req_q0, i1$ %req_q1) -> (i32$ %data_dst_q)
+    inst %cdc_2phase_dst.param3.always_ff.618.3 (i1$ %rst_ni, i1$ %clk_i, i1$ %async_req_i) -> (i1$ %req_dst_q, i1$ %req_q0, i1$ %req_q1)
+}
+
+entity @cdc_2phase.param1 (i1$ %src_rst_ni, i1$ %src_clk_i, i32$ %src_data_i, i1$ %src_valid_i, i1$ %dst_rst_ni, i1$ %dst_clk_i, i1$ %dst_ready_i) -> (i1$ %src_ready_o, i32$ %dst_data_o, i1$ %dst_valid_o) {
+    %0 = const i1 0
+    %async_req = sig i1 %0
+    %async_ack = sig i1 %0
+    %1 = const i32 0
+    %async_data = sig i32 %1
+    inst @cdc_2phase_src.param2 (i1$ %src_rst_ni, i1$ %src_clk_i, i32$ %src_data_i, i1$ %src_valid_i, i1$ %async_ack) -> (i1$ %src_ready_o, i1$ %async_req, i32$ %async_data)
+    inst @cdc_2phase_dst.param3 (i1$ %dst_rst_ni, i1$ %dst_clk_i, i1$ %dst_ready_i, i1$ %async_req, i32$ %async_data) -> (i32$ %dst_data_o, i1$ %dst_valid_o, i1$ %async_ack)
+}
+
+proc %cdc_2phase_tb.initial.903.0 (i1$ %src_ready_o) -> (i1$ %src_rst_ni, i1$ %src_clk_i, i32$ %src_data_i, i1$ %src_valid_i) {
+0:
+    %1 = const i1 0
+    %2 = const time 0s 1e
+    drv i1$ %src_rst_ni, %1, %2
+    %3 = const time 1ns
+    wait %4 for %3
+4:
+    %5 = const i1 1
+    %6 = const time 0s 1e
+    drv i1$ %src_rst_ni, %5, %6
+    %7 = const time 1ns
+    wait %8 for %7
+8:
+    %9 = const i32 0
+    %i = var i32 %9
+    br %loop_body
+loop_body:
+    %i.ld = ld i32* %i
+    %10 = const i32 500000
+    %11 = slt i32 %i.ld, %10
+    br %11, %loop_exit, %loop_body1
+loop_exit:
+    halt
+loop_body1:
+    %src_ready_o.prb = prb i1$ %src_ready_o
+    %12 = const i1 0
+    %13 = neq i1 %src_ready_o.prb, %12
+    %14 = not i1 %13
+    %15 = neq i1 %14, %12
+    %16 = const i1 1
+    %17 = const time 0s 1e
+    %18 = const time 1ns
+    br %15, %loop_exit1, %loop_continue
+loop_exit1:
+    drv i1$ %src_clk_i, %16, %17
+    %i.ld1 = ld i32* %i
+    drv i32$ %src_data_i, %i.ld1, %17
+    drv i1$ %src_valid_i, %16, %17
+    wait %19 for %18
+loop_continue:
+    drv i1$ %src_clk_i, %16, %17
+    wait %20 for %18
+20:
+    %21 = const i1 0
+    %22 = const time 0s 1e
+    drv i1$ %src_clk_i, %21, %22
+    %23 = const time 1ns
+    wait %24 for %23
+24:
+    br %loop_body1
+19:
+    %25 = const i1 0
+    %26 = const time 0s 1e
+    drv i1$ %src_clk_i, %25, %26
+    %27 = const time 1ns
+    wait %28 for %27
+28:
+    %i.ld2 = ld i32* %i
+    %29 = const i32 1
+    %30 = add i32 %i.ld2, %29
+    st i32* %i, %30
+    br %loop_body
+}
+
+proc %cdc_2phase_tb.initial.1048.0 (i32$ %dst_data_o, i1$ %dst_valid_o) -> (i32$ %ERRORS, i1$ %dst_rst_ni, i1$ %dst_clk_i, i1$ %dst_ready_i) {
+0:
+    %1 = const i1 0
+    %2 = const time 0s 1e
+    drv i1$ %dst_rst_ni, %1, %2
+    %3 = const time 1ns
+    wait %4 for %3
+4:
+    %5 = const i1 1
+    %6 = const time 0s 1e
+    drv i1$ %dst_rst_ni, %5, %6
+    %7 = const time 1ns
+    wait %8 for %7
+8:
+    %9 = const i1 1
+    %10 = const time 0s 1e
+    drv i1$ %dst_ready_i, %9, %10
+    %11 = const i32 0
+    %i = var i32 %11
+    br %loop_body
+loop_body:
+    %i.ld = ld i32* %i
+    %12 = const i32 500000
+    %13 = slt i32 %i.ld, %12
+    br %13, %loop_exit, %loop_body1
+loop_exit:
+    halt
+loop_body1:
+    %dst_valid_o.prb = prb i1$ %dst_valid_o
+    %14 = const i1 0
+    %15 = neq i1 %dst_valid_o.prb, %14
+    %16 = not i1 %15
+    %17 = neq i1 %16, %14
+    %18 = const i1 1
+    %19 = const time 0s 1e
+    %20 = const time 1ns
+    br %17, %loop_exit1, %loop_continue
+loop_exit1:
+    drv i1$ %dst_clk_i, %18, %19
+    %21 = const i32 0
+    %i.ld1 = ld i32* %i
+    %dst_data_o.prb = prb i32$ %dst_data_o
+    %22 = neq i32 %i.ld1, %dst_data_o.prb
+    %zext = inss i32 %21, i1 %22, 0, 1
+    %ERRORS.prb = prb i32$ %ERRORS
+    %23 = add i32 %ERRORS.prb, %zext
+    drv i32$ %ERRORS, %23, %19
+    wait %24 for %20
+loop_continue:
+    drv i1$ %dst_clk_i, %18, %19
+    wait %25 for %20
+25:
+    %26 = const i1 0
+    %27 = const time 0s 1e
+    drv i1$ %dst_clk_i, %26, %27
+    %28 = const time 1ns
+    wait %29 for %28
+29:
+    br %loop_body1
+24:
+    %30 = const i1 0
+    %31 = const time 0s 1e
+    drv i1$ %dst_clk_i, %30, %31
+    %32 = const time 1ns
+    wait %33 for %32
+33:
+    %i.ld2 = ld i32* %i
+    %34 = const i32 1
+    %35 = add i32 %i.ld2, %34
+    st i32* %i, %35
+    br %loop_body
+}
+
+entity @cdc_2phase_tb () -> () {
+    %0 = const i32 0
+    %ERRORS = sig i32 %0
+    %1 = const i1 1
+    %src_rst_ni = sig i1 %1
+    %2 = const i1 0
+    %src_clk_i = sig i1 %2
+    %src_data_i = sig i32 %0
+    %src_valid_i = sig i1 %2
+    %src_ready_o = sig i1 %2
+    %dst_rst_ni = sig i1 %1
+    %dst_clk_i = sig i1 %2
+    %dst_data_o = sig i32 %0
+    %dst_valid_o = sig i1 %2
+    %dst_ready_i = sig i1 %2
+    inst @cdc_2phase.param1 (i1$ %src_rst_ni, i1$ %src_clk_i, i32$ %src_data_i, i1$ %src_valid_i, i1$ %dst_rst_ni, i1$ %dst_clk_i, i1$ %dst_ready_i) -> (i1$ %src_ready_o, i32$ %dst_data_o, i1$ %dst_valid_o)
+    inst %cdc_2phase_tb.initial.903.0 (i1$ %src_ready_o) -> (i1$ %src_rst_ni, i1$ %src_clk_i, i32$ %src_data_i, i1$ %src_valid_i)
+    inst %cdc_2phase_tb.initial.1048.0 (i32$ %dst_data_o, i1$ %dst_valid_o) -> (i32$ %ERRORS, i1$ %dst_rst_ni, i1$ %dst_clk_i, i1$ %dst_ready_i)
+}

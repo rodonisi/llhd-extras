@@ -1,0 +1,598 @@
+proc %rr_arb_tree.param1.always_ff.639.1 (i1$ %clk_i, i1$ %rst_ni, i1$ %flush_i, i3$ %rr_d) -> (i3$ %rr_q) {
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    %rst_ni.prb = prb i1$ %rst_ni
+    wait %check, %clk_i, %rst_ni
+check:
+    %clk_i.prb1 = prb i1$ %clk_i
+    %0 = const i1 0
+    %1 = eq i1 %clk_i.prb, %0
+    %2 = neq i1 %clk_i.prb1, %0
+    %posedge = and i1 %1, %2
+    %rst_ni.prb1 = prb i1$ %rst_ni
+    %3 = neq i1 %rst_ni.prb, %0
+    %4 = eq i1 %rst_ni.prb1, %0
+    %negedge = and i1 %4, %3
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %5 = neq i1 %rst_ni.prb1, %0
+    %6 = not i1 %5
+    %7 = neq i1 %6, %0
+    %8 = const i3 0
+    %9 = const time 0s 1d
+    br %7, %if_false, %if_true
+if_true:
+    drv i3$ %rr_q, %8, %9
+    br %init
+if_false:
+    %flush_i.prb = prb i1$ %flush_i
+    %10 = neq i1 %flush_i.prb, %0
+    br %10, %if_false1, %if_true1
+if_true1:
+    drv i3$ %rr_q, %8, %9
+    br %init
+if_false1:
+    %rr_d.prb = prb i3$ %rr_d
+    drv i3$ %rr_q, %rr_d.prb, %9
+    br %init
+}
+
+proc %rr_arb_tree.param1.initial.1529.1 () -> () {
+0:
+    halt
+}
+
+entity @rr_arb_tree.param1 (i1$ %clk_i, i1$ %rst_ni, i1$ %flush_i, i3$ %rr_i, i8$ %req_i, [8 x i32]$ %data_i, i1$ %gnt_i) -> (i8$ %gnt_o, i1$ %req_o, i32$ %data_o, i3$ %idx_o) {
+    %0 = const i3 0
+    %1 = [i3 %0, %0, %0, %0, %0, %0, %0]
+    %index_nodes = sig [7 x i3] %1
+    %2 = const i32 0
+    %3 = [i32 %2, %2, %2, %2, %2, %2, %2]
+    %data_nodes = sig [7 x i32] %3
+    %4 = const i7 0
+    %gnt_nodes = sig i7 %4
+    %req_nodes = sig i7 %4
+    %rr_q = sig i3 %0
+    %5 = const i8 0
+    %req_d = sig i8 %5
+    %req_nodes.prb = prb i7$ %req_nodes
+    %6 = exts i1, i7 %req_nodes.prb, 0, 1
+    %7 = const time 0s 1e
+    drv i1$ %req_o, %6, %7
+    %data_nodes.prb = prb [7 x i32]$ %data_nodes
+    %8 = extf i32, [7 x i32] %data_nodes.prb, 0
+    drv i32$ %data_o, %8, %7
+    %index_nodes.prb = prb [7 x i3]$ %index_nodes
+    %9 = extf i3, [7 x i3] %index_nodes.prb, 0
+    drv i3$ %idx_o, %9, %7
+    %10 = exts i1$, i7$ %gnt_nodes, 0, 1
+    %gnt_i.prb = prb i1$ %gnt_i
+    drv i1$ %10, %gnt_i.prb, %7
+    %rr_d = sig i3 %0
+    %11 = const i1 0
+    %12 = neq i1 %gnt_i.prb, %11
+    %req_o.prb = prb i1$ %req_o
+    %13 = neq i1 %req_o.prb, %11
+    %14 = and i1 %12, %13
+    %15 = neq i1 %14, %11
+    %rr_q.prb = prb i3$ %rr_q
+    %zext = inss i32 %2, i3 %rr_q.prb, 0, 3
+    %16 = const i32 7
+    %17 = eq i32 %zext, %16
+    %18 = neq i1 %17, %11
+    %19 = const i3 1
+    %20 = add i3 %rr_q.prb, %19
+    %21 = [i3 %20, %0]
+    %22 = mux [2 x i3] %21, i1 %18
+    %23 = [i3 %rr_q.prb, %22]
+    %24 = mux [2 x i3] %23, i1 %15
+    drv i3$ %rr_d, %24, %7
+    %req_i.prb = prb i8$ %req_i
+    drv i8$ %req_d, %req_i.prb, %7
+    inst %rr_arb_tree.param1.always_ff.639.1 (i1$ %clk_i, i1$ %rst_ni, i1$ %flush_i, i3$ %rr_d) -> (i3$ %rr_q)
+    %sel = sig i1 %11
+    %25 = exts i1$, i7$ %req_nodes, 0, 1
+    %26 = exts i6, i7 %req_nodes.prb, 1, 6
+    %27 = inss i7 %4, i6 %26, 0, 6
+    %28 = exts i1, i7 %27, 0, 1
+    %29 = exts i5, i7 %req_nodes.prb, 2, 5
+    %30 = inss i7 %4, i5 %29, 0, 5
+    %31 = exts i1, i7 %30, 0, 1
+    %32 = or i1 %28, %31
+    drv i1$ %25, %32, %7
+    %33 = not i1 %28
+    %34 = exts i1, i3 %rr_q.prb, 2, 1
+    %35 = inss i3 %0, i1 %34, 0, 1
+    %36 = exts i1, i3 %35, 0, 1
+    %37 = and i1 %31, %36
+    %38 = or i1 %33, %37
+    drv i1$ %sel, %38, %7
+    %39 = extf i3$, [7 x i3]$ %index_nodes, 0
+    %sel.prb = prb i1$ %sel
+    %40 = neq i1 %sel.prb, %11
+    %41 = [7 x i3 %0]
+    %42 = exts [2 x i3], [7 x i3] %41, 0, 2
+    %43 = exts [5 x i3], [7 x i3] %index_nodes.prb, 2, 5
+    %44 = inss [7 x i3] %41, [2 x i3] %42, 5, 2
+    %45 = inss [7 x i3] %44, [5 x i3] %43, 0, 5
+    %46 = extf i3, [7 x i3] %45, 0
+    %47 = exts i2, i3 %46, 0, 2
+    %48 = inss i3 %0, i2 %47, 0, 2
+    %49 = const i1 1
+    %concat = inss i3 %48, i1 %49, 2, 1
+    %50 = exts [1 x i3], [7 x i3] %41, 0, 1
+    %51 = exts [6 x i3], [7 x i3] %index_nodes.prb, 1, 6
+    %52 = inss [7 x i3] %41, [1 x i3] %50, 6, 1
+    %53 = inss [7 x i3] %52, [6 x i3] %51, 0, 6
+    %54 = extf i3, [7 x i3] %53, 0
+    %55 = exts i2, i3 %54, 0, 2
+    %56 = inss i3 %0, i2 %55, 0, 2
+    %concat1 = inss i3 %56, i1 %11, 2, 1
+    %57 = [i3 %concat1, %concat]
+    %58 = mux [2 x i3] %57, i1 %40
+    drv i3$ %39, %58, %7
+    %59 = extf i32$, [7 x i32]$ %data_nodes, 0
+    %60 = [7 x i32 %2]
+    %61 = exts [2 x i32], [7 x i32] %60, 0, 2
+    %62 = exts [5 x i32], [7 x i32] %data_nodes.prb, 2, 5
+    %63 = inss [7 x i32] %60, [2 x i32] %61, 5, 2
+    %64 = inss [7 x i32] %63, [5 x i32] %62, 0, 5
+    %65 = extf i32, [7 x i32] %64, 0
+    %66 = exts [1 x i32], [7 x i32] %60, 0, 1
+    %67 = exts [6 x i32], [7 x i32] %data_nodes.prb, 1, 6
+    %68 = inss [7 x i32] %60, [1 x i32] %66, 6, 1
+    %69 = inss [7 x i32] %68, [6 x i32] %67, 0, 6
+    %70 = extf i32, [7 x i32] %69, 0
+    %71 = [i32 %70, %65]
+    %72 = mux [2 x i32] %71, i1 %40
+    drv i32$ %59, %72, %7
+    %73 = const i32 1
+    %74 = sig i7 %4
+    %75 = shr i7$ %gnt_nodes, i7$ %74, i32 %73
+    %76 = exts i1$, i7$ %75, 0, 1
+    %gnt_nodes.prb = prb i7$ %gnt_nodes
+    %77 = exts i1, i7 %gnt_nodes.prb, 0, 1
+    %78 = not i1 %sel.prb
+    %79 = and i1 %77, %78
+    drv i1$ %76, %79, %7
+    %80 = const i32 2
+    %81 = sig i7 %4
+    %82 = shr i7$ %gnt_nodes, i7$ %81, i32 %80
+    %83 = exts i1$, i7$ %82, 0, 1
+    %84 = and i1 %77, %sel.prb
+    drv i1$ %83, %84, %7
+    %sel1 = sig i1 %11
+    %85 = sig i7 %4
+    %86 = shr i7$ %req_nodes, i7$ %85, i32 %73
+    %87 = exts i1$, i7$ %86, 0, 1
+    %88 = exts i4, i7 %req_nodes.prb, 3, 4
+    %89 = inss i7 %4, i4 %88, 0, 4
+    %90 = exts i1, i7 %89, 0, 1
+    %91 = exts i3, i7 %req_nodes.prb, 4, 3
+    %92 = inss i7 %4, i3 %91, 0, 3
+    %93 = exts i1, i7 %92, 0, 1
+    %94 = or i1 %90, %93
+    drv i1$ %87, %94, %7
+    %95 = not i1 %90
+    %96 = exts i2, i3 %rr_q.prb, 1, 2
+    %97 = inss i3 %0, i2 %96, 0, 2
+    %98 = exts i1, i3 %97, 0, 1
+    %99 = and i1 %93, %98
+    %100 = or i1 %95, %99
+    drv i1$ %sel1, %100, %7
+    %101 = sig [7 x i3] %41
+    %102 = shr [7 x i3]$ %index_nodes, [7 x i3]$ %101, i32 %73
+    %103 = extf i3$, [7 x i3]$ %102, 0
+    %sel.prb1 = prb i1$ %sel1
+    %104 = neq i1 %sel.prb1, %11
+    %105 = const i2 0
+    %106 = exts [4 x i3], [7 x i3] %41, 0, 4
+    %107 = exts [3 x i3], [7 x i3] %index_nodes.prb, 4, 3
+    %108 = inss [7 x i3] %41, [4 x i3] %106, 3, 4
+    %109 = inss [7 x i3] %108, [3 x i3] %107, 0, 3
+    %110 = extf i3, [7 x i3] %109, 0
+    %111 = exts i1, i3 %110, 0, 1
+    %112 = inss i2 %105, i1 %111, 0, 1
+    %concat2 = inss i2 %112, i1 %49, 1, 1
+    %zext1 = inss i3 %0, i2 %concat2, 0, 2
+    %113 = exts [3 x i3], [7 x i3] %41, 0, 3
+    %114 = exts [4 x i3], [7 x i3] %index_nodes.prb, 3, 4
+    %115 = inss [7 x i3] %41, [3 x i3] %113, 4, 3
+    %116 = inss [7 x i3] %115, [4 x i3] %114, 0, 4
+    %117 = extf i3, [7 x i3] %116, 0
+    %118 = exts i1, i3 %117, 0, 1
+    %119 = inss i2 %105, i1 %118, 0, 1
+    %concat3 = inss i2 %119, i1 %11, 1, 1
+    %zext2 = inss i3 %0, i2 %concat3, 0, 2
+    %120 = [i3 %zext2, %zext1]
+    %121 = mux [2 x i3] %120, i1 %104
+    drv i3$ %103, %121, %7
+    %122 = sig [7 x i32] %60
+    %123 = shr [7 x i32]$ %data_nodes, [7 x i32]$ %122, i32 %73
+    %124 = extf i32$, [7 x i32]$ %123, 0
+    %125 = exts [4 x i32], [7 x i32] %60, 0, 4
+    %126 = exts [3 x i32], [7 x i32] %data_nodes.prb, 4, 3
+    %127 = inss [7 x i32] %60, [4 x i32] %125, 3, 4
+    %128 = inss [7 x i32] %127, [3 x i32] %126, 0, 3
+    %129 = extf i32, [7 x i32] %128, 0
+    %130 = exts [3 x i32], [7 x i32] %60, 0, 3
+    %131 = exts [4 x i32], [7 x i32] %data_nodes.prb, 3, 4
+    %132 = inss [7 x i32] %60, [3 x i32] %130, 4, 3
+    %133 = inss [7 x i32] %132, [4 x i32] %131, 0, 4
+    %134 = extf i32, [7 x i32] %133, 0
+    %135 = [i32 %134, %129]
+    %136 = mux [2 x i32] %135, i1 %104
+    drv i32$ %124, %136, %7
+    %137 = const i32 3
+    %138 = sig i7 %4
+    %139 = shr i7$ %gnt_nodes, i7$ %138, i32 %137
+    %140 = exts i1$, i7$ %139, 0, 1
+    %141 = exts i6, i7 %gnt_nodes.prb, 1, 6
+    %142 = inss i7 %4, i6 %141, 0, 6
+    %143 = exts i1, i7 %142, 0, 1
+    %144 = not i1 %sel.prb1
+    %145 = and i1 %143, %144
+    drv i1$ %140, %145, %7
+    %146 = const i32 4
+    %147 = sig i7 %4
+    %148 = shr i7$ %gnt_nodes, i7$ %147, i32 %146
+    %149 = exts i1$, i7$ %148, 0, 1
+    %150 = and i1 %143, %sel.prb1
+    drv i1$ %149, %150, %7
+    %sel2 = sig i1 %11
+    %151 = sig i7 %4
+    %152 = shr i7$ %req_nodes, i7$ %151, i32 %80
+    %153 = exts i1$, i7$ %152, 0, 1
+    %154 = exts i2, i7 %req_nodes.prb, 5, 2
+    %155 = inss i7 %4, i2 %154, 0, 2
+    %156 = exts i1, i7 %155, 0, 1
+    %157 = exts i1, i7 %req_nodes.prb, 6, 1
+    %158 = inss i7 %4, i1 %157, 0, 1
+    %159 = exts i1, i7 %158, 0, 1
+    %160 = or i1 %156, %159
+    drv i1$ %153, %160, %7
+    %161 = not i1 %156
+    %162 = and i1 %159, %98
+    %163 = or i1 %161, %162
+    drv i1$ %sel2, %163, %7
+    %164 = sig [7 x i3] %41
+    %165 = shr [7 x i3]$ %index_nodes, [7 x i3]$ %164, i32 %80
+    %166 = extf i3$, [7 x i3]$ %165, 0
+    %sel.prb2 = prb i1$ %sel2
+    %167 = neq i1 %sel.prb2, %11
+    %168 = exts [6 x i3], [7 x i3] %41, 0, 6
+    %169 = exts [1 x i3], [7 x i3] %index_nodes.prb, 6, 1
+    %170 = inss [7 x i3] %41, [6 x i3] %168, 1, 6
+    %171 = inss [7 x i3] %170, [1 x i3] %169, 0, 1
+    %172 = extf i3, [7 x i3] %171, 0
+    %173 = exts i1, i3 %172, 0, 1
+    %174 = inss i2 %105, i1 %173, 0, 1
+    %concat4 = inss i2 %174, i1 %49, 1, 1
+    %zext3 = inss i3 %0, i2 %concat4, 0, 2
+    %175 = exts [5 x i3], [7 x i3] %41, 0, 5
+    %176 = exts [2 x i3], [7 x i3] %index_nodes.prb, 5, 2
+    %177 = inss [7 x i3] %41, [5 x i3] %175, 2, 5
+    %178 = inss [7 x i3] %177, [2 x i3] %176, 0, 2
+    %179 = extf i3, [7 x i3] %178, 0
+    %180 = exts i1, i3 %179, 0, 1
+    %181 = inss i2 %105, i1 %180, 0, 1
+    %concat5 = inss i2 %181, i1 %11, 1, 1
+    %zext4 = inss i3 %0, i2 %concat5, 0, 2
+    %182 = [i3 %zext4, %zext3]
+    %183 = mux [2 x i3] %182, i1 %167
+    drv i3$ %166, %183, %7
+    %184 = sig [7 x i32] %60
+    %185 = shr [7 x i32]$ %data_nodes, [7 x i32]$ %184, i32 %80
+    %186 = extf i32$, [7 x i32]$ %185, 0
+    %187 = exts [6 x i32], [7 x i32] %60, 0, 6
+    %188 = exts [1 x i32], [7 x i32] %data_nodes.prb, 6, 1
+    %189 = inss [7 x i32] %60, [6 x i32] %187, 1, 6
+    %190 = inss [7 x i32] %189, [1 x i32] %188, 0, 1
+    %191 = extf i32, [7 x i32] %190, 0
+    %192 = exts [5 x i32], [7 x i32] %60, 0, 5
+    %193 = exts [2 x i32], [7 x i32] %data_nodes.prb, 5, 2
+    %194 = inss [7 x i32] %60, [5 x i32] %192, 2, 5
+    %195 = inss [7 x i32] %194, [2 x i32] %193, 0, 2
+    %196 = extf i32, [7 x i32] %195, 0
+    %197 = [i32 %196, %191]
+    %198 = mux [2 x i32] %197, i1 %167
+    drv i32$ %186, %198, %7
+    %199 = const i32 5
+    %200 = sig i7 %4
+    %201 = shr i7$ %gnt_nodes, i7$ %200, i32 %199
+    %202 = exts i1$, i7$ %201, 0, 1
+    %203 = exts i5, i7 %gnt_nodes.prb, 2, 5
+    %204 = inss i7 %4, i5 %203, 0, 5
+    %205 = exts i1, i7 %204, 0, 1
+    %206 = not i1 %sel.prb2
+    %207 = and i1 %205, %206
+    drv i1$ %202, %207, %7
+    %208 = const i32 6
+    %209 = sig i7 %4
+    %210 = shr i7$ %gnt_nodes, i7$ %209, i32 %208
+    %211 = exts i1$, i7$ %210, 0, 1
+    %212 = and i1 %205, %sel.prb2
+    drv i1$ %211, %212, %7
+    %sel3 = sig i1 %11
+    %213 = sig i7 %4
+    %214 = shr i7$ %req_nodes, i7$ %213, i32 %137
+    %215 = exts i1$, i7$ %214, 0, 1
+    %req_d.prb = prb i8$ %req_d
+    %216 = exts i1, i8 %req_d.prb, 0, 1
+    %217 = exts i7, i8 %req_d.prb, 1, 7
+    %218 = inss i8 %5, i7 %217, 0, 7
+    %219 = exts i1, i8 %218, 0, 1
+    %220 = or i1 %216, %219
+    drv i1$ %215, %220, %7
+    %221 = not i1 %216
+    %222 = exts i1, i3 %rr_q.prb, 0, 1
+    %223 = and i1 %219, %222
+    %224 = or i1 %221, %223
+    drv i1$ %sel3, %224, %7
+    %225 = sig [7 x i3] %41
+    %226 = shr [7 x i3]$ %index_nodes, [7 x i3]$ %225, i32 %137
+    %227 = extf i3$, [7 x i3]$ %226, 0
+    %sel.prb3 = prb i1$ %sel3
+    %zext5 = inss i3 %0, i1 %sel.prb3, 0, 1
+    drv i3$ %227, %zext5, %7
+    %228 = sig [7 x i32] %60
+    %229 = shr [7 x i32]$ %data_nodes, [7 x i32]$ %228, i32 %137
+    %230 = extf i32$, [7 x i32]$ %229, 0
+    %231 = neq i1 %sel.prb3, %11
+    %data_i.prb = prb [8 x i32]$ %data_i
+    %232 = [8 x i32 %2]
+    %233 = exts [1 x i32], [8 x i32] %232, 0, 1
+    %234 = exts [7 x i32], [8 x i32] %data_i.prb, 1, 7
+    %235 = inss [8 x i32] %232, [1 x i32] %233, 7, 1
+    %236 = inss [8 x i32] %235, [7 x i32] %234, 0, 7
+    %237 = extf i32, [8 x i32] %236, 0
+    %238 = extf i32, [8 x i32] %data_i.prb, 0
+    %239 = [i32 %238, %237]
+    %240 = mux [2 x i32] %239, i1 %231
+    drv i32$ %230, %240, %7
+    %241 = exts i1$, i8$ %gnt_o, 0, 1
+    %242 = exts i4, i7 %gnt_nodes.prb, 3, 4
+    %243 = inss i7 %4, i4 %242, 0, 4
+    %244 = exts i1, i7 %243, 0, 1
+    %245 = and i1 %244, %216
+    %246 = not i1 %sel.prb3
+    %247 = and i1 %245, %246
+    drv i1$ %241, %247, %7
+    %248 = sig i8 %5
+    %249 = shr i8$ %gnt_o, i8$ %248, i32 %73
+    %250 = exts i1$, i8$ %249, 0, 1
+    %251 = and i1 %244, %219
+    %252 = and i1 %251, %sel.prb3
+    drv i1$ %250, %252, %7
+    %sel4 = sig i1 %11
+    %253 = sig i7 %4
+    %254 = shr i7$ %req_nodes, i7$ %253, i32 %146
+    %255 = exts i1$, i7$ %254, 0, 1
+    %256 = exts i6, i8 %req_d.prb, 2, 6
+    %257 = inss i8 %5, i6 %256, 0, 6
+    %258 = exts i1, i8 %257, 0, 1
+    %259 = exts i5, i8 %req_d.prb, 3, 5
+    %260 = inss i8 %5, i5 %259, 0, 5
+    %261 = exts i1, i8 %260, 0, 1
+    %262 = or i1 %258, %261
+    drv i1$ %255, %262, %7
+    %263 = not i1 %258
+    %264 = and i1 %261, %222
+    %265 = or i1 %263, %264
+    drv i1$ %sel4, %265, %7
+    %266 = sig [7 x i3] %41
+    %267 = shr [7 x i3]$ %index_nodes, [7 x i3]$ %266, i32 %146
+    %268 = extf i3$, [7 x i3]$ %267, 0
+    %sel.prb4 = prb i1$ %sel4
+    %zext6 = inss i3 %0, i1 %sel.prb4, 0, 1
+    drv i3$ %268, %zext6, %7
+    %269 = sig [7 x i32] %60
+    %270 = shr [7 x i32]$ %data_nodes, [7 x i32]$ %269, i32 %146
+    %271 = extf i32$, [7 x i32]$ %270, 0
+    %272 = neq i1 %sel.prb4, %11
+    %273 = exts [3 x i32], [8 x i32] %232, 0, 3
+    %274 = exts [5 x i32], [8 x i32] %data_i.prb, 3, 5
+    %275 = inss [8 x i32] %232, [3 x i32] %273, 5, 3
+    %276 = inss [8 x i32] %275, [5 x i32] %274, 0, 5
+    %277 = extf i32, [8 x i32] %276, 0
+    %278 = exts [2 x i32], [8 x i32] %232, 0, 2
+    %279 = exts [6 x i32], [8 x i32] %data_i.prb, 2, 6
+    %280 = inss [8 x i32] %232, [2 x i32] %278, 6, 2
+    %281 = inss [8 x i32] %280, [6 x i32] %279, 0, 6
+    %282 = extf i32, [8 x i32] %281, 0
+    %283 = [i32 %282, %277]
+    %284 = mux [2 x i32] %283, i1 %272
+    drv i32$ %271, %284, %7
+    %285 = sig i8 %5
+    %286 = shr i8$ %gnt_o, i8$ %285, i32 %80
+    %287 = exts i1$, i8$ %286, 0, 1
+    %288 = exts i3, i7 %gnt_nodes.prb, 4, 3
+    %289 = inss i7 %4, i3 %288, 0, 3
+    %290 = exts i1, i7 %289, 0, 1
+    %291 = and i1 %290, %258
+    %292 = not i1 %sel.prb4
+    %293 = and i1 %291, %292
+    drv i1$ %287, %293, %7
+    %294 = sig i8 %5
+    %295 = shr i8$ %gnt_o, i8$ %294, i32 %137
+    %296 = exts i1$, i8$ %295, 0, 1
+    %297 = and i1 %290, %261
+    %298 = and i1 %297, %sel.prb4
+    drv i1$ %296, %298, %7
+    %sel5 = sig i1 %11
+    %299 = sig i7 %4
+    %300 = shr i7$ %req_nodes, i7$ %299, i32 %199
+    %301 = exts i1$, i7$ %300, 0, 1
+    %302 = exts i4, i8 %req_d.prb, 4, 4
+    %303 = inss i8 %5, i4 %302, 0, 4
+    %304 = exts i1, i8 %303, 0, 1
+    %305 = exts i3, i8 %req_d.prb, 5, 3
+    %306 = inss i8 %5, i3 %305, 0, 3
+    %307 = exts i1, i8 %306, 0, 1
+    %308 = or i1 %304, %307
+    drv i1$ %301, %308, %7
+    %309 = not i1 %304
+    %310 = and i1 %307, %222
+    %311 = or i1 %309, %310
+    drv i1$ %sel5, %311, %7
+    %312 = sig [7 x i3] %41
+    %313 = shr [7 x i3]$ %index_nodes, [7 x i3]$ %312, i32 %199
+    %314 = extf i3$, [7 x i3]$ %313, 0
+    %sel.prb5 = prb i1$ %sel5
+    %zext7 = inss i3 %0, i1 %sel.prb5, 0, 1
+    drv i3$ %314, %zext7, %7
+    %315 = sig [7 x i32] %60
+    %316 = shr [7 x i32]$ %data_nodes, [7 x i32]$ %315, i32 %199
+    %317 = extf i32$, [7 x i32]$ %316, 0
+    %318 = neq i1 %sel.prb5, %11
+    %319 = exts [5 x i32], [8 x i32] %232, 0, 5
+    %320 = exts [3 x i32], [8 x i32] %data_i.prb, 5, 3
+    %321 = inss [8 x i32] %232, [5 x i32] %319, 3, 5
+    %322 = inss [8 x i32] %321, [3 x i32] %320, 0, 3
+    %323 = extf i32, [8 x i32] %322, 0
+    %324 = exts [4 x i32], [8 x i32] %232, 0, 4
+    %325 = exts [4 x i32], [8 x i32] %data_i.prb, 4, 4
+    %326 = inss [8 x i32] %232, [4 x i32] %324, 4, 4
+    %327 = inss [8 x i32] %326, [4 x i32] %325, 0, 4
+    %328 = extf i32, [8 x i32] %327, 0
+    %329 = [i32 %328, %323]
+    %330 = mux [2 x i32] %329, i1 %318
+    drv i32$ %317, %330, %7
+    %331 = sig i8 %5
+    %332 = shr i8$ %gnt_o, i8$ %331, i32 %146
+    %333 = exts i1$, i8$ %332, 0, 1
+    %334 = exts i2, i7 %gnt_nodes.prb, 5, 2
+    %335 = inss i7 %4, i2 %334, 0, 2
+    %336 = exts i1, i7 %335, 0, 1
+    %337 = and i1 %336, %304
+    %338 = not i1 %sel.prb5
+    %339 = and i1 %337, %338
+    drv i1$ %333, %339, %7
+    %340 = sig i8 %5
+    %341 = shr i8$ %gnt_o, i8$ %340, i32 %199
+    %342 = exts i1$, i8$ %341, 0, 1
+    %343 = and i1 %336, %307
+    %344 = and i1 %343, %sel.prb5
+    drv i1$ %342, %344, %7
+    %sel6 = sig i1 %11
+    %345 = sig i7 %4
+    %346 = shr i7$ %req_nodes, i7$ %345, i32 %208
+    %347 = exts i1$, i7$ %346, 0, 1
+    %348 = exts i2, i8 %req_d.prb, 6, 2
+    %349 = inss i8 %5, i2 %348, 0, 2
+    %350 = exts i1, i8 %349, 0, 1
+    %351 = exts i1, i8 %req_d.prb, 7, 1
+    %352 = inss i8 %5, i1 %351, 0, 1
+    %353 = exts i1, i8 %352, 0, 1
+    %354 = or i1 %350, %353
+    drv i1$ %347, %354, %7
+    %355 = not i1 %350
+    %356 = and i1 %353, %222
+    %357 = or i1 %355, %356
+    drv i1$ %sel6, %357, %7
+    %358 = sig [7 x i3] %41
+    %359 = shr [7 x i3]$ %index_nodes, [7 x i3]$ %358, i32 %208
+    %360 = extf i3$, [7 x i3]$ %359, 0
+    %sel.prb6 = prb i1$ %sel6
+    %zext8 = inss i3 %0, i1 %sel.prb6, 0, 1
+    drv i3$ %360, %zext8, %7
+    %361 = sig [7 x i32] %60
+    %362 = shr [7 x i32]$ %data_nodes, [7 x i32]$ %361, i32 %208
+    %363 = extf i32$, [7 x i32]$ %362, 0
+    %364 = neq i1 %sel.prb6, %11
+    %365 = exts [7 x i32], [8 x i32] %232, 0, 7
+    %366 = exts [1 x i32], [8 x i32] %data_i.prb, 7, 1
+    %367 = inss [8 x i32] %232, [7 x i32] %365, 1, 7
+    %368 = inss [8 x i32] %367, [1 x i32] %366, 0, 1
+    %369 = extf i32, [8 x i32] %368, 0
+    %370 = exts [6 x i32], [8 x i32] %232, 0, 6
+    %371 = exts [2 x i32], [8 x i32] %data_i.prb, 6, 2
+    %372 = inss [8 x i32] %232, [6 x i32] %370, 2, 6
+    %373 = inss [8 x i32] %372, [2 x i32] %371, 0, 2
+    %374 = extf i32, [8 x i32] %373, 0
+    %375 = [i32 %374, %369]
+    %376 = mux [2 x i32] %375, i1 %364
+    drv i32$ %363, %376, %7
+    %377 = sig i8 %5
+    %378 = shr i8$ %gnt_o, i8$ %377, i32 %208
+    %379 = exts i1$, i8$ %378, 0, 1
+    %380 = exts i1, i7 %gnt_nodes.prb, 6, 1
+    %381 = inss i7 %4, i1 %380, 0, 1
+    %382 = exts i1, i7 %381, 0, 1
+    %383 = and i1 %382, %350
+    %384 = not i1 %sel.prb6
+    %385 = and i1 %383, %384
+    drv i1$ %379, %385, %7
+    %386 = sig i8 %5
+    %387 = shr i8$ %gnt_o, i8$ %386, i32 %16
+    %388 = exts i1$, i8$ %387, 0, 1
+    %389 = and i1 %382, %353
+    %390 = and i1 %389, %sel.prb6
+    drv i1$ %388, %390, %7
+    inst %rr_arb_tree.param1.initial.1529.1 () -> ()
+    %391 = const time 0s
+    drv i8$ %gnt_o, %5, %391
+}
+
+proc %rr_arb_tree_tb.initial.1815.0 () -> (i1$ %clk_i, i1$ %rst_ni) {
+0:
+    %1 = const i1 0
+    %2 = const time 1ns
+    drv i1$ %rst_ni, %1, %2
+    %3 = const i1 1
+    %4 = const time 2ns
+    drv i1$ %rst_ni, %3, %4
+    %5 = const time 4ns
+    wait %6 for %5
+6:
+    %7 = const i32 5000000
+    %loop_count = var i32 %7
+    br %loop_body
+loop_body:
+    %8 = ld i32* %loop_count
+    %9 = const i32 0
+    %10 = neq i32 %8, %9
+    br %10, %loop_exit, %loop_continue
+loop_exit:
+    halt
+loop_continue:
+    %11 = const i1 1
+    %12 = const time 1ns
+    drv i1$ %clk_i, %11, %12
+    %13 = const i1 0
+    %14 = const time 2ns
+    drv i1$ %clk_i, %13, %14
+    wait %15 for %14
+15:
+    %16 = ld i32* %loop_count
+    st i32* %loop_count, %16
+    br %loop_body
+}
+
+entity @rr_arb_tree_tb () -> () {
+    %0 = const i1 0
+    %clk_i = sig i1 %0
+    %1 = const i1 1
+    %rst_ni = sig i1 %1
+    %flush_i = sig i1 %0
+    %2 = const i3 0
+    %rr_i = sig i3 %2
+    %3 = const i8 0
+    %req_i = sig i8 %3
+    %gnt_o = sig i8 %3
+    %4 = const i32 0
+    %5 = [i32 %4, %4, %4, %4, %4, %4, %4, %4]
+    %data_i = sig [8 x i32] %5
+    %gnt_i = sig i1 %0
+    %req_o = sig i1 %0
+    %data_o = sig i32 %4
+    %idx_o = sig i3 %2
+    %6 = const i8 255
+    %7 = const time 0s 1e
+    drv i8$ %req_i, %6, %7
+    %req_o.prb = prb i1$ %req_o
+    drv i1$ %gnt_i, %req_o.prb, %7
+    inst @rr_arb_tree.param1 (i1$ %clk_i, i1$ %rst_ni, i1$ %flush_i, i3$ %rr_i, i8$ %req_i, [8 x i32]$ %data_i, i1$ %gnt_i) -> (i8$ %gnt_o, i1$ %req_o, i32$ %data_o, i3$ %idx_o)
+    inst %rr_arb_tree_tb.initial.1815.0 () -> (i1$ %clk_i, i1$ %rst_ni)
+}

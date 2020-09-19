@@ -1,0 +1,4959 @@
+proc %snitch_regfile.param2.always_comb.24878.2 ([1 x i5]$ %waddr_i, i1$ %we_i) -> ([1 x i32]$ %we_dec) {
+body:
+    %0 = const i32 0
+    %j = var i32 %0
+    br %loop_body
+check:
+    wait %body, %waddr_i, %we_i
+loop_body:
+    %j.ld = ld i32* %j
+    %1 = const i32 1
+    %2 = ult i32 %j.ld, %1
+    br %2, %check, %loop_continue
+loop_continue:
+    %i = var i32 %0
+    br %loop_body1
+loop_body1:
+    %i.ld = ld i32* %i
+    %3 = const i32 32
+    %4 = ult i32 %i.ld, %3
+    br %4, %loop_exit, %loop_continue1
+loop_exit:
+    %j.ld1 = ld i32* %j
+    %5 = add i32 %j.ld1, %1
+    st i32* %j, %5
+    br %loop_body
+loop_continue1:
+    %waddr_i.prb = prb [1 x i5]$ %waddr_i
+    %j.ld2 = ld i32* %j
+    %6 = const i5 0
+    %7 = [1 x i5 %6]
+    %8 = shr [1 x i5] %waddr_i.prb, [1 x i5] %7, i32 %j.ld2
+    %9 = extf i5, [1 x i5] %8, 0
+    %zext = inss i32 %0, i5 %9, 0, 5
+    %i.ld1 = ld i32* %i
+    %10 = eq i32 %zext, %i.ld1
+    %11 = const i1 0
+    %12 = neq i1 %10, %11
+    %13 = [1 x i32 %0]
+    %14 = const time 0s 1e
+    br %12, %if_false, %if_true
+if_true:
+    %j.ld3 = ld i32* %j
+    %15 = sig [1 x i32] %13
+    %16 = shr [1 x i32]$ %we_dec, [1 x i32]$ %15, i32 %j.ld3
+    %17 = extf i32$, [1 x i32]$ %16, 0
+    %i.ld2 = ld i32* %i
+    %18 = sig i32 %0
+    %19 = shr i32$ %17, i32$ %18, i32 %i.ld2
+    %20 = exts i1$, i32$ %19, 0, 1
+    %we_i.prb = prb i1$ %we_i
+    %j.ld4 = ld i32* %j
+    %21 = shr i1 %we_i.prb, i1 %11, i32 %j.ld4
+    drv i1$ %20, %21, %14
+    br %if_exit
+if_false:
+    %j.ld5 = ld i32* %j
+    %22 = sig [1 x i32] %13
+    %23 = shr [1 x i32]$ %we_dec, [1 x i32]$ %22, i32 %j.ld5
+    %24 = extf i32$, [1 x i32]$ %23, 0
+    %i.ld3 = ld i32* %i
+    %25 = sig i32 %0
+    %26 = shr i32$ %24, i32$ %25, i32 %i.ld3
+    %27 = exts i1$, i32$ %26, 0, 1
+    drv i1$ %27, %11, %14
+    br %if_exit
+if_exit:
+    %i.ld4 = ld i32* %i
+    %28 = add i32 %i.ld4, %1
+    st i32* %i, %28
+    br %loop_body1
+}
+
+proc %snitch_regfile.param2.always_ff.25008.2 (i1$ %clk_i, [1 x i32]$ %wdata_i, [1 x i32]$ %we_dec) -> ([32 x i32]$ %mem) {
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    wait %check, %clk_i
+check:
+    %clk_i.prb1 = prb i1$ %clk_i
+    %0 = const i1 0
+    %1 = eq i1 %clk_i.prb, %0
+    %2 = neq i1 %clk_i.prb1, %0
+    %posedge = and i1 %1, %2
+    br %posedge, %init, %event
+event:
+    %3 = const i32 0
+    %j = var i32 %3
+    br %loop_body
+loop_body:
+    %j.ld = ld i32* %j
+    %4 = const i32 1
+    %5 = ult i32 %j.ld, %4
+    br %5, %init, %loop_continue
+loop_continue:
+    %i = var i32 %3
+    br %loop_body1
+loop_body1:
+    %i.ld = ld i32* %i
+    %6 = const i32 32
+    %7 = ult i32 %i.ld, %6
+    %8 = const time 0s 1d
+    br %7, %loop_exit, %loop_continue1
+loop_exit:
+    %9 = extf i32$, [32 x i32]$ %mem, 0
+    drv i32$ %9, %3, %8
+    %j.ld1 = ld i32* %j
+    %10 = add i32 %j.ld1, %4
+    st i32* %j, %10
+    br %loop_body
+loop_continue1:
+    %we_dec.prb = prb [1 x i32]$ %we_dec
+    %j.ld2 = ld i32* %j
+    %11 = [1 x i32 %3]
+    %12 = shr [1 x i32] %we_dec.prb, [1 x i32] %11, i32 %j.ld2
+    %13 = extf i32, [1 x i32] %12, 0
+    %i.ld1 = ld i32* %i
+    %14 = shr i32 %13, i32 %3, i32 %i.ld1
+    %15 = exts i1, i32 %14, 0, 1
+    %16 = neq i1 %15, %0
+    br %16, %if_exit, %if_true
+if_true:
+    %i.ld2 = ld i32* %i
+    %17 = [32 x i32 %3]
+    %18 = sig [32 x i32] %17
+    %19 = shr [32 x i32]$ %mem, [32 x i32]$ %18, i32 %i.ld2
+    %20 = extf i32$, [32 x i32]$ %19, 0
+    %wdata_i.prb = prb [1 x i32]$ %wdata_i
+    %j.ld3 = ld i32* %j
+    %21 = shr [1 x i32] %wdata_i.prb, [1 x i32] %11, i32 %j.ld3
+    %22 = extf i32, [1 x i32] %21, 0
+    drv i32$ %20, %22, %8
+    br %if_exit
+if_exit:
+    %i.ld3 = ld i32* %i
+    %23 = add i32 %i.ld3, %4
+    st i32* %i, %23
+    br %loop_body1
+}
+
+entity @snitch_regfile.param2 (i1$ %clk_i, [2 x i5]$ %raddr_i, [1 x i5]$ %waddr_i, [1 x i32]$ %wdata_i, i1$ %we_i) -> ([2 x i32]$ %rdata_o) {
+    %0 = const i32 0
+    %1 = [i32 %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0, %0]
+    %mem = sig [32 x i32] %1
+    %2 = [i32 %0]
+    %we_dec = sig [1 x i32] %2
+    %3 = extf i32$, [2 x i32]$ %rdata_o, 0
+    %mem.prb = prb [32 x i32]$ %mem
+    %raddr_i.prb = prb [2 x i5]$ %raddr_i
+    %4 = extf i5, [2 x i5] %raddr_i.prb, 0
+    %5 = [32 x i32 %0]
+    %6 = shr [32 x i32] %mem.prb, [32 x i32] %5, i5 %4
+    %7 = extf i32, [32 x i32] %6, 0
+    %8 = const time 0s 1e
+    drv i32$ %3, %7, %8
+    %9 = const i32 1
+    %10 = [2 x i32 %0]
+    %11 = sig [2 x i32] %10
+    %12 = shr [2 x i32]$ %rdata_o, [2 x i32]$ %11, i32 %9
+    %13 = extf i32$, [2 x i32]$ %12, 0
+    %14 = const i5 0
+    %15 = [2 x i5 %14]
+    %16 = exts [1 x i5], [2 x i5] %15, 0, 1
+    %17 = exts [1 x i5], [2 x i5] %raddr_i.prb, 1, 1
+    %18 = inss [2 x i5] %15, [1 x i5] %16, 1, 1
+    %19 = inss [2 x i5] %18, [1 x i5] %17, 0, 1
+    %20 = extf i5, [2 x i5] %19, 0
+    %21 = shr [32 x i32] %mem.prb, [32 x i32] %5, i5 %20
+    %22 = extf i32, [32 x i32] %21, 0
+    drv i32$ %13, %22, %8
+    inst %snitch_regfile.param2.always_comb.24878.2 ([1 x i5]$ %waddr_i, i1$ %we_i) -> ([1 x i32]$ %we_dec)
+    inst %snitch_regfile.param2.always_ff.25008.2 (i1$ %clk_i, [1 x i32]$ %wdata_i, [1 x i32]$ %we_dec) -> ([32 x i32]$ %mem)
+    %23 = [i32 %0, %0]
+    %24 = const time 0s
+    drv [2 x i32]$ %rdata_o, %23, %24
+}
+
+proc %fifo_v3.param6.always_comb.26642.6 (i1$ %full_o, i1$ %empty_o, {i5, i1, i3, i2}$ %data_i, i1$ %push_i, i1$ %pop_i, i1$ %read_pointer_q, i1$ %write_pointer_q, i2$ %status_cnt_q, [1 x {i5, i1, i3, i2}]$ %mem_q) -> ({i5, i1, i3, i2}$ %data_o, i1$ %gate_clock, i1$ %read_pointer_n, i1$ %write_pointer_n, i2$ %status_cnt_n, [1 x {i5, i1, i3, i2}]$ %mem_n) {
+0:
+    %1 = prb i1$ %read_pointer_n
+    %read_pointer_n.shadow = var i1 %1
+    st i1* %read_pointer_n.shadow, %1
+    %read_pointer_q.prb = prb i1$ %read_pointer_q
+    %2 = const time 0s 1e
+    drv i1$ %read_pointer_n, %read_pointer_q.prb, %2
+    st i1* %read_pointer_n.shadow, %read_pointer_q.prb
+    %write_pointer_q.prb = prb i1$ %write_pointer_q
+    drv i1$ %write_pointer_n, %write_pointer_q.prb, %2
+    %status_cnt_q.prb = prb i2$ %status_cnt_q
+    drv i2$ %status_cnt_n, %status_cnt_q.prb, %2
+    %3 = const i11 0
+    %data_i.prb = prb {i5, i1, i3, i2}$ %data_i
+    %4 = extf i2, {i5, i1, i3, i2} %data_i.prb, 3
+    %5 = inss i11 %3, i2 %4, 0, 2
+    %6 = extf i3, {i5, i1, i3, i2} %data_i.prb, 2
+    %7 = inss i11 %5, i3 %6, 2, 3
+    %8 = extf i1, {i5, i1, i3, i2} %data_i.prb, 1
+    %9 = inss i11 %7, i1 %8, 5, 1
+    %10 = extf i5, {i5, i1, i3, i2} %data_i.prb, 0
+    %concat = inss i11 %9, i5 %10, 6, 5
+    %mem_q.prb = prb [1 x {i5, i1, i3, i2}]$ %mem_q
+    %11 = const i5 0
+    %12 = const i1 0
+    %13 = const i3 0
+    %14 = const i2 0
+    %15 = {i5 %11, i1 %12, i3 %13, i2 %14}
+    %16 = [1 x {i5, i1, i3, i2} %15]
+    %17 = shr [1 x {i5, i1, i3, i2}] %mem_q.prb, [1 x {i5, i1, i3, i2}] %16, i1 %read_pointer_q.prb
+    %18 = extf {i5, i1, i3, i2}, [1 x {i5, i1, i3, i2}] %17, 0
+    %19 = extf i2, {i5, i1, i3, i2} %18, 3
+    %20 = inss i11 %3, i2 %19, 0, 2
+    %21 = extf i3, {i5, i1, i3, i2} %18, 2
+    %22 = inss i11 %20, i3 %21, 2, 3
+    %23 = extf i1, {i5, i1, i3, i2} %18, 1
+    %24 = inss i11 %22, i1 %23, 5, 1
+    %25 = extf i5, {i5, i1, i3, i2} %18, 0
+    %concat1 = inss i11 %24, i5 %25, 6, 5
+    %26 = [i11 %concat1, %concat]
+    %27 = extf i11, [2 x i11] %26, 0
+    %28 = exts i5, i11 %27, 0, 5
+    %29 = exts i6, i11 %27, 5, 6
+    %30 = inss i11 %3, i6 %29, 0, 6
+    %31 = exts i1, i11 %30, 0, 1
+    %32 = exts i5, i11 %27, 6, 5
+    %33 = inss i11 %3, i5 %32, 0, 5
+    %34 = exts i3, i11 %33, 0, 3
+    %35 = exts i2, i11 %27, 9, 2
+    %36 = inss i11 %3, i2 %35, 0, 2
+    %37 = exts i2, i11 %36, 0, 2
+    %38 = {i5 %28, i1 %31, i3 %34, i2 %37}
+    drv {i5, i1, i3, i2}$ %data_o, %38, %2
+    drv [1 x {i5, i1, i3, i2}]$ %mem_n, %mem_q.prb, %2
+    %39 = const i1 1
+    drv i1$ %gate_clock, %39, %2
+    %push_i.prb = prb i1$ %push_i
+    %40 = neq i1 %push_i.prb, %12
+    %full_o.prb = prb i1$ %full_o
+    %41 = not i1 %full_o.prb
+    %42 = neq i1 %41, %12
+    %43 = and i1 %40, %42
+    %44 = neq i1 %43, %12
+    %45 = const i32 0
+    %46 = const i32 1
+    br %44, %if_exit, %if_true
+if_true:
+    %47 = sig [1 x {i5, i1, i3, i2}] %16
+    %48 = shr [1 x {i5, i1, i3, i2}]$ %mem_n, [1 x {i5, i1, i3, i2}]$ %47, i1 %write_pointer_q.prb
+    %49 = extf {i5, i1, i3, i2}$, [1 x {i5, i1, i3, i2}]$ %48, 0
+    drv {i5, i1, i3, i2}$ %49, %data_i.prb, %2
+    drv i1$ %gate_clock, %12, %2
+    %zext = inss i32 %45, i1 %write_pointer_q.prb, 0, 1
+    %50 = eq i32 %zext, %45
+    %51 = neq i1 %50, %12
+    br %51, %if_false, %if_true1
+if_exit:
+    %pop_i.prb = prb i1$ %pop_i
+    %52 = neq i1 %pop_i.prb, %12
+    %empty_o.prb = prb i1$ %empty_o
+    %53 = not i1 %empty_o.prb
+    %54 = neq i1 %53, %12
+    %55 = and i1 %52, %54
+    %56 = neq i1 %55, %12
+    br %56, %if_exit1, %if_true2
+if_true1:
+    drv i1$ %write_pointer_n, %12, %2
+    br %if_exit2
+if_false:
+    %57 = add i32 %zext, %46
+    %58 = exts i1, i32 %57, 0, 1
+    drv i1$ %write_pointer_n, %58, %2
+    br %if_exit2
+if_exit2:
+    %zext1 = inss i32 %45, i2 %status_cnt_q.prb, 0, 2
+    %59 = add i32 %zext1, %46
+    %60 = exts i2, i32 %59, 0, 2
+    drv i2$ %status_cnt_n, %60, %2
+    br %if_exit
+if_true2:
+    %read_pointer_n.shadow.ld = ld i1* %read_pointer_n.shadow
+    %zext2 = inss i32 %45, i1 %read_pointer_n.shadow.ld, 0, 1
+    %61 = eq i32 %zext2, %45
+    %62 = neq i1 %61, %12
+    br %62, %if_false1, %if_true3
+if_exit1:
+    %63 = and i1 %40, %52
+    %64 = neq i1 %63, %12
+    %65 = and i1 %64, %42
+    %66 = neq i1 %65, %12
+    %67 = and i1 %66, %54
+    %68 = neq i1 %67, %12
+    br %68, %if_exit3, %if_true4
+if_true3:
+    drv i1$ %read_pointer_n, %12, %2
+    st i1* %read_pointer_n.shadow, %12
+    br %if_exit4
+if_false1:
+    %zext3 = inss i32 %45, i1 %read_pointer_q.prb, 0, 1
+    %69 = add i32 %zext3, %46
+    %70 = exts i1, i32 %69, 0, 1
+    drv i1$ %read_pointer_n, %70, %2
+    st i1* %read_pointer_n.shadow, %70
+    br %if_exit4
+if_exit4:
+    %zext4 = inss i32 %45, i2 %status_cnt_q.prb, 0, 2
+    %71 = sub i32 %zext4, %46
+    %72 = exts i2, i32 %71, 0, 2
+    drv i2$ %status_cnt_n, %72, %2
+    br %if_exit1
+if_true4:
+    drv i2$ %status_cnt_n, %status_cnt_q.prb, %2
+    br %if_exit3
+if_exit3:
+    wait %0, %full_o, %empty_o, %data_i, %push_i, %pop_i, %read_pointer_q, %write_pointer_q, %status_cnt_q, %mem_q
+}
+
+proc %fifo_v3.param6.always_ff.26761.6 (i1$ %clk_i, i1$ %rst_ni, i1$ %flush_i, i1$ %read_pointer_n, i1$ %write_pointer_n, i2$ %status_cnt_n) -> (i1$ %read_pointer_q, i1$ %write_pointer_q, i2$ %status_cnt_q) {
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    %rst_ni.prb = prb i1$ %rst_ni
+    wait %check, %clk_i, %rst_ni
+check:
+    %clk_i.prb1 = prb i1$ %clk_i
+    %0 = const i1 0
+    %1 = eq i1 %clk_i.prb, %0
+    %2 = neq i1 %clk_i.prb1, %0
+    %posedge = and i1 %1, %2
+    %rst_ni.prb1 = prb i1$ %rst_ni
+    %3 = neq i1 %rst_ni.prb, %0
+    %4 = eq i1 %rst_ni.prb1, %0
+    %negedge = and i1 %4, %3
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %5 = not i1 %rst_ni.prb1
+    %6 = neq i1 %5, %0
+    %7 = const time 0s 1d
+    %8 = const i2 0
+    br %6, %if_false, %if_true
+if_true:
+    drv i1$ %read_pointer_q, %0, %7
+    drv i1$ %write_pointer_q, %0, %7
+    drv i2$ %status_cnt_q, %8, %7
+    br %init
+if_false:
+    %flush_i.prb = prb i1$ %flush_i
+    %9 = neq i1 %flush_i.prb, %0
+    br %9, %if_false1, %if_true1
+if_true1:
+    drv i1$ %read_pointer_q, %0, %7
+    drv i1$ %write_pointer_q, %0, %7
+    drv i2$ %status_cnt_q, %8, %7
+    br %init
+if_false1:
+    %read_pointer_n.prb = prb i1$ %read_pointer_n
+    drv i1$ %read_pointer_q, %read_pointer_n.prb, %7
+    %write_pointer_n.prb = prb i1$ %write_pointer_n
+    drv i1$ %write_pointer_q, %write_pointer_n.prb, %7
+    %status_cnt_n.prb = prb i2$ %status_cnt_n
+    drv i2$ %status_cnt_q, %status_cnt_n.prb, %7
+    br %init
+}
+
+proc %fifo_v3.param6.always_ff.26805.6 (i1$ %clk_i, i1$ %rst_ni, i1$ %gate_clock, [1 x {i5, i1, i3, i2}]$ %mem_n) -> ([1 x {i5, i1, i3, i2}]$ %mem_q) {
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    %rst_ni.prb = prb i1$ %rst_ni
+    wait %check, %clk_i, %rst_ni
+check:
+    %clk_i.prb1 = prb i1$ %clk_i
+    %0 = const i1 0
+    %1 = eq i1 %clk_i.prb, %0
+    %2 = neq i1 %clk_i.prb1, %0
+    %posedge = and i1 %1, %2
+    %rst_ni.prb1 = prb i1$ %rst_ni
+    %3 = neq i1 %rst_ni.prb, %0
+    %4 = eq i1 %rst_ni.prb1, %0
+    %negedge = and i1 %4, %3
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %5 = not i1 %rst_ni.prb1
+    %6 = neq i1 %5, %0
+    %7 = const time 0s 1d
+    br %6, %if_false, %if_true
+if_true:
+    %8 = const i5 0
+    %9 = const i3 0
+    %10 = const i2 0
+    %11 = {i5 %8, i1 %0, i3 %9, i2 %10}
+    %12 = [{i5, i1, i3, i2} %11]
+    drv [1 x {i5, i1, i3, i2}]$ %mem_q, %12, %7
+    br %init
+if_false:
+    %gate_clock.prb = prb i1$ %gate_clock
+    %13 = neq i1 %gate_clock.prb, %0
+    %14 = not i1 %13
+    %15 = neq i1 %14, %0
+    br %15, %init, %if_true1
+if_true1:
+    %mem_n.prb = prb [1 x {i5, i1, i3, i2}]$ %mem_n
+    drv [1 x {i5, i1, i3, i2}]$ %mem_q, %mem_n.prb, %7
+    br %init
+}
+
+proc %fifo_v3.param6.initial.26821.6 () -> () {
+0:
+    halt
+}
+
+entity @fifo_v3.param6 (i1$ %clk_i, i1$ %rst_ni, i1$ %flush_i, i1$ %testmode_i, {i5, i1, i3, i2}$ %data_i, i1$ %push_i, i1$ %pop_i) -> (i1$ %full_o, i1$ %empty_o, i1$ %usage_o, {i5, i1, i3, i2}$ %data_o) {
+    %0 = const i1 0
+    %gate_clock = sig i1 %0
+    %read_pointer_n = sig i1 %0
+    %read_pointer_q = sig i1 %0
+    %write_pointer_n = sig i1 %0
+    %write_pointer_q = sig i1 %0
+    %1 = const i2 0
+    %status_cnt_n = sig i2 %1
+    %status_cnt_q = sig i2 %1
+    %2 = const i5 0
+    %3 = const i3 0
+    %4 = {i5 %2, i1 %0, i3 %3, i2 %1}
+    %5 = [{i5, i1, i3, i2} %4]
+    %mem_n = sig [1 x {i5, i1, i3, i2}] %5
+    %mem_q = sig [1 x {i5, i1, i3, i2}] %5
+    %status_cnt_q.prb = prb i2$ %status_cnt_q
+    %6 = exts i1, i2 %status_cnt_q.prb, 0, 1
+    %7 = const time 0s 1e
+    drv i1$ %usage_o, %6, %7
+    %8 = const i2 1
+    %9 = eq i2 %status_cnt_q.prb, %8
+    drv i1$ %full_o, %9, %7
+    %10 = const i32 0
+    %zext = inss i32 %10, i2 %status_cnt_q.prb, 0, 2
+    %11 = eq i32 %zext, %10
+    drv i1$ %empty_o, %11, %7
+    inst %fifo_v3.param6.always_comb.26642.6 (i1$ %full_o, i1$ %empty_o, {i5, i1, i3, i2}$ %data_i, i1$ %push_i, i1$ %pop_i, i1$ %read_pointer_q, i1$ %write_pointer_q, i2$ %status_cnt_q, [1 x {i5, i1, i3, i2}]$ %mem_q) -> ({i5, i1, i3, i2}$ %data_o, i1$ %gate_clock, i1$ %read_pointer_n, i1$ %write_pointer_n, i2$ %status_cnt_n, [1 x {i5, i1, i3, i2}]$ %mem_n)
+    inst %fifo_v3.param6.always_ff.26761.6 (i1$ %clk_i, i1$ %rst_ni, i1$ %flush_i, i1$ %read_pointer_n, i1$ %write_pointer_n, i2$ %status_cnt_n) -> (i1$ %read_pointer_q, i1$ %write_pointer_q, i2$ %status_cnt_q)
+    inst %fifo_v3.param6.always_ff.26805.6 (i1$ %clk_i, i1$ %rst_ni, i1$ %gate_clock, [1 x {i5, i1, i3, i2}]$ %mem_n) -> ([1 x {i5, i1, i3, i2}]$ %mem_q)
+    inst %fifo_v3.param6.initial.26821.6 () -> ()
+}
+
+proc %snitch_lsu.param3.always_comb.25524.3 (i32$ %lsu_qaddr_i, i2$ %lsu_qsize_i) -> (i8$ %data_qstrb_o) {
+body:
+    %lsu_qsize_i.prb = prb i2$ %lsu_qsize_i
+    %0 = const i2 0
+    %1 = eq i2 %lsu_qsize_i.prb, %0
+    %lsu_qaddr_i.prb = prb i32$ %lsu_qaddr_i
+    %2 = const i8 0
+    %3 = const time 0s 1e
+    %4 = const i8 1
+    br %1, %5, %case_body
+check:
+    wait %body, %lsu_qaddr_i, %lsu_qsize_i
+case_body:
+    %6 = exts i3, i32 %lsu_qaddr_i.prb, 0, 3
+    %7 = shl i8 %4, i8 %2, i3 %6
+    drv i8$ %data_qstrb_o, %7, %3
+    br %check
+5:
+    %8 = const i2 1
+    %9 = eq i2 %lsu_qsize_i.prb, %8
+    %10 = exts i3, i32 %lsu_qaddr_i.prb, 0, 3
+    br %9, %11, %case_body1
+case_body1:
+    %12 = const i8 3
+    %13 = shl i8 %12, i8 %2, i3 %10
+    drv i8$ %data_qstrb_o, %13, %3
+    br %check
+11:
+    %14 = const i2 2
+    %15 = eq i2 %lsu_qsize_i.prb, %14
+    br %15, %16, %case_body2
+case_body2:
+    %17 = const i8 15
+    %18 = shl i8 %17, i8 %2, i3 %10
+    drv i8$ %data_qstrb_o, %18, %3
+    br %check
+16:
+    %19 = const i2 3
+    %20 = eq i2 %lsu_qsize_i.prb, %19
+    br %20, %21, %case_body3
+case_body3:
+    drv i8$ %data_qstrb_o, %4, %3
+    br %check
+21:
+    drv i8$ %data_qstrb_o, %2, %3
+    br %check
+}
+
+proc %snitch_lsu.param3.always_comb.25765.3 (i32$ %lsu_qaddr_i, i64$ %lsu_qdata_i) -> (i64$ %data_qdata_o) {
+body:
+    %lsu_qaddr_i.prb = prb i32$ %lsu_qaddr_i
+    %0 = exts i3, i32 %lsu_qaddr_i.prb, 0, 3
+    %1 = const i3 0
+    %2 = eq i3 %0, %1
+    %lsu_qdata_i.prb = prb i64$ %lsu_qdata_i
+    %3 = const time 0s 1e
+    br %2, %4, %case_body
+check:
+    wait %body, %lsu_qaddr_i, %lsu_qdata_i
+case_body:
+    drv i64$ %data_qdata_o, %lsu_qdata_i.prb, %3
+    br %check
+4:
+    %5 = const i3 1
+    %6 = eq i3 %0, %5
+    %7 = const i64 0
+    br %6, %8, %case_body1
+case_body1:
+    %9 = exts i8, i64 %lsu_qdata_i.prb, 56, 8
+    %10 = inss i64 %7, i8 %9, 0, 8
+    %11 = exts i8, i64 %10, 0, 8
+    %12 = inss i64 %7, i8 %11, 0, 8
+    %13 = exts i56, i64 %lsu_qdata_i.prb, 0, 56
+    %concat = inss i64 %12, i56 %13, 8, 56
+    drv i64$ %data_qdata_o, %concat, %3
+    br %check
+8:
+    %14 = const i3 2
+    %15 = eq i3 %0, %14
+    br %15, %16, %case_body2
+case_body2:
+    %17 = exts i16, i64 %lsu_qdata_i.prb, 48, 16
+    %18 = inss i64 %7, i16 %17, 0, 16
+    %19 = exts i16, i64 %18, 0, 16
+    %20 = inss i64 %7, i16 %19, 0, 16
+    %21 = exts i48, i64 %lsu_qdata_i.prb, 0, 48
+    %concat1 = inss i64 %20, i48 %21, 16, 48
+    drv i64$ %data_qdata_o, %concat1, %3
+    br %check
+16:
+    %22 = const i3 3
+    %23 = eq i3 %0, %22
+    br %23, %24, %case_body3
+case_body3:
+    %25 = exts i24, i64 %lsu_qdata_i.prb, 40, 24
+    %26 = inss i64 %7, i24 %25, 0, 24
+    %27 = exts i24, i64 %26, 0, 24
+    %28 = inss i64 %7, i24 %27, 0, 24
+    %29 = exts i40, i64 %lsu_qdata_i.prb, 0, 40
+    %concat2 = inss i64 %28, i40 %29, 24, 40
+    drv i64$ %data_qdata_o, %concat2, %3
+    br %check
+24:
+    %30 = const i3 4
+    %31 = eq i3 %0, %30
+    br %31, %32, %case_body4
+case_body4:
+    %33 = exts i32, i64 %lsu_qdata_i.prb, 32, 32
+    %34 = inss i64 %7, i32 %33, 0, 32
+    %35 = exts i32, i64 %34, 0, 32
+    %36 = inss i64 %7, i32 %35, 0, 32
+    %37 = exts i32, i64 %lsu_qdata_i.prb, 0, 32
+    %concat3 = inss i64 %36, i32 %37, 32, 32
+    drv i64$ %data_qdata_o, %concat3, %3
+    br %check
+32:
+    %38 = const i3 5
+    %39 = eq i3 %0, %38
+    br %39, %40, %case_body5
+case_body5:
+    %41 = exts i40, i64 %lsu_qdata_i.prb, 24, 40
+    %42 = inss i64 %7, i40 %41, 0, 40
+    %43 = exts i40, i64 %42, 0, 40
+    %44 = inss i64 %7, i40 %43, 0, 40
+    %45 = exts i24, i64 %lsu_qdata_i.prb, 0, 24
+    %concat4 = inss i64 %44, i24 %45, 40, 24
+    drv i64$ %data_qdata_o, %concat4, %3
+    br %check
+40:
+    %46 = const i3 6
+    %47 = eq i3 %0, %46
+    br %47, %48, %case_body6
+case_body6:
+    %49 = exts i48, i64 %lsu_qdata_i.prb, 16, 48
+    %50 = inss i64 %7, i48 %49, 0, 48
+    %51 = exts i48, i64 %50, 0, 48
+    %52 = inss i64 %7, i48 %51, 0, 48
+    %53 = exts i16, i64 %lsu_qdata_i.prb, 0, 16
+    %concat5 = inss i64 %52, i16 %53, 48, 16
+    drv i64$ %data_qdata_o, %concat5, %3
+    br %check
+48:
+    %54 = const i3 7
+    %55 = eq i3 %0, %54
+    br %55, %56, %case_body7
+case_body7:
+    %57 = exts i56, i64 %lsu_qdata_i.prb, 8, 56
+    %58 = inss i64 %7, i56 %57, 0, 56
+    %59 = exts i56, i64 %58, 0, 56
+    %60 = inss i64 %7, i56 %59, 0, 56
+    %61 = exts i8, i64 %lsu_qdata_i.prb, 0, 8
+    %concat6 = inss i64 %60, i8 %61, 56, 8
+    drv i64$ %data_qdata_o, %concat6, %3
+    br %check
+56:
+    drv i64$ %data_qdata_o, %lsu_qdata_i.prb, %3
+    br %check
+}
+
+proc %snitch_lsu.param3.always_comb.25969.3 ({i5, i1, i3, i2}$ %laq_out, i64$ %shifted_data) -> (i64$ %ld_result) {
+body:
+    %laq_out.prb = prb {i5, i1, i3, i2}$ %laq_out
+    %0 = extf i2, {i5, i1, i3, i2} %laq_out.prb, 3
+    %1 = const i2 0
+    %2 = eq i2 %0, %1
+    %3 = const i64 0
+    %shifted_data.prb = prb i64$ %shifted_data
+    %4 = extf i1, {i5, i1, i3, i2} %laq_out.prb, 1
+    %5 = const time 0s 1e
+    br %2, %6, %case_body
+check:
+    wait %body, %laq_out, %shifted_data
+case_body:
+    %7 = exts i8, i64 %shifted_data.prb, 0, 8
+    %8 = inss i64 %3, i8 %7, 0, 8
+    %9 = exts i57, i64 %shifted_data.prb, 7, 57
+    %10 = inss i64 %3, i57 %9, 0, 57
+    %11 = exts i1, i64 %10, 0, 1
+    %concat = and i1 %11, %4
+    %12 = const i56 0
+    %13 = inss i56 %12, i1 %concat, 0, 1
+    %14 = inss i56 %13, i1 %concat, 1, 1
+    %15 = inss i56 %14, i1 %concat, 2, 1
+    %16 = inss i56 %15, i1 %concat, 3, 1
+    %17 = inss i56 %16, i1 %concat, 4, 1
+    %18 = inss i56 %17, i1 %concat, 5, 1
+    %19 = inss i56 %18, i1 %concat, 6, 1
+    %20 = inss i56 %19, i1 %concat, 7, 1
+    %21 = inss i56 %20, i1 %concat, 8, 1
+    %22 = inss i56 %21, i1 %concat, 9, 1
+    %23 = inss i56 %22, i1 %concat, 10, 1
+    %24 = inss i56 %23, i1 %concat, 11, 1
+    %25 = inss i56 %24, i1 %concat, 12, 1
+    %26 = inss i56 %25, i1 %concat, 13, 1
+    %27 = inss i56 %26, i1 %concat, 14, 1
+    %28 = inss i56 %27, i1 %concat, 15, 1
+    %29 = inss i56 %28, i1 %concat, 16, 1
+    %30 = inss i56 %29, i1 %concat, 17, 1
+    %31 = inss i56 %30, i1 %concat, 18, 1
+    %32 = inss i56 %31, i1 %concat, 19, 1
+    %33 = inss i56 %32, i1 %concat, 20, 1
+    %34 = inss i56 %33, i1 %concat, 21, 1
+    %35 = inss i56 %34, i1 %concat, 22, 1
+    %36 = inss i56 %35, i1 %concat, 23, 1
+    %37 = inss i56 %36, i1 %concat, 24, 1
+    %38 = inss i56 %37, i1 %concat, 25, 1
+    %39 = inss i56 %38, i1 %concat, 26, 1
+    %40 = inss i56 %39, i1 %concat, 27, 1
+    %41 = inss i56 %40, i1 %concat, 28, 1
+    %42 = inss i56 %41, i1 %concat, 29, 1
+    %43 = inss i56 %42, i1 %concat, 30, 1
+    %44 = inss i56 %43, i1 %concat, 31, 1
+    %45 = inss i56 %44, i1 %concat, 32, 1
+    %46 = inss i56 %45, i1 %concat, 33, 1
+    %47 = inss i56 %46, i1 %concat, 34, 1
+    %48 = inss i56 %47, i1 %concat, 35, 1
+    %49 = inss i56 %48, i1 %concat, 36, 1
+    %50 = inss i56 %49, i1 %concat, 37, 1
+    %51 = inss i56 %50, i1 %concat, 38, 1
+    %52 = inss i56 %51, i1 %concat, 39, 1
+    %53 = inss i56 %52, i1 %concat, 40, 1
+    %54 = inss i56 %53, i1 %concat, 41, 1
+    %55 = inss i56 %54, i1 %concat, 42, 1
+    %56 = inss i56 %55, i1 %concat, 43, 1
+    %57 = inss i56 %56, i1 %concat, 44, 1
+    %58 = inss i56 %57, i1 %concat, 45, 1
+    %59 = inss i56 %58, i1 %concat, 46, 1
+    %60 = inss i56 %59, i1 %concat, 47, 1
+    %61 = inss i56 %60, i1 %concat, 48, 1
+    %62 = inss i56 %61, i1 %concat, 49, 1
+    %63 = inss i56 %62, i1 %concat, 50, 1
+    %64 = inss i56 %63, i1 %concat, 51, 1
+    %65 = inss i56 %64, i1 %concat, 52, 1
+    %66 = inss i56 %65, i1 %concat, 53, 1
+    %67 = inss i56 %66, i1 %concat, 54, 1
+    %repeat = inss i56 %67, i1 %concat, 55, 1
+    %concat1 = inss i64 %8, i56 %repeat, 8, 56
+    drv i64$ %ld_result, %concat1, %5
+    br %check
+6:
+    %68 = const i2 1
+    %69 = eq i2 %0, %68
+    br %69, %70, %case_body1
+case_body1:
+    %71 = exts i16, i64 %shifted_data.prb, 0, 16
+    %72 = inss i64 %3, i16 %71, 0, 16
+    %73 = exts i49, i64 %shifted_data.prb, 15, 49
+    %74 = inss i64 %3, i49 %73, 0, 49
+    %75 = exts i1, i64 %74, 0, 1
+    %concat2 = and i1 %75, %4
+    %76 = const i48 0
+    %77 = inss i48 %76, i1 %concat2, 0, 1
+    %78 = inss i48 %77, i1 %concat2, 1, 1
+    %79 = inss i48 %78, i1 %concat2, 2, 1
+    %80 = inss i48 %79, i1 %concat2, 3, 1
+    %81 = inss i48 %80, i1 %concat2, 4, 1
+    %82 = inss i48 %81, i1 %concat2, 5, 1
+    %83 = inss i48 %82, i1 %concat2, 6, 1
+    %84 = inss i48 %83, i1 %concat2, 7, 1
+    %85 = inss i48 %84, i1 %concat2, 8, 1
+    %86 = inss i48 %85, i1 %concat2, 9, 1
+    %87 = inss i48 %86, i1 %concat2, 10, 1
+    %88 = inss i48 %87, i1 %concat2, 11, 1
+    %89 = inss i48 %88, i1 %concat2, 12, 1
+    %90 = inss i48 %89, i1 %concat2, 13, 1
+    %91 = inss i48 %90, i1 %concat2, 14, 1
+    %92 = inss i48 %91, i1 %concat2, 15, 1
+    %93 = inss i48 %92, i1 %concat2, 16, 1
+    %94 = inss i48 %93, i1 %concat2, 17, 1
+    %95 = inss i48 %94, i1 %concat2, 18, 1
+    %96 = inss i48 %95, i1 %concat2, 19, 1
+    %97 = inss i48 %96, i1 %concat2, 20, 1
+    %98 = inss i48 %97, i1 %concat2, 21, 1
+    %99 = inss i48 %98, i1 %concat2, 22, 1
+    %100 = inss i48 %99, i1 %concat2, 23, 1
+    %101 = inss i48 %100, i1 %concat2, 24, 1
+    %102 = inss i48 %101, i1 %concat2, 25, 1
+    %103 = inss i48 %102, i1 %concat2, 26, 1
+    %104 = inss i48 %103, i1 %concat2, 27, 1
+    %105 = inss i48 %104, i1 %concat2, 28, 1
+    %106 = inss i48 %105, i1 %concat2, 29, 1
+    %107 = inss i48 %106, i1 %concat2, 30, 1
+    %108 = inss i48 %107, i1 %concat2, 31, 1
+    %109 = inss i48 %108, i1 %concat2, 32, 1
+    %110 = inss i48 %109, i1 %concat2, 33, 1
+    %111 = inss i48 %110, i1 %concat2, 34, 1
+    %112 = inss i48 %111, i1 %concat2, 35, 1
+    %113 = inss i48 %112, i1 %concat2, 36, 1
+    %114 = inss i48 %113, i1 %concat2, 37, 1
+    %115 = inss i48 %114, i1 %concat2, 38, 1
+    %116 = inss i48 %115, i1 %concat2, 39, 1
+    %117 = inss i48 %116, i1 %concat2, 40, 1
+    %118 = inss i48 %117, i1 %concat2, 41, 1
+    %119 = inss i48 %118, i1 %concat2, 42, 1
+    %120 = inss i48 %119, i1 %concat2, 43, 1
+    %121 = inss i48 %120, i1 %concat2, 44, 1
+    %122 = inss i48 %121, i1 %concat2, 45, 1
+    %123 = inss i48 %122, i1 %concat2, 46, 1
+    %repeat1 = inss i48 %123, i1 %concat2, 47, 1
+    %concat3 = inss i64 %72, i48 %repeat1, 16, 48
+    drv i64$ %ld_result, %concat3, %5
+    br %check
+70:
+    %124 = const i2 2
+    %125 = eq i2 %0, %124
+    br %125, %126, %case_body2
+case_body2:
+    %127 = exts i32, i64 %shifted_data.prb, 0, 32
+    %128 = inss i64 %3, i32 %127, 0, 32
+    %129 = exts i33, i64 %shifted_data.prb, 31, 33
+    %130 = inss i64 %3, i33 %129, 0, 33
+    %131 = exts i1, i64 %130, 0, 1
+    %concat4 = and i1 %131, %4
+    %132 = const i32 0
+    %133 = inss i32 %132, i1 %concat4, 0, 1
+    %134 = inss i32 %133, i1 %concat4, 1, 1
+    %135 = inss i32 %134, i1 %concat4, 2, 1
+    %136 = inss i32 %135, i1 %concat4, 3, 1
+    %137 = inss i32 %136, i1 %concat4, 4, 1
+    %138 = inss i32 %137, i1 %concat4, 5, 1
+    %139 = inss i32 %138, i1 %concat4, 6, 1
+    %140 = inss i32 %139, i1 %concat4, 7, 1
+    %141 = inss i32 %140, i1 %concat4, 8, 1
+    %142 = inss i32 %141, i1 %concat4, 9, 1
+    %143 = inss i32 %142, i1 %concat4, 10, 1
+    %144 = inss i32 %143, i1 %concat4, 11, 1
+    %145 = inss i32 %144, i1 %concat4, 12, 1
+    %146 = inss i32 %145, i1 %concat4, 13, 1
+    %147 = inss i32 %146, i1 %concat4, 14, 1
+    %148 = inss i32 %147, i1 %concat4, 15, 1
+    %149 = inss i32 %148, i1 %concat4, 16, 1
+    %150 = inss i32 %149, i1 %concat4, 17, 1
+    %151 = inss i32 %150, i1 %concat4, 18, 1
+    %152 = inss i32 %151, i1 %concat4, 19, 1
+    %153 = inss i32 %152, i1 %concat4, 20, 1
+    %154 = inss i32 %153, i1 %concat4, 21, 1
+    %155 = inss i32 %154, i1 %concat4, 22, 1
+    %156 = inss i32 %155, i1 %concat4, 23, 1
+    %157 = inss i32 %156, i1 %concat4, 24, 1
+    %158 = inss i32 %157, i1 %concat4, 25, 1
+    %159 = inss i32 %158, i1 %concat4, 26, 1
+    %160 = inss i32 %159, i1 %concat4, 27, 1
+    %161 = inss i32 %160, i1 %concat4, 28, 1
+    %162 = inss i32 %161, i1 %concat4, 29, 1
+    %163 = inss i32 %162, i1 %concat4, 30, 1
+    %repeat2 = inss i32 %163, i1 %concat4, 31, 1
+    %concat5 = inss i64 %128, i32 %repeat2, 32, 32
+    drv i64$ %ld_result, %concat5, %5
+    br %check
+126:
+    %164 = const i2 3
+    %165 = eq i2 %0, %164
+    br %165, %166, %case_body3
+case_body3:
+    drv i64$ %ld_result, %shifted_data.prb, %5
+    br %check
+166:
+    drv i64$ %ld_result, %shifted_data.prb, %5
+    br %check
+}
+
+entity @snitch_lsu.param3 (i1$ %clk_i, i1$ %rst_i, i5$ %lsu_qtag_i, i1$ %lsu_qwrite, i1$ %lsu_qsigned, i32$ %lsu_qaddr_i, i64$ %lsu_qdata_i, i2$ %lsu_qsize_i, i4$ %lsu_qamo_i, i1$ %lsu_qvalid_i, i1$ %lsu_pready_i, i1$ %data_qready_i, i64$ %data_pdata_i, i1$ %data_perror_i, i1$ %data_pvalid_i) -> (i1$ %lsu_qready_o, i64$ %lsu_pdata_o, i5$ %lsu_ptag_o, i1$ %lsu_perror_o, i1$ %lsu_pvalid_o, i32$ %data_qaddr_o, i1$ %data_qwrite_o, i4$ %data_qamo_o, i64$ %data_qdata_o, i8$ %data_qstrb_o, i1$ %data_qvalid_o, i1$ %data_pready_o) {
+    %0 = const i64 0
+    %ld_result = sig i64 %0
+    %1 = const i5 0
+    %2 = const i1 0
+    %3 = const i3 0
+    %4 = const i2 0
+    %5 = {i5 %1, i1 %2, i3 %3, i2 %4}
+    %laq_in = sig {i5, i1, i3, i2} %5
+    %laq_out = sig {i5, i1, i3, i2} %5
+    %laq_full = sig i1 %2
+    %laq_push = sig i1 %2
+    %shifted_data = sig i64 %0
+    %lsu_qtag_i.prb = prb i5$ %lsu_qtag_i
+    %lsu_qsigned.prb = prb i1$ %lsu_qsigned
+    %lsu_qaddr_i.prb = prb i32$ %lsu_qaddr_i
+    %6 = exts i3, i32 %lsu_qaddr_i.prb, 0, 3
+    %lsu_qsize_i.prb = prb i2$ %lsu_qsize_i
+    %7 = {i5 %lsu_qtag_i.prb, i1 %lsu_qsigned.prb, i3 %6, i2 %lsu_qsize_i.prb}
+    %8 = const time 0s 1e
+    drv {i5, i1, i3, i2}$ %laq_in, %7, %8
+    %lsu_qvalid_i.prb = prb i1$ %lsu_qvalid_i
+    %lsu_qwrite.prb = prb i1$ %lsu_qwrite
+    %laq_full.prb = prb i1$ %laq_full
+    %9 = not i1 %laq_full.prb
+    %10 = or i1 %lsu_qwrite.prb, %9
+    %11 = and i1 %lsu_qvalid_i.prb, %10
+    drv i1$ %data_qvalid_o, %11, %8
+    drv i1$ %data_qwrite_o, %lsu_qwrite.prb, %8
+    %12 = const i32 0
+    %13 = exts i29, i32 %lsu_qaddr_i.prb, 3, 29
+    %14 = inss i32 %12, i29 %13, 0, 29
+    %15 = exts i29, i32 %14, 0, 29
+    %concat = inss i32 %12, i29 %15, 3, 29
+    drv i32$ %data_qaddr_o, %concat, %8
+    %lsu_qamo_i.prb = prb i4$ %lsu_qamo_i
+    drv i4$ %data_qamo_o, %lsu_qamo_i.prb, %8
+    %data_qvalid_o.prb = prb i1$ %data_qvalid_o
+    %data_qready_i.prb = prb i1$ %data_qready_i
+    %16 = not i1 %data_qready_i.prb
+    %17 = and i1 %data_qvalid_o.prb, %16
+    %18 = not i1 %17
+    %19 = and i1 %18, %9
+    drv i1$ %lsu_qready_o, %19, %8
+    %20 = and i1 %data_qready_i.prb, %data_qvalid_o.prb
+    %21 = and i1 %20, %9
+    drv i1$ %laq_push, %21, %8
+    %data_pdata_i.prb = prb i64$ %data_pdata_i
+    %22 = const i6 0
+    %laq_out.prb = prb {i5, i1, i3, i2}$ %laq_out
+    %23 = extf i3, {i5, i1, i3, i2} %laq_out.prb, 2
+    %concat1 = inss i6 %22, i3 %23, 3, 3
+    %24 = shr i64 %data_pdata_i.prb, i64 %0, i6 %concat1
+    drv i64$ %shifted_data, %24, %8
+    %data_perror_i.prb = prb i1$ %data_perror_i
+    drv i1$ %lsu_perror_o, %data_perror_i.prb, %8
+    %ld_result.prb = prb i64$ %ld_result
+    drv i64$ %lsu_pdata_o, %ld_result.prb, %8
+    %25 = extf i5, {i5, i1, i3, i2} %laq_out.prb, 0
+    drv i5$ %lsu_ptag_o, %25, %8
+    %data_pvalid_i.prb = prb i1$ %data_pvalid_i
+    drv i1$ %lsu_pvalid_o, %data_pvalid_i.prb, %8
+    %lsu_pready_i.prb = prb i1$ %lsu_pready_i
+    drv i1$ %data_pready_o, %lsu_pready_i.prb, %8
+    %rst_i.prb = prb i1$ %rst_i
+    %26 = not i1 %rst_i.prb
+    %27 = sig i1 %2
+    %28 = const time 0s 1d
+    drv i1$ %27, %26, %28
+    %29 = sig i1 %2
+    drv i1$ %29, %2, %28
+    %30 = sig i1 %2
+    drv i1$ %30, %2, %28
+    %data_pready_o.prb = prb i1$ %data_pready_o
+    %31 = and i1 %data_pvalid_i.prb, %data_pready_o.prb
+    %32 = sig i1 %2
+    drv i1$ %32, %31, %28
+    %i_fifo_laq.empty_o.default = sig i1 %2
+    %i_fifo_laq.usage_o.default = sig i1 %2
+    inst @fifo_v3.param6 (i1$ %clk_i, i1$ %27, i1$ %29, i1$ %30, {i5, i1, i3, i2}$ %laq_in, i1$ %laq_push, i1$ %32) -> (i1$ %laq_full, i1$ %i_fifo_laq.empty_o.default, i1$ %i_fifo_laq.usage_o.default, {i5, i1, i3, i2}$ %laq_out)
+    inst %snitch_lsu.param3.always_comb.25524.3 (i32$ %lsu_qaddr_i, i2$ %lsu_qsize_i) -> (i8$ %data_qstrb_o)
+    inst %snitch_lsu.param3.always_comb.25765.3 (i32$ %lsu_qaddr_i, i64$ %lsu_qdata_i) -> (i64$ %data_qdata_o)
+    inst %snitch_lsu.param3.always_comb.25969.3 ({i5, i1, i3, i2}$ %laq_out, i64$ %shifted_data) -> (i64$ %ld_result)
+}
+
+proc %snitch.param1.always_ff.12501.1 (i1$ %clk_i, i1$ %rst_i, i32$ %pc_d) -> (i32$ %pc_q) {
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    wait %check, %clk_i
+check:
+    %clk_i.prb1 = prb i1$ %clk_i
+    %0 = const i1 0
+    %1 = eq i1 %clk_i.prb, %0
+    %2 = neq i1 %clk_i.prb1, %0
+    %posedge = and i1 %1, %2
+    br %posedge, %init, %event
+event:
+    %rst_i.prb = prb i1$ %rst_i
+    %3 = neq i1 %rst_i.prb, %0
+    %4 = const i32 65536
+    %pc_d.prb = prb i32$ %pc_d
+    %5 = [i32 %pc_d.prb, %4]
+    %6 = mux [2 x i32] %5, i1 %3
+    %7 = const time 0s 1d
+    drv i32$ %pc_q, %6, %7
+    br %init
+}
+
+proc %snitch.param1.always_ff.12525.1 (i1$ %clk_i, i1$ %rst_i, i1$ %wfi_d) -> (i1$ %wfi_q) {
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    wait %check, %clk_i
+check:
+    %clk_i.prb1 = prb i1$ %clk_i
+    %0 = const i1 0
+    %1 = eq i1 %clk_i.prb, %0
+    %2 = neq i1 %clk_i.prb1, %0
+    %posedge = and i1 %1, %2
+    br %posedge, %init, %event
+event:
+    %rst_i.prb = prb i1$ %rst_i
+    %3 = neq i1 %rst_i.prb, %0
+    %wfi_d.prb = prb i1$ %wfi_d
+    %4 = [i1 %wfi_d.prb, %0]
+    %5 = mux [2 x i1] %4, i1 %3
+    %6 = const time 0s 1d
+    drv i1$ %wfi_q, %5, %6
+    br %init
+}
+
+proc %snitch.param1.always_ff.12549.1 (i1$ %clk_i, i1$ %rst_i, i32$ %sb_d) -> (i32$ %sb_q) {
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    wait %check, %clk_i
+check:
+    %clk_i.prb1 = prb i1$ %clk_i
+    %0 = const i1 0
+    %1 = eq i1 %clk_i.prb, %0
+    %2 = neq i1 %clk_i.prb1, %0
+    %posedge = and i1 %1, %2
+    br %posedge, %init, %event
+event:
+    %rst_i.prb = prb i1$ %rst_i
+    %3 = neq i1 %rst_i.prb, %0
+    %4 = const i32 0
+    %sb_d.prb = prb i32$ %sb_d
+    %5 = [i32 %sb_d.prb, %4]
+    %6 = mux [2 x i32] %5, i1 %3
+    %7 = const time 0s 1d
+    drv i32$ %sb_q, %6, %7
+    br %init
+}
+
+proc %snitch.param1.always_ff.12573.1 (i1$ %clk_i, i1$ %rst_i, {i3, {i1, i1, i1, i1, i1}}$ %fcsr_d) -> ({i3, {i1, i1, i1, i1, i1}}$ %fcsr_q) {
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    wait %check, %clk_i
+check:
+    %clk_i.prb1 = prb i1$ %clk_i
+    %0 = const i1 0
+    %1 = eq i1 %clk_i.prb, %0
+    %2 = neq i1 %clk_i.prb1, %0
+    %posedge = and i1 %1, %2
+    br %posedge, %init, %event
+event:
+    %rst_i.prb = prb i1$ %rst_i
+    %3 = neq i1 %rst_i.prb, %0
+    %4 = const i8 0
+    %5 = const i5 0
+    %fcsr_d.prb = prb {i3, {i1, i1, i1, i1, i1}}$ %fcsr_d
+    %6 = extf {i1, i1, i1, i1, i1}, {i3, {i1, i1, i1, i1, i1}} %fcsr_d.prb, 1
+    %7 = extf i1, {i1, i1, i1, i1, i1} %6, 4
+    %8 = inss i5 %5, i1 %7, 0, 1
+    %9 = extf i1, {i1, i1, i1, i1, i1} %6, 3
+    %10 = inss i5 %8, i1 %9, 1, 1
+    %11 = extf i1, {i1, i1, i1, i1, i1} %6, 2
+    %12 = inss i5 %10, i1 %11, 2, 1
+    %13 = extf i1, {i1, i1, i1, i1, i1} %6, 1
+    %14 = inss i5 %12, i1 %13, 3, 1
+    %15 = extf i1, {i1, i1, i1, i1, i1} %6, 0
+    %concat = inss i5 %14, i1 %15, 4, 1
+    %16 = inss i8 %4, i5 %concat, 0, 5
+    %17 = extf i3, {i3, {i1, i1, i1, i1, i1}} %fcsr_d.prb, 0
+    %concat1 = inss i8 %16, i3 %17, 5, 3
+    %18 = [i8 %concat1, %4]
+    %19 = mux [2 x i8] %18, i1 %3
+    %20 = exts i3, i8 %19, 0, 3
+    %21 = exts i5, i8 %19, 3, 5
+    %22 = inss i8 %4, i5 %21, 0, 5
+    %23 = exts i5, i8 %22, 0, 5
+    %24 = exts i1, i5 %23, 0, 1
+    %25 = exts i4, i5 %23, 1, 4
+    %26 = inss i5 %5, i4 %25, 0, 4
+    %27 = exts i1, i5 %26, 0, 1
+    %28 = exts i3, i5 %23, 2, 3
+    %29 = inss i5 %5, i3 %28, 0, 3
+    %30 = exts i1, i5 %29, 0, 1
+    %31 = exts i2, i5 %23, 3, 2
+    %32 = inss i5 %5, i2 %31, 0, 2
+    %33 = exts i1, i5 %32, 0, 1
+    %34 = exts i1, i5 %23, 4, 1
+    %35 = inss i5 %5, i1 %34, 0, 1
+    %36 = exts i1, i5 %35, 0, 1
+    %37 = {i1 %24, i1 %27, i1 %30, i1 %33, i1 %36}
+    %38 = {i3 %20, {i1, i1, i1, i1, i1} %37}
+    %39 = const time 0s 1d
+    drv {i3, {i1, i1, i1, i1, i1}}$ %fcsr_q, %38, %39
+    br %init
+}
+
+proc %snitch.param1.always_comb.12607.1 (i1$ %stall) -> ({i1, i1, i1, i1}$ %core_events_o) {
+body:
+    %0 = const i1 0
+    %1 = {i1 %0, i1 %0, i1 %0, i1 %0}
+    %2 = const time 0s 1e
+    drv {i1, i1, i1, i1}$ %core_events_o, %1, %2
+    %3 = extf i1$, {i1, i1, i1, i1}$ %core_events_o, 3
+    %stall.prb = prb i1$ %stall
+    %4 = not i1 %stall.prb
+    drv i1$ %3, %4, %2
+    wait %body, %stall
+}
+
+proc %snitch.param1.always_comb.12929.1 (i5$ %acc_pid_i, i5$ %rd, i1$ %stall, i32$ %sb_q, i1$ %is_load, i5$ %lsu_rd, i1$ %retire_load, i1$ %retire_acc, i1$ %acc_register_rd) -> (i32$ %sb_d) {
+body:
+    %sb_q.prb = prb i32$ %sb_q
+    %0 = const time 0s 1e
+    drv i32$ %sb_d, %sb_q.prb, %0
+    %retire_load.prb = prb i1$ %retire_load
+    %1 = const i1 0
+    %2 = neq i1 %retire_load.prb, %1
+    %3 = const i32 0
+    br %2, %if_exit, %if_true
+if_true:
+    %lsu_rd.prb = prb i5$ %lsu_rd
+    %4 = sig i32 %3
+    %5 = shr i32$ %sb_d, i32$ %4, i5 %lsu_rd.prb
+    %6 = exts i1$, i32$ %5, 0, 1
+    drv i1$ %6, %1, %0
+    br %if_exit
+if_exit:
+    %is_load.prb = prb i1$ %is_load
+    %acc_register_rd.prb = prb i1$ %acc_register_rd
+    %7 = or i1 %is_load.prb, %acc_register_rd.prb
+    %8 = neq i1 %7, %1
+    %stall.prb = prb i1$ %stall
+    %9 = neq i1 %stall.prb, %1
+    %10 = not i1 %9
+    %11 = neq i1 %10, %1
+    %12 = and i1 %8, %11
+    %13 = neq i1 %12, %1
+    br %13, %if_exit1, %if_true1
+if_true1:
+    %rd.prb = prb i5$ %rd
+    %14 = sig i32 %3
+    %15 = shr i32$ %sb_d, i32$ %14, i5 %rd.prb
+    %16 = exts i1$, i32$ %15, 0, 1
+    %17 = const i1 1
+    drv i1$ %16, %17, %0
+    br %if_exit1
+if_exit1:
+    %retire_acc.prb = prb i1$ %retire_acc
+    %18 = neq i1 %retire_acc.prb, %1
+    br %18, %if_exit2, %if_true2
+if_true2:
+    %acc_pid_i.prb = prb i5$ %acc_pid_i
+    %19 = sig i32 %3
+    %20 = shr i32$ %sb_d, i32$ %19, i5 %acc_pid_i.prb
+    %21 = exts i1$, i32$ %20, 0, 1
+    drv i1$ %21, %1, %0
+    br %if_exit2
+if_exit2:
+    %22 = exts i1$, i32$ %sb_d, 0, 1
+    drv i1$ %22, %1, %0
+    wait %body, %acc_pid_i, %rd, %stall, %sb_q, %is_load, %lsu_rd, %retire_load, %retire_acc, %acc_register_rd
+}
+
+proc %snitch.param1.always_comb.13188.1 (i1$ %zero_lsb, i32$ %pc_q, i1$ %wfi_q, i32$ %consec_pc, i32$ %alu_result, i1$ %stall, i2$ %next_pc) -> (i32$ %pc_d) {
+body:
+    %pc_q.prb = prb i32$ %pc_q
+    %0 = const time 0s 1e
+    drv i32$ %pc_d, %pc_q.prb, %0
+    %stall.prb = prb i1$ %stall
+    %1 = const i1 0
+    %2 = neq i1 %stall.prb, %1
+    %3 = not i1 %2
+    %4 = neq i1 %3, %1
+    %wfi_q.prb = prb i1$ %wfi_q
+    %5 = neq i1 %wfi_q.prb, %1
+    %6 = not i1 %5
+    %7 = neq i1 %6, %1
+    %8 = and i1 %4, %7
+    %9 = neq i1 %8, %1
+    br %9, %check, %if_true
+check:
+    wait %body, %zero_lsb, %pc_q, %wfi_q, %consec_pc, %alu_result, %stall, %next_pc
+if_true:
+    %next_pc.prb = prb i2$ %next_pc
+    %10 = const i2 0
+    %11 = eq i2 %next_pc.prb, %10
+    br %11, %12, %case_body
+case_body:
+    %consec_pc.prb = prb i32$ %consec_pc
+    drv i32$ %pc_d, %consec_pc.prb, %0
+    br %check
+12:
+    %13 = const i2 1
+    %14 = eq i2 %next_pc.prb, %13
+    br %14, %15, %case_body1
+case_body1:
+    %alu_result.prb = prb i32$ %alu_result
+    %16 = const i32 0
+    %zero_lsb.prb = prb i1$ %zero_lsb
+    %17 = not i1 %zero_lsb.prb
+    %18 = inss i32 %16, i1 %17, 0, 1
+    %19 = const i31 2147483647
+    %concat = inss i32 %18, i31 %19, 1, 31
+    %20 = and i32 %alu_result.prb, %concat
+    drv i32$ %pc_d, %20, %0
+    br %check
+15:
+    %21 = const i2 2
+    %22 = eq i2 %next_pc.prb, %21
+    br %22, %check, %case_body2
+case_body2:
+    %23 = const i32 65536
+    drv i32$ %pc_d, %23, %0
+    br %check
+}
+
+proc %snitch.param1.always_comb.22810.1 (i32$ %inst_data_i, i1$ %wake_up_sync_i, i1$ %wfi_q, i32$ %uimm, i1$ %valid_instr, i32$ %csr_rvalue) -> (i1$ %acc_qvalid_o, i1$ %illegal_inst, i1$ %zero_lsb, i1$ %wfi_d, i1$ %is_load, i1$ %is_store, i1$ %is_signed, i2$ %ls_size, i4$ %ls_amo, i4$ %alu_op, i4$ %opa_select, i4$ %opb_select, i1$ %write_rd, i1$ %uses_rd, i2$ %next_pc, i2$ %rd_select, i32$ %rd_bypass, i1$ %is_branch, i1$ %csr_en, i1$ %acc_register_rd) {
+0:
+    %1 = prb i1$ %illegal_inst
+    %illegal_inst.shadow = var i1 %1
+    %2 = prb i1$ %write_rd
+    %write_rd.shadow = var i1 %2
+    st i1* %illegal_inst.shadow, %1
+    st i1* %write_rd.shadow, %2
+    %3 = const i1 0
+    %4 = const time 0s 1e
+    drv i1$ %illegal_inst, %3, %4
+    st i1* %illegal_inst.shadow, %3
+    %5 = const i4 0
+    drv i4$ %alu_op, %5, %4
+    drv i4$ %opa_select, %5, %4
+    drv i4$ %opb_select, %5, %4
+    %6 = const i2 0
+    drv i2$ %next_pc, %6, %4
+    drv i2$ %rd_select, %6, %4
+    %7 = const i1 1
+    drv i1$ %write_rd, %7, %4
+    st i1* %write_rd.shadow, %7
+    %write_rd.shadow.ld = ld i1* %write_rd.shadow
+    drv i1$ %uses_rd, %write_rd.shadow.ld, %4
+    %8 = const i32 0
+    drv i32$ %rd_bypass, %8, %4
+    drv i1$ %zero_lsb, %3, %4
+    drv i1$ %is_branch, %3, %4
+    drv i1$ %is_load, %3, %4
+    drv i1$ %is_store, %3, %4
+    drv i1$ %is_signed, %3, %4
+    drv i2$ %ls_size, %6, %4
+    drv i4$ %ls_amo, %5, %4
+    drv i1$ %acc_qvalid_o, %3, %4
+    drv i1$ %acc_register_rd, %3, %4
+    drv i1$ %csr_en, %3, %4
+    %wake_up_sync_i.prb = prb i1$ %wake_up_sync_i
+    %9 = neq i1 %wake_up_sync_i.prb, %3
+    %wfi_q.prb = prb i1$ %wfi_q
+    %10 = [i1 %wfi_q.prb, %3]
+    %11 = mux [2 x i1] %10, i1 %9
+    drv i1$ %wfi_d, %11, %4
+    %inst_data_i.prb = prb i32$ %inst_data_i
+    %12 = const i32 4261441663
+    %13 = and i32 %inst_data_i.prb, %12
+    %14 = const i32 51
+    %15 = eq i32 %13, %14
+    %16 = const i4 1
+    %17 = const i2 2
+    br %15, %18, %case_body
+check:
+    wait %0, %inst_data_i, %wake_up_sync_i, %wfi_q, %uimm, %valid_instr, %csr_rvalue
+case_exit:
+    %illegal_inst.shadow.ld = ld i1* %illegal_inst.shadow
+    %19 = neq i1 %illegal_inst.shadow.ld, %3
+    br %19, %check, %if_true
+case_body:
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+18:
+    %20 = const i32 28799
+    %21 = and i32 %inst_data_i.prb, %20
+    %22 = const i32 19
+    %23 = eq i32 %21, %22
+    %24 = const i4 2
+    br %23, %25, %case_body1
+case_body1:
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+25:
+    %26 = const i32 1073741875
+    %27 = eq i32 %13, %26
+    br %27, %28, %case_body2
+case_body2:
+    drv i4$ %alu_op, %16, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+28:
+    %29 = const i32 16435
+    %30 = eq i32 %13, %29
+    %31 = const i4 7
+    br %30, %32, %case_body3
+case_body3:
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    drv i4$ %alu_op, %31, %4
+    br %case_exit
+32:
+    %33 = const i32 16403
+    %34 = eq i32 %21, %33
+    br %34, %35, %case_body4
+case_body4:
+    drv i4$ %alu_op, %31, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+35:
+    %36 = const i32 24627
+    %37 = eq i32 %13, %36
+    %38 = const i4 8
+    br %37, %39, %case_body5
+case_body5:
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    drv i4$ %alu_op, %38, %4
+    br %case_exit
+39:
+    %40 = const i32 24595
+    %41 = eq i32 %21, %40
+    br %41, %42, %case_body6
+case_body6:
+    drv i4$ %alu_op, %38, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+42:
+    %43 = const i32 28723
+    %44 = eq i32 %13, %43
+    %45 = const i4 9
+    br %44, %46, %case_body7
+case_body7:
+    drv i4$ %alu_op, %45, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+46:
+    %47 = const i32 28691
+    %48 = eq i32 %21, %47
+    br %48, %49, %case_body8
+case_body8:
+    drv i4$ %alu_op, %45, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+49:
+    %50 = const i32 8243
+    %51 = eq i32 %13, %50
+    br %51, %52, %case_body9
+case_body9:
+    drv i4$ %alu_op, %24, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+52:
+    %53 = const i32 8211
+    %54 = eq i32 %21, %53
+    br %54, %55, %case_body10
+case_body10:
+    drv i4$ %alu_op, %24, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+55:
+    %56 = const i32 12339
+    %57 = eq i32 %13, %56
+    %58 = const i4 3
+    br %57, %59, %case_body11
+case_body11:
+    drv i4$ %alu_op, %58, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+59:
+    %60 = const i32 12307
+    %61 = eq i32 %21, %60
+    br %61, %62, %case_body12
+case_body12:
+    drv i4$ %alu_op, %58, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+62:
+    %63 = const i32 4147
+    %64 = eq i32 %13, %63
+    %65 = const i4 4
+    br %64, %66, %case_body13
+case_body13:
+    drv i4$ %alu_op, %65, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+66:
+    %67 = const i32 20531
+    %68 = eq i32 %13, %67
+    %69 = const i4 5
+    br %68, %70, %case_body14
+case_body14:
+    drv i4$ %alu_op, %69, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+70:
+    %71 = const i32 1073762355
+    %72 = eq i32 %13, %71
+    %73 = const i4 6
+    br %72, %74, %case_body15
+case_body15:
+    drv i4$ %alu_op, %73, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+74:
+    %75 = const i32 4227887231
+    %76 = and i32 %inst_data_i.prb, %75
+    %77 = const i32 4115
+    %78 = eq i32 %76, %77
+    br %78, %79, %case_body16
+case_body16:
+    drv i4$ %alu_op, %65, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+79:
+    %80 = const i32 20499
+    %81 = eq i32 %76, %80
+    br %81, %82, %case_body17
+case_body17:
+    drv i4$ %alu_op, %69, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+82:
+    %83 = const i32 1073762323
+    %84 = eq i32 %76, %83
+    br %84, %85, %case_body18
+case_body18:
+    drv i4$ %alu_op, %73, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+85:
+    %86 = const i32 127
+    %87 = and i32 %inst_data_i.prb, %86
+    %88 = const i32 55
+    %89 = eq i32 %87, %88
+    br %89, %90, %case_body19
+case_body19:
+    drv i4$ %opa_select, %5, %4
+    drv i4$ %opb_select, %5, %4
+    drv i2$ %rd_select, %17, %4
+    %uimm.prb = prb i32$ %uimm
+    drv i32$ %rd_bypass, %uimm.prb, %4
+    br %case_exit
+90:
+    %91 = const i32 23
+    %92 = eq i32 %87, %91
+    br %92, %93, %case_body20
+case_body20:
+    drv i4$ %opa_select, %58, %4
+    drv i4$ %opb_select, %31, %4
+    br %case_exit
+93:
+    %94 = const i32 111
+    %95 = eq i32 %87, %94
+    %96 = const i2 1
+    br %95, %97, %case_body21
+case_body21:
+    drv i2$ %rd_select, %96, %4
+    drv i4$ %opa_select, %65, %4
+    drv i4$ %opb_select, %31, %4
+    drv i2$ %next_pc, %96, %4
+    br %case_exit
+97:
+    %98 = const i32 103
+    %99 = eq i32 %21, %98
+    br %99, %100, %case_body22
+case_body22:
+    drv i2$ %rd_select, %96, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    drv i2$ %next_pc, %96, %4
+    drv i1$ %zero_lsb, %7, %4
+    br %case_exit
+100:
+    %101 = const i32 99
+    %102 = eq i32 %21, %101
+    %103 = const i4 11
+    br %102, %104, %case_body23
+case_body23:
+    drv i1$ %is_branch, %7, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i4$ %alu_op, %103, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+104:
+    %105 = const i32 4195
+    %106 = eq i32 %21, %105
+    br %106, %107, %case_body24
+case_body24:
+    drv i1$ %is_branch, %7, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    %108 = const i4 12
+    drv i4$ %alu_op, %108, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+107:
+    %109 = const i32 16483
+    %110 = eq i32 %21, %109
+    br %110, %111, %case_body25
+case_body25:
+    drv i1$ %is_branch, %7, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i4$ %alu_op, %24, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+111:
+    %112 = const i32 24675
+    %113 = eq i32 %21, %112
+    br %113, %114, %case_body26
+case_body26:
+    drv i1$ %is_branch, %7, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i4$ %alu_op, %58, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+114:
+    %115 = const i32 20579
+    %116 = eq i32 %21, %115
+    br %116, %117, %case_body27
+case_body27:
+    drv i1$ %is_branch, %7, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    %118 = const i4 13
+    drv i4$ %alu_op, %118, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+117:
+    %119 = const i32 28771
+    %120 = eq i32 %21, %119
+    br %120, %121, %case_body28
+case_body28:
+    drv i1$ %is_branch, %7, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    %122 = const i4 14
+    drv i4$ %alu_op, %122, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+121:
+    %123 = const i32 35
+    %124 = eq i32 %21, %123
+    br %124, %125, %case_body29
+case_body29:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %is_store, %7, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %69, %4
+    br %case_exit
+125:
+    %126 = const i32 4131
+    %127 = eq i32 %21, %126
+    br %127, %128, %case_body30
+case_body30:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %is_store, %7, %4
+    drv i2$ %ls_size, %96, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %69, %4
+    br %case_exit
+128:
+    %129 = const i32 8227
+    %130 = eq i32 %21, %129
+    br %130, %131, %case_body31
+case_body31:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %is_store, %7, %4
+    drv i2$ %ls_size, %17, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %69, %4
+    br %case_exit
+131:
+    %132 = const i32 3
+    %133 = eq i32 %21, %132
+    br %133, %134, %case_body32
+case_body32:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+134:
+    %135 = const i32 4099
+    %136 = eq i32 %21, %135
+    br %136, %137, %case_body33
+case_body33:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i2$ %ls_size, %96, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+137:
+    %138 = const i32 8195
+    %139 = eq i32 %21, %138
+    br %139, %140, %case_body34
+case_body34:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i2$ %ls_size, %17, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+140:
+    %141 = const i32 16387
+    %142 = eq i32 %21, %141
+    br %142, %143, %case_body35
+case_body35:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+143:
+    %144 = const i32 20483
+    %145 = eq i32 %21, %144
+    br %145, %146, %case_body36
+case_body36:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i2$ %ls_size, %96, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    br %case_exit
+146:
+    %147 = const i32 4211
+    %148 = eq i32 %21, %147
+    %csr_rvalue.prb = prb i32$ %csr_rvalue
+    br %148, %149, %case_body37
+case_body37:
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %5, %4
+    drv i2$ %rd_select, %17, %4
+    drv i32$ %rd_bypass, %csr_rvalue.prb, %4
+    drv i1$ %csr_en, %7, %4
+    br %case_exit
+149:
+    %150 = const i32 20595
+    %151 = eq i32 %21, %150
+    br %151, %152, %case_body38
+case_body38:
+    drv i4$ %opa_select, %45, %4
+    drv i4$ %opb_select, %5, %4
+    drv i2$ %rd_select, %17, %4
+    drv i32$ %rd_bypass, %csr_rvalue.prb, %4
+    drv i1$ %csr_en, %7, %4
+    br %case_exit
+152:
+    %153 = const i32 8307
+    %154 = eq i32 %21, %153
+    br %154, %155, %case_body39
+case_body39:
+    drv i4$ %alu_op, %38, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %38, %4
+    drv i2$ %rd_select, %17, %4
+    drv i32$ %rd_bypass, %csr_rvalue.prb, %4
+    drv i1$ %csr_en, %7, %4
+    br %case_exit
+155:
+    %156 = const i32 24691
+    %157 = eq i32 %21, %156
+    %158 = exts i12, i32 %inst_data_i.prb, 20, 12
+    %159 = const i12 1984
+    %valid_instr.prb = prb i1$ %valid_instr
+    br %157, %160, %case_body40
+case_body40:
+    %161 = inss i32 %8, i12 %158, 0, 12
+    %162 = exts i12, i32 %161, 0, 12
+    %163 = neq i12 %162, %159
+    %164 = neq i1 %163, %3
+    br %164, %if_false, %if_true1
+160:
+    %165 = const i32 12403
+    %166 = eq i32 %21, %165
+    %167 = const i4 10
+    br %166, %168, %case_body41
+if_true1:
+    drv i4$ %alu_op, %38, %4
+    drv i4$ %opa_select, %45, %4
+    drv i4$ %opb_select, %38, %4
+    drv i2$ %rd_select, %17, %4
+    drv i32$ %rd_bypass, %csr_rvalue.prb, %4
+    drv i1$ %csr_en, %7, %4
+    br %case_exit
+if_false:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+case_body41:
+    drv i4$ %alu_op, %167, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %38, %4
+    drv i2$ %rd_select, %17, %4
+    drv i32$ %rd_bypass, %csr_rvalue.prb, %4
+    drv i1$ %csr_en, %7, %4
+    br %case_exit
+168:
+    %169 = const i32 28787
+    %170 = eq i32 %21, %169
+    br %170, %171, %case_body42
+case_body42:
+    %172 = inss i32 %8, i12 %158, 0, 12
+    %173 = exts i12, i32 %172, 0, 12
+    %174 = neq i12 %173, %159
+    %175 = neq i1 %174, %3
+    br %175, %if_false1, %if_true2
+171:
+    %176 = const i32 115
+    %177 = eq i32 %inst_data_i.prb, %176
+    %178 = const i32 1048691
+    %179 = eq i32 %inst_data_i.prb, %178
+    %180 = or i1 %177, %179
+    br %180, %181, %case_body43
+if_true2:
+    drv i4$ %alu_op, %167, %4
+    drv i4$ %opa_select, %45, %4
+    drv i4$ %opb_select, %38, %4
+    drv i2$ %rd_select, %17, %4
+    drv i32$ %rd_bypass, %csr_rvalue.prb, %4
+    drv i1$ %csr_en, %7, %4
+    br %case_exit
+if_false1:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+case_body43:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    br %case_exit
+181:
+    %182 = const i32 15
+    %183 = eq i32 %21, %182
+    br %183, %184, %case_body44
+case_body44:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    br %case_exit
+184:
+    %185 = const i32 273678451
+    %186 = eq i32 %inst_data_i.prb, %185
+    br %186, %187, %case_body45
+case_body45:
+    drv i1$ %wfi_d, %7, %4
+    br %case_exit
+187:
+    %188 = const i32 4160778367
+    %189 = and i32 %inst_data_i.prb, %188
+    %190 = const i32 8239
+    %191 = eq i32 %189, %190
+    %192 = const i4 15
+    br %191, %193, %case_body46
+case_body46:
+    drv i4$ %alu_op, %192, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i2$ %ls_size, %17, %4
+    drv i4$ %ls_amo, %24, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+193:
+    %194 = const i32 536879151
+    %195 = eq i32 %189, %194
+    br %195, %196, %case_body47
+case_body47:
+    drv i4$ %alu_op, %192, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i2$ %ls_size, %17, %4
+    drv i4$ %ls_amo, %69, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+196:
+    %197 = const i32 1073750063
+    %198 = eq i32 %189, %197
+    br %198, %199, %case_body48
+case_body48:
+    drv i4$ %alu_op, %192, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i2$ %ls_size, %17, %4
+    drv i4$ %ls_amo, %65, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+199:
+    %200 = const i32 1610620975
+    %201 = eq i32 %189, %200
+    br %201, %202, %case_body49
+case_body49:
+    drv i4$ %alu_op, %192, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i2$ %ls_size, %17, %4
+    drv i4$ %ls_amo, %58, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+202:
+    %203 = const i32 2147491887
+    %204 = eq i32 %189, %203
+    br %204, %205, %case_body50
+case_body50:
+    drv i4$ %alu_op, %192, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i2$ %ls_size, %17, %4
+    drv i4$ %ls_amo, %45, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+205:
+    %206 = const i32 2684362799
+    %207 = eq i32 %189, %206
+    br %207, %208, %case_body51
+case_body51:
+    drv i4$ %alu_op, %192, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i2$ %ls_size, %17, %4
+    drv i4$ %ls_amo, %73, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+208:
+    %209 = const i32 3221233711
+    %210 = eq i32 %189, %209
+    br %210, %211, %case_body52
+case_body52:
+    drv i4$ %alu_op, %192, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i2$ %ls_size, %17, %4
+    drv i4$ %ls_amo, %45, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+211:
+    %212 = const i32 3758104623
+    %213 = eq i32 %189, %212
+    br %213, %214, %case_body53
+case_body53:
+    drv i4$ %alu_op, %192, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i2$ %ls_size, %17, %4
+    drv i4$ %ls_amo, %31, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+214:
+    %215 = const i32 134225967
+    %216 = eq i32 %189, %215
+    br %216, %217, %case_body54
+case_body54:
+    drv i4$ %alu_op, %192, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i2$ %ls_size, %17, %4
+    drv i4$ %ls_amo, %16, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+217:
+    %218 = const i32 4193284223
+    %219 = and i32 %inst_data_i.prb, %218
+    %220 = const i32 268443695
+    %221 = eq i32 %219, %220
+    br %221, %222, %case_body55
+case_body55:
+    drv i4$ %alu_op, %192, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i2$ %ls_size, %17, %4
+    drv i4$ %ls_amo, %167, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+222:
+    %223 = const i32 402661423
+    %224 = eq i32 %189, %223
+    br %224, %225, %case_body56
+case_body56:
+    drv i4$ %alu_op, %192, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %is_load, %7, %4
+    drv i1$ %is_signed, %7, %4
+    drv i2$ %ls_size, %17, %4
+    drv i4$ %ls_amo, %103, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    br %case_exit
+225:
+    %226 = const i32 33554483
+    %227 = eq i32 %13, %226
+    %228 = const i32 33558579
+    %229 = eq i32 %13, %228
+    %230 = or i1 %227, %229
+    %231 = const i32 33562675
+    %232 = eq i32 %13, %231
+    %233 = or i1 %230, %232
+    %234 = const i32 33566771
+    %235 = eq i32 %13, %234
+    %236 = or i1 %233, %235
+    %237 = const i32 33570867
+    %238 = eq i32 %13, %237
+    %239 = or i1 %236, %238
+    %240 = const i32 33574963
+    %241 = eq i32 %13, %240
+    %242 = or i1 %239, %241
+    %243 = const i32 33579059
+    %244 = eq i32 %13, %243
+    %245 = or i1 %242, %244
+    %246 = const i32 33583155
+    %247 = eq i32 %13, %246
+    %248 = or i1 %245, %247
+    %249 = const i32 33554491
+    %250 = eq i32 %13, %249
+    %251 = or i1 %248, %250
+    %252 = const i32 33570875
+    %253 = eq i32 %13, %252
+    %254 = or i1 %251, %253
+    %255 = const i32 33574971
+    %256 = eq i32 %13, %255
+    %257 = or i1 %254, %256
+    %258 = const i32 33579067
+    %259 = eq i32 %13, %258
+    %260 = or i1 %257, %259
+    %261 = const i32 33583163
+    %262 = eq i32 %13, %261
+    %263 = or i1 %260, %262
+    br %263, %264, %case_body57
+case_body57:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %16, %4
+    drv i1$ %acc_register_rd, %7, %4
+    br %case_exit
+264:
+    %265 = const i32 4261412991
+    %266 = and i32 %inst_data_i.prb, %265
+    %267 = const i32 83
+    %268 = eq i32 %266, %267
+    %269 = const i32 134217811
+    %270 = eq i32 %266, %269
+    %271 = or i1 %268, %270
+    %272 = const i32 268435539
+    %273 = eq i32 %266, %272
+    %274 = or i1 %271, %273
+    %275 = const i32 402653267
+    %276 = eq i32 %266, %275
+    %277 = or i1 %274, %276
+    %278 = const i32 536870995
+    %279 = eq i32 %13, %278
+    %280 = or i1 %277, %279
+    %281 = const i32 536875091
+    %282 = eq i32 %13, %281
+    %283 = or i1 %280, %282
+    %284 = const i32 536879187
+    %285 = eq i32 %13, %284
+    %286 = or i1 %283, %285
+    %287 = const i32 671088723
+    %288 = eq i32 %13, %287
+    %289 = or i1 %286, %288
+    %290 = const i32 671092819
+    %291 = eq i32 %13, %290
+    %292 = or i1 %289, %291
+    %293 = const i32 4293918847
+    %294 = and i32 %inst_data_i.prb, %293
+    %295 = const i32 1476395091
+    %296 = eq i32 %294, %295
+    %297 = or i1 %292, %296
+    %298 = const i32 100663423
+    %299 = and i32 %inst_data_i.prb, %298
+    %300 = const i32 67
+    %301 = eq i32 %299, %300
+    %302 = or i1 %297, %301
+    %303 = const i32 71
+    %304 = eq i32 %299, %303
+    %305 = or i1 %302, %304
+    %306 = const i32 75
+    %307 = eq i32 %299, %306
+    %308 = or i1 %305, %307
+    %309 = const i32 79
+    %310 = eq i32 %299, %309
+    %311 = or i1 %308, %310
+    br %311, %312, %case_body58
+case_body58:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+312:
+    %313 = const i32 2181038131
+    %314 = eq i32 %13, %313
+    %315 = const i32 2181054515
+    %316 = eq i32 %13, %315
+    %317 = or i1 %314, %316
+    %318 = const i32 2214592563
+    %319 = eq i32 %13, %318
+    %320 = or i1 %317, %319
+    %321 = const i32 2214608947
+    %322 = eq i32 %13, %321
+    %323 = or i1 %320, %322
+    %324 = const i32 2248146995
+    %325 = eq i32 %13, %324
+    %326 = or i1 %323, %325
+    %327 = const i32 2248163379
+    %328 = eq i32 %13, %327
+    %329 = or i1 %326, %328
+    %330 = const i32 2281701427
+    %331 = eq i32 %13, %330
+    %332 = or i1 %329, %331
+    %333 = const i32 2281717811
+    %334 = eq i32 %13, %333
+    %335 = or i1 %332, %334
+    %336 = const i32 2315255859
+    %337 = eq i32 %13, %336
+    %338 = or i1 %335, %337
+    %339 = const i32 2315272243
+    %340 = eq i32 %13, %339
+    %341 = or i1 %338, %340
+    %342 = const i32 2348810291
+    %343 = eq i32 %13, %342
+    %344 = or i1 %341, %343
+    %345 = const i32 2348826675
+    %346 = eq i32 %13, %345
+    %347 = or i1 %344, %346
+    %348 = const i32 4293947519
+    %349 = and i32 %inst_data_i.prb, %348
+    %350 = const i32 2382364723
+    %351 = eq i32 %349, %350
+    %352 = or i1 %347, %351
+    %353 = const i32 2415919155
+    %354 = eq i32 %13, %353
+    %355 = or i1 %352, %354
+    %356 = const i32 2415935539
+    %357 = eq i32 %13, %356
+    %358 = or i1 %355, %357
+    %359 = const i32 2449473587
+    %360 = eq i32 %13, %359
+    %361 = or i1 %358, %360
+    %362 = const i32 2449489971
+    %363 = eq i32 %13, %362
+    %364 = or i1 %361, %363
+    %365 = const i32 2583691315
+    %366 = eq i32 %13, %365
+    %367 = or i1 %364, %366
+    %368 = const i32 2583707699
+    %369 = eq i32 %13, %368
+    %370 = or i1 %367, %369
+    %371 = const i32 2617245747
+    %372 = eq i32 %13, %371
+    %373 = or i1 %370, %372
+    %374 = const i32 2617262131
+    %375 = eq i32 %13, %374
+    %376 = or i1 %373, %375
+    %377 = const i32 2650800179
+    %378 = eq i32 %13, %377
+    %379 = or i1 %376, %378
+    %380 = const i32 2650816563
+    %381 = eq i32 %13, %380
+    %382 = or i1 %379, %381
+    %383 = const i32 2952790067
+    %384 = eq i32 %13, %383
+    %385 = or i1 %382, %384
+    %386 = const i32 3019898931
+    %387 = eq i32 %13, %386
+    %388 = or i1 %385, %387
+    br %388, %389, %case_body59
+case_body59:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+389:
+    %390 = const i32 33554515
+    %391 = eq i32 %266, %390
+    %392 = const i32 167772243
+    %393 = eq i32 %266, %392
+    %394 = or i1 %391, %393
+    %395 = const i32 301989971
+    %396 = eq i32 %266, %395
+    %397 = or i1 %394, %396
+    %398 = const i32 436207699
+    %399 = eq i32 %266, %398
+    %400 = or i1 %397, %399
+    %401 = const i32 570425427
+    %402 = eq i32 %13, %401
+    %403 = or i1 %400, %402
+    %404 = const i32 570429523
+    %405 = eq i32 %13, %404
+    %406 = or i1 %403, %405
+    %407 = const i32 570433619
+    %408 = eq i32 %13, %407
+    %409 = or i1 %406, %408
+    %410 = const i32 704643155
+    %411 = eq i32 %13, %410
+    %412 = or i1 %409, %411
+    %413 = const i32 704647251
+    %414 = eq i32 %13, %413
+    %415 = or i1 %412, %414
+    %416 = const i32 1509949523
+    %417 = eq i32 %294, %416
+    %418 = or i1 %415, %417
+    %419 = const i32 33554499
+    %420 = eq i32 %299, %419
+    %421 = or i1 %418, %420
+    %422 = const i32 33554503
+    %423 = eq i32 %299, %422
+    %424 = or i1 %421, %423
+    %425 = const i32 33554507
+    %426 = eq i32 %299, %425
+    %427 = or i1 %424, %426
+    %428 = const i32 33554511
+    %429 = eq i32 %299, %428
+    %430 = or i1 %427, %429
+    br %430, %431, %case_body60
+case_body60:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+431:
+    %432 = const i32 1074790483
+    %433 = eq i32 %294, %432
+    %434 = const i32 1107296339
+    %435 = eq i32 %294, %434
+    %436 = or i1 %433, %435
+    br %436, %437, %case_body61
+case_body61:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+437:
+    %438 = const i32 67108947
+    %439 = eq i32 %266, %438
+    %440 = const i32 201326675
+    %441 = eq i32 %266, %440
+    %442 = or i1 %439, %441
+    %443 = const i32 335544403
+    %444 = eq i32 %266, %443
+    %445 = or i1 %442, %444
+    %446 = const i32 469762131
+    %447 = eq i32 %266, %446
+    %448 = or i1 %445, %447
+    %449 = const i32 1543503955
+    %450 = eq i32 %294, %449
+    %451 = or i1 %448, %450
+    %452 = const i32 67108931
+    %453 = eq i32 %299, %452
+    %454 = or i1 %451, %453
+    %455 = const i32 67108935
+    %456 = eq i32 %299, %455
+    %457 = or i1 %454, %456
+    %458 = const i32 67108939
+    %459 = eq i32 %299, %458
+    %460 = or i1 %457, %459
+    %461 = const i32 67108943
+    %462 = eq i32 %299, %461
+    %463 = or i1 %460, %462
+    br %463, %464, %case_body62
+case_body62:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+464:
+    %465 = const i32 603979859
+    %466 = eq i32 %13, %465
+    %467 = const i32 603983955
+    %468 = eq i32 %13, %467
+    %469 = or i1 %466, %468
+    %470 = const i32 603988051
+    %471 = eq i32 %13, %470
+    %472 = or i1 %469, %471
+    %473 = const i32 738197587
+    %474 = eq i32 %13, %473
+    %475 = or i1 %472, %474
+    %476 = const i32 738201683
+    %477 = eq i32 %13, %476
+    %478 = or i1 %475, %477
+    br %478, %479, %case_body63
+case_body63:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+479:
+    %480 = const i32 1075839059
+    %481 = eq i32 %349, %480
+    %482 = const i32 1140850771
+    %483 = eq i32 %294, %482
+    %484 = or i1 %481, %483
+    br %484, %485, %case_body64
+case_body64:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+485:
+    %486 = const i32 1109393491
+    %487 = eq i32 %349, %486
+    %488 = const i32 1141899347
+    %489 = eq i32 %294, %488
+    %490 = or i1 %487, %489
+    br %490, %491, %case_body65
+case_body65:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+491:
+    %492 = const i32 2181046323
+    %493 = eq i32 %13, %492
+    %494 = const i32 2181062707
+    %495 = eq i32 %13, %494
+    %496 = or i1 %493, %495
+    %497 = const i32 2214600755
+    %498 = eq i32 %13, %497
+    %499 = or i1 %496, %498
+    %500 = const i32 2214617139
+    %501 = eq i32 %13, %500
+    %502 = or i1 %499, %501
+    %503 = const i32 2248155187
+    %504 = eq i32 %13, %503
+    %505 = or i1 %502, %504
+    %506 = const i32 2248171571
+    %507 = eq i32 %13, %506
+    %508 = or i1 %505, %507
+    %509 = const i32 2281709619
+    %510 = eq i32 %13, %509
+    %511 = or i1 %508, %510
+    %512 = const i32 2281726003
+    %513 = eq i32 %13, %512
+    %514 = or i1 %511, %513
+    %515 = const i32 2315264051
+    %516 = eq i32 %13, %515
+    %517 = or i1 %514, %516
+    %518 = const i32 2315280435
+    %519 = eq i32 %13, %518
+    %520 = or i1 %517, %519
+    %521 = const i32 2348818483
+    %522 = eq i32 %13, %521
+    %523 = or i1 %520, %522
+    %524 = const i32 2348834867
+    %525 = eq i32 %13, %524
+    %526 = or i1 %523, %525
+    %527 = const i32 2382372915
+    %528 = eq i32 %349, %527
+    %529 = or i1 %526, %528
+    %530 = const i32 2415927347
+    %531 = eq i32 %13, %530
+    %532 = or i1 %529, %531
+    %533 = const i32 2415943731
+    %534 = eq i32 %13, %533
+    %535 = or i1 %532, %534
+    %536 = const i32 2449481779
+    %537 = eq i32 %13, %536
+    %538 = or i1 %535, %537
+    %539 = const i32 2449498163
+    %540 = eq i32 %13, %539
+    %541 = or i1 %538, %540
+    %542 = const i32 2583699507
+    %543 = eq i32 %13, %542
+    %544 = or i1 %541, %543
+    %545 = const i32 2583715891
+    %546 = eq i32 %13, %545
+    %547 = or i1 %544, %546
+    %548 = const i32 2617253939
+    %549 = eq i32 %13, %548
+    %550 = or i1 %547, %549
+    %551 = const i32 2617270323
+    %552 = eq i32 %13, %551
+    %553 = or i1 %550, %552
+    %554 = const i32 2650808371
+    %555 = eq i32 %13, %554
+    %556 = or i1 %553, %555
+    %557 = const i32 2650824755
+    %558 = eq i32 %13, %557
+    %559 = or i1 %556, %558
+    %560 = const i32 2952798259
+    %561 = eq i32 %13, %560
+    %562 = or i1 %559, %561
+    br %562, %563, %case_body66
+case_body66:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+563:
+    %564 = const i32 2556428339
+    %565 = eq i32 %349, %564
+    %566 = const i32 2556444723
+    %567 = eq i32 %349, %566
+    %568 = or i1 %565, %567
+    %569 = const i32 2554339379
+    %570 = eq i32 %349, %569
+    %571 = or i1 %568, %570
+    %572 = const i32 2554355763
+    %573 = eq i32 %349, %572
+    %574 = or i1 %571, %573
+    %575 = const i32 2952814643
+    %576 = eq i32 %13, %575
+    %577 = or i1 %574, %576
+    %578 = const i32 3019907123
+    %579 = eq i32 %13, %578
+    %580 = or i1 %577, %579
+    %581 = const i32 3019923507
+    %582 = eq i32 %13, %581
+    %583 = or i1 %580, %582
+    br %583, %584, %case_body67
+case_body67:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+584:
+    %585 = const i32 603996243
+    %586 = eq i32 %13, %585
+    %587 = const i32 604000339
+    %588 = eq i32 %13, %587
+    %589 = or i1 %586, %588
+    %590 = const i32 604004435
+    %591 = eq i32 %13, %590
+    %592 = or i1 %589, %591
+    %593 = const i32 738213971
+    %594 = eq i32 %13, %593
+    %595 = or i1 %592, %594
+    %596 = const i32 738218067
+    %597 = eq i32 %13, %596
+    %598 = or i1 %595, %597
+    br %598, %599, %case_body68
+case_body68:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+599:
+    %600 = const i32 1080033363
+    %601 = eq i32 %349, %600
+    br %601, %602, %case_body69
+case_body69:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+602:
+    %603 = const i32 1113587795
+    %604 = eq i32 %349, %603
+    br %604, %605, %case_body70
+case_body70:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+605:
+    %606 = const i32 1147142227
+    %607 = eq i32 %294, %606
+    %608 = const i32 1142968403
+    %609 = eq i32 %349, %608
+    %610 = or i1 %607, %609
+    br %610, %611, %case_body71
+case_body71:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+611:
+    %612 = const i32 2181042227
+    %613 = eq i32 %13, %612
+    %614 = const i32 2181058611
+    %615 = eq i32 %13, %614
+    %616 = or i1 %613, %615
+    %617 = const i32 2214596659
+    %618 = eq i32 %13, %617
+    %619 = or i1 %616, %618
+    %620 = const i32 2214613043
+    %621 = eq i32 %13, %620
+    %622 = or i1 %619, %621
+    %623 = const i32 2248151091
+    %624 = eq i32 %13, %623
+    %625 = or i1 %622, %624
+    %626 = const i32 2248167475
+    %627 = eq i32 %13, %626
+    %628 = or i1 %625, %627
+    %629 = const i32 2281705523
+    %630 = eq i32 %13, %629
+    %631 = or i1 %628, %630
+    %632 = const i32 2281721907
+    %633 = eq i32 %13, %632
+    %634 = or i1 %631, %633
+    %635 = const i32 2315259955
+    %636 = eq i32 %13, %635
+    %637 = or i1 %634, %636
+    %638 = const i32 2315276339
+    %639 = eq i32 %13, %638
+    %640 = or i1 %637, %639
+    %641 = const i32 2348814387
+    %642 = eq i32 %13, %641
+    %643 = or i1 %640, %642
+    %644 = const i32 2348830771
+    %645 = eq i32 %13, %644
+    %646 = or i1 %643, %645
+    %647 = const i32 2382368819
+    %648 = eq i32 %349, %647
+    %649 = or i1 %646, %648
+    %650 = const i32 2415923251
+    %651 = eq i32 %13, %650
+    %652 = or i1 %649, %651
+    %653 = const i32 2415939635
+    %654 = eq i32 %13, %653
+    %655 = or i1 %652, %654
+    %656 = const i32 2449477683
+    %657 = eq i32 %13, %656
+    %658 = or i1 %655, %657
+    %659 = const i32 2449494067
+    %660 = eq i32 %13, %659
+    %661 = or i1 %658, %660
+    %662 = const i32 2583695411
+    %663 = eq i32 %13, %662
+    %664 = or i1 %661, %663
+    %665 = const i32 2583711795
+    %666 = eq i32 %13, %665
+    %667 = or i1 %664, %666
+    %668 = const i32 2617249843
+    %669 = eq i32 %13, %668
+    %670 = or i1 %667, %669
+    %671 = const i32 2617266227
+    %672 = eq i32 %13, %671
+    %673 = or i1 %670, %672
+    %674 = const i32 2650804275
+    %675 = eq i32 %13, %674
+    %676 = or i1 %673, %675
+    %677 = const i32 2650820659
+    %678 = eq i32 %13, %677
+    %679 = or i1 %676, %678
+    %680 = const i32 2952794163
+    %681 = eq i32 %13, %680
+    %682 = or i1 %679, %681
+    br %682, %683, %case_body72
+case_body72:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+683:
+    %684 = const i32 2555379763
+    %685 = eq i32 %349, %684
+    %686 = const i32 2555396147
+    %687 = eq i32 %349, %686
+    %688 = or i1 %685, %687
+    %689 = const i32 2554335283
+    %690 = eq i32 %349, %689
+    %691 = or i1 %688, %690
+    %692 = const i32 2554351667
+    %693 = eq i32 %349, %692
+    %694 = or i1 %691, %693
+    %695 = const i32 2952810547
+    %696 = eq i32 %13, %695
+    %697 = or i1 %694, %696
+    %698 = const i32 3019903027
+    %699 = eq i32 %13, %698
+    %700 = or i1 %697, %699
+    %701 = const i32 3019919411
+    %702 = eq i32 %13, %701
+    %703 = or i1 %700, %702
+    br %703, %704, %case_body73
+case_body73:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+704:
+    %705 = const i32 2555387955
+    %706 = eq i32 %349, %705
+    %707 = const i32 2555404339
+    %708 = eq i32 %349, %707
+    %709 = or i1 %706, %708
+    %710 = const i32 2556432435
+    %711 = eq i32 %349, %710
+    %712 = or i1 %709, %711
+    %713 = const i32 2556448819
+    %714 = eq i32 %349, %713
+    %715 = or i1 %712, %714
+    br %715, %716, %case_body74
+case_body74:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+716:
+    %717 = const i32 100663379
+    %718 = eq i32 %266, %717
+    %719 = const i32 234881107
+    %720 = eq i32 %266, %719
+    %721 = or i1 %718, %720
+    %722 = const i32 369098835
+    %723 = eq i32 %266, %722
+    %724 = or i1 %721, %723
+    %725 = const i32 503316563
+    %726 = eq i32 %266, %725
+    %727 = or i1 %724, %726
+    %728 = const i32 637534291
+    %729 = eq i32 %13, %728
+    %730 = or i1 %727, %729
+    %731 = const i32 637538387
+    %732 = eq i32 %13, %731
+    %733 = or i1 %730, %732
+    %734 = const i32 637542483
+    %735 = eq i32 %13, %734
+    %736 = or i1 %733, %735
+    %737 = const i32 771752019
+    %738 = eq i32 %13, %737
+    %739 = or i1 %736, %738
+    %740 = const i32 771756115
+    %741 = eq i32 %13, %740
+    %742 = or i1 %739, %741
+    %743 = const i32 1577058387
+    %744 = eq i32 %294, %743
+    %745 = or i1 %742, %744
+    %746 = const i32 100663363
+    %747 = eq i32 %299, %746
+    %748 = or i1 %745, %747
+    %749 = const i32 100663367
+    %750 = eq i32 %299, %749
+    %751 = or i1 %748, %750
+    %752 = const i32 100663371
+    %753 = eq i32 %299, %752
+    %754 = or i1 %751, %753
+    %755 = const i32 100663375
+    %756 = eq i32 %299, %755
+    %757 = or i1 %754, %756
+    br %757, %758, %case_body75
+case_body75:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+758:
+    %759 = const i32 1076887635
+    %760 = eq i32 %349, %759
+    %761 = const i32 1174405203
+    %762 = eq i32 %294, %761
+    %763 = or i1 %760, %762
+    br %763, %764, %case_body76
+case_body76:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+764:
+    %765 = const i32 1110442067
+    %766 = eq i32 %349, %765
+    %767 = const i32 1175453779
+    %768 = eq i32 %294, %767
+    %769 = or i1 %766, %768
+    br %769, %770, %case_body77
+case_body77:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+770:
+    %771 = const i32 1143996499
+    %772 = eq i32 %349, %771
+    %773 = const i32 1176502355
+    %774 = eq i32 %294, %773
+    %775 = or i1 %772, %774
+    br %775, %776, %case_body78
+case_body78:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+776:
+    %777 = const i32 1144016979
+    %778 = eq i32 %349, %777
+    %779 = const i32 1180696659
+    %780 = eq i32 %294, %779
+    %781 = or i1 %778, %780
+    br %781, %782, %case_body79
+case_body79:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+782:
+    %783 = const i32 2181050419
+    %784 = eq i32 %13, %783
+    %785 = const i32 2181066803
+    %786 = eq i32 %13, %785
+    %787 = or i1 %784, %786
+    %788 = const i32 2214604851
+    %789 = eq i32 %13, %788
+    %790 = or i1 %787, %789
+    %791 = const i32 2214621235
+    %792 = eq i32 %13, %791
+    %793 = or i1 %790, %792
+    %794 = const i32 2248159283
+    %795 = eq i32 %13, %794
+    %796 = or i1 %793, %795
+    %797 = const i32 2248175667
+    %798 = eq i32 %13, %797
+    %799 = or i1 %796, %798
+    %800 = const i32 2281713715
+    %801 = eq i32 %13, %800
+    %802 = or i1 %799, %801
+    %803 = const i32 2281730099
+    %804 = eq i32 %13, %803
+    %805 = or i1 %802, %804
+    %806 = const i32 2315268147
+    %807 = eq i32 %13, %806
+    %808 = or i1 %805, %807
+    %809 = const i32 2315284531
+    %810 = eq i32 %13, %809
+    %811 = or i1 %808, %810
+    %812 = const i32 2348822579
+    %813 = eq i32 %13, %812
+    %814 = or i1 %811, %813
+    %815 = const i32 2348838963
+    %816 = eq i32 %13, %815
+    %817 = or i1 %814, %816
+    %818 = const i32 2382377011
+    %819 = eq i32 %349, %818
+    %820 = or i1 %817, %819
+    %821 = const i32 2415931443
+    %822 = eq i32 %13, %821
+    %823 = or i1 %820, %822
+    %824 = const i32 2415947827
+    %825 = eq i32 %13, %824
+    %826 = or i1 %823, %825
+    %827 = const i32 2449485875
+    %828 = eq i32 %13, %827
+    %829 = or i1 %826, %828
+    %830 = const i32 2449502259
+    %831 = eq i32 %13, %830
+    %832 = or i1 %829, %831
+    %833 = const i32 2583703603
+    %834 = eq i32 %13, %833
+    %835 = or i1 %832, %834
+    %836 = const i32 2583719987
+    %837 = eq i32 %13, %836
+    %838 = or i1 %835, %837
+    %839 = const i32 2617258035
+    %840 = eq i32 %13, %839
+    %841 = or i1 %838, %840
+    %842 = const i32 2617274419
+    %843 = eq i32 %13, %842
+    %844 = or i1 %841, %843
+    %845 = const i32 2650812467
+    %846 = eq i32 %13, %845
+    %847 = or i1 %844, %846
+    %848 = const i32 2650828851
+    %849 = eq i32 %13, %848
+    %850 = or i1 %847, %849
+    br %850, %851, %case_body80
+case_body80:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+851:
+    %852 = const i32 2952802355
+    %853 = eq i32 %13, %852
+    %854 = const i32 2952818739
+    %855 = eq i32 %13, %854
+    %856 = or i1 %853, %855
+    br %856, %857, %case_body81
+case_body81:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+857:
+    %858 = const i32 2557476915
+    %859 = eq i32 %349, %858
+    %860 = const i32 2557493299
+    %861 = eq i32 %349, %860
+    %862 = or i1 %859, %861
+    %863 = const i32 2554343475
+    %864 = eq i32 %349, %863
+    %865 = or i1 %862, %864
+    %866 = const i32 2554359859
+    %867 = eq i32 %349, %866
+    %868 = or i1 %865, %867
+    br %868, %869, %case_body82
+case_body82:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+869:
+    %870 = const i32 2986356787
+    %871 = eq i32 %13, %870
+    %872 = const i32 2986373171
+    %873 = eq i32 %13, %872
+    %874 = or i1 %871, %873
+    %875 = const i32 3019911219
+    %876 = eq i32 %13, %875
+    %877 = or i1 %874, %876
+    %878 = const i32 3019927603
+    %879 = eq i32 %13, %878
+    %880 = or i1 %877, %879
+    %881 = const i32 3053465651
+    %882 = eq i32 %13, %881
+    %883 = or i1 %880, %882
+    %884 = const i32 3053482035
+    %885 = eq i32 %13, %884
+    %886 = or i1 %883, %885
+    br %886, %887, %case_body83
+case_body83:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+887:
+    %888 = const i32 2557485107
+    %889 = eq i32 %349, %888
+    %890 = const i32 2557501491
+    %891 = eq i32 %349, %890
+    %892 = or i1 %889, %891
+    %893 = const i32 2556440627
+    %894 = eq i32 %349, %893
+    %895 = or i1 %892, %894
+    %896 = const i32 2556457011
+    %897 = eq i32 %349, %896
+    %898 = or i1 %895, %897
+    br %898, %899, %case_body84
+case_body84:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+899:
+    %900 = const i32 2557481011
+    %901 = eq i32 %349, %900
+    %902 = const i32 2557497395
+    %903 = eq i32 %349, %902
+    %904 = or i1 %901, %903
+    %905 = const i32 2555392051
+    %906 = eq i32 %349, %905
+    %907 = or i1 %904, %906
+    %908 = const i32 2555408435
+    %909 = eq i32 %349, %908
+    %910 = or i1 %907, %909
+    br %910, %911, %case_body85
+case_body85:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+911:
+    %912 = const i32 2684354643
+    %913 = eq i32 %13, %912
+    %914 = const i32 2684358739
+    %915 = eq i32 %13, %914
+    %916 = or i1 %913, %915
+    %917 = const i32 2684362835
+    %918 = eq i32 %13, %917
+    %919 = or i1 %916, %918
+    %920 = const i32 3758100563
+    %921 = eq i32 %349, %920
+    %922 = or i1 %919, %921
+    %923 = const i32 3221225555
+    %924 = eq i32 %294, %923
+    %925 = or i1 %922, %924
+    %926 = const i32 3222274131
+    %927 = eq i32 %294, %926
+    %928 = or i1 %925, %927
+    %929 = const i32 3758096467
+    %930 = eq i32 %349, %929
+    %931 = or i1 %928, %930
+    br %931, %932, %case_body86
+case_body86:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    drv i1$ %acc_register_rd, %7, %4
+    br %case_exit
+932:
+    %933 = const i32 2684354611
+    %934 = eq i32 %13, %933
+    %935 = const i32 2684370995
+    %936 = eq i32 %13, %935
+    %937 = or i1 %934, %936
+    %938 = const i32 2717909043
+    %939 = eq i32 %13, %938
+    %940 = or i1 %937, %939
+    %941 = const i32 2717925427
+    %942 = eq i32 %13, %941
+    %943 = or i1 %940, %942
+    %944 = const i32 2751463475
+    %945 = eq i32 %13, %944
+    %946 = or i1 %943, %945
+    %947 = const i32 2751479859
+    %948 = eq i32 %13, %947
+    %949 = or i1 %946, %948
+    %950 = const i32 2785017907
+    %951 = eq i32 %13, %950
+    %952 = or i1 %949, %951
+    %953 = const i32 2785034291
+    %954 = eq i32 %13, %953
+    %955 = or i1 %952, %954
+    %956 = const i32 2818572339
+    %957 = eq i32 %13, %956
+    %958 = or i1 %955, %957
+    %959 = const i32 2818588723
+    %960 = eq i32 %13, %959
+    %961 = or i1 %958, %960
+    %962 = const i32 2852126771
+    %963 = eq i32 %13, %962
+    %964 = or i1 %961, %963
+    %965 = const i32 2852143155
+    %966 = eq i32 %13, %965
+    %967 = or i1 %964, %966
+    %968 = const i32 2551185459
+    %969 = eq i32 %349, %968
+    %970 = or i1 %967, %969
+    br %970, %971, %case_body87
+case_body87:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+971:
+    %972 = const i32 2717909075
+    %973 = eq i32 %13, %972
+    %974 = const i32 2717913171
+    %975 = eq i32 %13, %974
+    %976 = or i1 %973, %975
+    %977 = const i32 2717917267
+    %978 = eq i32 %13, %977
+    %979 = or i1 %976, %978
+    %980 = const i32 3791654995
+    %981 = eq i32 %349, %980
+    %982 = or i1 %979, %981
+    %983 = const i32 3254779987
+    %984 = eq i32 %294, %983
+    %985 = or i1 %982, %984
+    %986 = const i32 3255828563
+    %987 = eq i32 %294, %986
+    %988 = or i1 %985, %987
+    br %988, %989, %case_body88
+case_body88:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %7, %4
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    drv i1$ %acc_register_rd, %7, %4
+    br %case_exit
+989:
+    %990 = const i32 2751463507
+    %991 = eq i32 %13, %990
+    %992 = const i32 2751467603
+    %993 = eq i32 %13, %992
+    %994 = or i1 %991, %993
+    %995 = const i32 2751471699
+    %996 = eq i32 %13, %995
+    %997 = or i1 %994, %996
+    %998 = const i32 3825209427
+    %999 = eq i32 %349, %998
+    %1000 = or i1 %997, %999
+    %1001 = const i32 3288334419
+    %1002 = eq i32 %294, %1001
+    %1003 = or i1 %1000, %1002
+    %1004 = const i32 3289382995
+    %1005 = eq i32 %294, %1004
+    %1006 = or i1 %1003, %1005
+    %1007 = const i32 3825205331
+    %1008 = eq i32 %349, %1007
+    %1009 = or i1 %1006, %1008
+    br %1009, %1010, %case_body89
+case_body89:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1010:
+    %1011 = const i32 2684362803
+    %1012 = eq i32 %13, %1011
+    %1013 = const i32 2684379187
+    %1014 = eq i32 %13, %1013
+    %1015 = or i1 %1012, %1014
+    %1016 = const i32 2717917235
+    %1017 = eq i32 %13, %1016
+    %1018 = or i1 %1015, %1017
+    %1019 = const i32 2717933619
+    %1020 = eq i32 %13, %1019
+    %1021 = or i1 %1018, %1020
+    %1022 = const i32 2751471667
+    %1023 = eq i32 %13, %1022
+    %1024 = or i1 %1021, %1023
+    %1025 = const i32 2751488051
+    %1026 = eq i32 %13, %1025
+    %1027 = or i1 %1024, %1026
+    %1028 = const i32 2785026099
+    %1029 = eq i32 %13, %1028
+    %1030 = or i1 %1027, %1029
+    %1031 = const i32 2785042483
+    %1032 = eq i32 %13, %1031
+    %1033 = or i1 %1030, %1032
+    %1034 = const i32 2818580531
+    %1035 = eq i32 %13, %1034
+    %1036 = or i1 %1033, %1035
+    %1037 = const i32 2818596915
+    %1038 = eq i32 %13, %1037
+    %1039 = or i1 %1036, %1038
+    %1040 = const i32 2852134963
+    %1041 = eq i32 %13, %1040
+    %1042 = or i1 %1039, %1041
+    %1043 = const i32 2852151347
+    %1044 = eq i32 %13, %1043
+    %1045 = or i1 %1042, %1044
+    %1046 = const i32 2551193651
+    %1047 = eq i32 %349, %1046
+    %1048 = or i1 %1045, %1047
+    br %1048, %1049, %case_body90
+case_body90:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1049:
+    %1050 = const i32 2550145075
+    %1051 = eq i32 %349, %1050
+    %1052 = const i32 2552242227
+    %1053 = eq i32 %349, %1052
+    %1054 = or i1 %1051, %1053
+    %1055 = const i32 2552258611
+    %1056 = eq i32 %349, %1055
+    %1057 = or i1 %1054, %1056
+    br %1057, %1058, %case_body91
+case_body91:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1058:
+    %1059 = const i32 2751479891
+    %1060 = eq i32 %13, %1059
+    %1061 = const i32 2751483987
+    %1062 = eq i32 %13, %1061
+    %1063 = or i1 %1060, %1062
+    %1064 = const i32 2751488083
+    %1065 = eq i32 %13, %1064
+    %1066 = or i1 %1063, %1065
+    %1067 = const i32 3825225811
+    %1068 = eq i32 %349, %1067
+    %1069 = or i1 %1066, %1068
+    %1070 = const i32 3825221715
+    %1071 = eq i32 %349, %1070
+    %1072 = or i1 %1069, %1071
+    br %1072, %1073, %case_body92
+case_body92:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1073:
+    %1074 = const i32 2684358707
+    %1075 = eq i32 %13, %1074
+    %1076 = const i32 2684375091
+    %1077 = eq i32 %13, %1076
+    %1078 = or i1 %1075, %1077
+    %1079 = const i32 2717913139
+    %1080 = eq i32 %13, %1079
+    %1081 = or i1 %1078, %1080
+    %1082 = const i32 2717929523
+    %1083 = eq i32 %13, %1082
+    %1084 = or i1 %1081, %1083
+    %1085 = const i32 2751467571
+    %1086 = eq i32 %13, %1085
+    %1087 = or i1 %1084, %1086
+    %1088 = const i32 2751483955
+    %1089 = eq i32 %13, %1088
+    %1090 = or i1 %1087, %1089
+    %1091 = const i32 2785022003
+    %1092 = eq i32 %13, %1091
+    %1093 = or i1 %1090, %1092
+    %1094 = const i32 2785038387
+    %1095 = eq i32 %13, %1094
+    %1096 = or i1 %1093, %1095
+    %1097 = const i32 2818576435
+    %1098 = eq i32 %13, %1097
+    %1099 = or i1 %1096, %1098
+    %1100 = const i32 2818592819
+    %1101 = eq i32 %13, %1100
+    %1102 = or i1 %1099, %1101
+    %1103 = const i32 2852130867
+    %1104 = eq i32 %13, %1103
+    %1105 = or i1 %1102, %1104
+    %1106 = const i32 2852147251
+    %1107 = eq i32 %13, %1106
+    %1108 = or i1 %1105, %1107
+    %1109 = const i32 2551189555
+    %1110 = eq i32 %349, %1109
+    %1111 = or i1 %1108, %1110
+    br %1111, %1112, %case_body93
+case_body93:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1112:
+    %1113 = const i32 2550140979
+    %1114 = eq i32 %349, %1113
+    %1115 = const i32 2552238131
+    %1116 = eq i32 %349, %1115
+    %1117 = or i1 %1114, %1116
+    %1118 = const i32 2552254515
+    %1119 = eq i32 %349, %1118
+    %1120 = or i1 %1117, %1119
+    br %1120, %1121, %case_body94
+case_body94:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1121:
+    %1122 = const i32 2785017939
+    %1123 = eq i32 %13, %1122
+    %1124 = const i32 2785022035
+    %1125 = eq i32 %13, %1124
+    %1126 = or i1 %1123, %1125
+    %1127 = const i32 2785026131
+    %1128 = eq i32 %13, %1127
+    %1129 = or i1 %1126, %1128
+    %1130 = const i32 3858763859
+    %1131 = eq i32 %349, %1130
+    %1132 = or i1 %1129, %1131
+    %1133 = const i32 3321888851
+    %1134 = eq i32 %294, %1133
+    %1135 = or i1 %1132, %1134
+    %1136 = const i32 3322937427
+    %1137 = eq i32 %294, %1136
+    %1138 = or i1 %1135, %1137
+    %1139 = const i32 3858759763
+    %1140 = eq i32 %349, %1139
+    %1141 = or i1 %1138, %1140
+    br %1141, %1142, %case_body95
+case_body95:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1142:
+    %1143 = const i32 2684366899
+    %1144 = eq i32 %13, %1143
+    %1145 = const i32 2684383283
+    %1146 = eq i32 %13, %1145
+    %1147 = or i1 %1144, %1146
+    %1148 = const i32 2717921331
+    %1149 = eq i32 %13, %1148
+    %1150 = or i1 %1147, %1149
+    %1151 = const i32 2717937715
+    %1152 = eq i32 %13, %1151
+    %1153 = or i1 %1150, %1152
+    %1154 = const i32 2751475763
+    %1155 = eq i32 %13, %1154
+    %1156 = or i1 %1153, %1155
+    %1157 = const i32 2751492147
+    %1158 = eq i32 %13, %1157
+    %1159 = or i1 %1156, %1158
+    %1160 = const i32 2785030195
+    %1161 = eq i32 %13, %1160
+    %1162 = or i1 %1159, %1161
+    %1163 = const i32 2785046579
+    %1164 = eq i32 %13, %1163
+    %1165 = or i1 %1162, %1164
+    %1166 = const i32 2818584627
+    %1167 = eq i32 %13, %1166
+    %1168 = or i1 %1165, %1167
+    %1169 = const i32 2818601011
+    %1170 = eq i32 %13, %1169
+    %1171 = or i1 %1168, %1170
+    %1172 = const i32 2852139059
+    %1173 = eq i32 %13, %1172
+    %1174 = or i1 %1171, %1173
+    %1175 = const i32 2852155443
+    %1176 = eq i32 %13, %1175
+    %1177 = or i1 %1174, %1176
+    br %1177, %1178, %case_body96
+case_body96:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1178:
+    %1179 = const i32 2550149171
+    %1180 = eq i32 %349, %1179
+    %1181 = const i32 2551197747
+    %1182 = eq i32 %349, %1181
+    %1183 = or i1 %1180, %1182
+    %1184 = const i32 2552246323
+    %1185 = eq i32 %349, %1184
+    %1186 = or i1 %1183, %1185
+    %1187 = const i32 2552262707
+    %1188 = eq i32 %349, %1187
+    %1189 = or i1 %1186, %1188
+    br %1189, %1190, %case_body97
+case_body97:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1190:
+    %1191 = const i32 4026531923
+    %1192 = eq i32 %349, %1191
+    %1193 = const i32 3489661011
+    %1194 = eq i32 %294, %1193
+    %1195 = or i1 %1192, %1194
+    %1196 = const i32 3490709587
+    %1197 = eq i32 %294, %1196
+    %1198 = or i1 %1195, %1197
+    br %1198, %1199, %case_body98
+case_body98:
+    drv i4$ %opa_select, %16, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+1199:
+    %1200 = const i32 3523215443
+    %1201 = eq i32 %294, %1200
+    %1202 = const i32 3524264019
+    %1203 = eq i32 %294, %1202
+    %1204 = or i1 %1201, %1203
+    br %1204, %1205, %case_body99
+case_body99:
+    drv i4$ %opa_select, %16, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+1205:
+    %1206 = const i32 4093640787
+    %1207 = eq i32 %349, %1206
+    %1208 = const i32 3556769875
+    %1209 = eq i32 %294, %1208
+    %1210 = or i1 %1207, %1209
+    %1211 = const i32 3557818451
+    %1212 = eq i32 %294, %1211
+    %1213 = or i1 %1210, %1212
+    br %1213, %1214, %case_body100
+case_body100:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1214:
+    %1215 = const i32 2550161459
+    %1216 = eq i32 %349, %1215
+    %1217 = const i32 2553290803
+    %1218 = eq i32 %349, %1217
+    %1219 = or i1 %1216, %1218
+    %1220 = const i32 2553307187
+    %1221 = eq i32 %349, %1220
+    %1222 = or i1 %1219, %1221
+    br %1222, %1223, %case_body101
+case_body101:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1223:
+    %1224 = const i32 4093657171
+    %1225 = eq i32 %349, %1224
+    br %1225, %1226, %case_body102
+case_body102:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1226:
+    %1227 = const i32 2550157363
+    %1228 = eq i32 %349, %1227
+    %1229 = const i32 2553286707
+    %1230 = eq i32 %349, %1229
+    %1231 = or i1 %1228, %1230
+    %1232 = const i32 2553303091
+    %1233 = eq i32 %349, %1232
+    %1234 = or i1 %1231, %1233
+    br %1234, %1235, %case_body103
+case_body103:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1235:
+    %1236 = const i32 4127195219
+    %1237 = eq i32 %349, %1236
+    %1238 = const i32 3590324307
+    %1239 = eq i32 %294, %1238
+    %1240 = or i1 %1237, %1239
+    %1241 = const i32 3591372883
+    %1242 = eq i32 %294, %1241
+    %1243 = or i1 %1240, %1242
+    br %1243, %1244, %case_body104
+case_body104:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1244:
+    %1245 = const i32 2550165555
+    %1246 = eq i32 %349, %1245
+    %1247 = const i32 2553294899
+    %1248 = eq i32 %349, %1247
+    %1249 = or i1 %1246, %1248
+    %1250 = const i32 2553311283
+    %1251 = eq i32 %349, %1250
+    %1252 = or i1 %1249, %1251
+    br %1252, %1253, %case_body105
+case_body105:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1253:
+    %1254 = const i32 11
+    %1255 = eq i32 %87, %1254
+    br %1255, %1256, %case_body106
+case_body106:
+    drv i4$ %opa_select, %16, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+1256:
+    %1257 = const i32 8199
+    %1258 = eq i32 %21, %1257
+    br %1258, %1259, %case_body107
+case_body107:
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+1259:
+    %1260 = const i32 8231
+    %1261 = eq i32 %21, %1260
+    br %1261, %1262, %case_body108
+case_body108:
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %73, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+1262:
+    %1263 = const i32 12295
+    %1264 = eq i32 %21, %1263
+    br %1264, %1265, %case_body109
+case_body109:
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %24, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+1265:
+    %1266 = const i32 12327
+    %1267 = eq i32 %21, %1266
+    br %1267, %1268, %case_body110
+case_body110:
+    drv i4$ %opa_select, %16, %4
+    drv i4$ %opb_select, %73, %4
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %acc_qvalid_o, %valid_instr.prb, %4
+    br %case_exit
+1268:
+    %1269 = const i32 4103
+    %1270 = eq i32 %21, %1269
+    br %1270, %1271, %case_body111
+case_body111:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1271:
+    %1272 = const i32 4135
+    %1273 = eq i32 %21, %1272
+    br %1273, %1274, %case_body112
+case_body112:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1274:
+    %1275 = const i32 7
+    %1276 = eq i32 %21, %1275
+    br %1276, %1277, %case_body113
+case_body113:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1277:
+    %1278 = const i32 39
+    %1279 = eq i32 %21, %1278
+    br %1279, %1280, %case_body114
+case_body114:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+1280:
+    drv i1$ %illegal_inst, %7, %4
+    st i1* %illegal_inst.shadow, %7
+    br %case_exit
+if_true:
+    drv i1$ %write_rd, %3, %4
+    st i1* %write_rd.shadow, %3
+    drv i1$ %uses_rd, %3, %4
+    drv i2$ %next_pc, %17, %4
+    br %check
+}
+
+proc %snitch.param1.always_comb.23058.1 (i32$ %hart_id_i, i32$ %inst_data_i, {i1, i1, i1, i1, i1}$ %fpu_status_i, i32$ %alu_result, i1$ %csr_en, {i3, {i1, i1, i1, i1, i1}}$ %fcsr_q) -> (i32$ %csr_rvalue, {i3, {i1, i1, i1, i1, i1}}$ %fcsr_d) {
+body:
+    %0 = const i32 0
+    %1 = const time 0s 1e
+    drv i32$ %csr_rvalue, %0, %1
+    %fcsr_q.prb = prb {i3, {i1, i1, i1, i1, i1}}$ %fcsr_q
+    drv {i3, {i1, i1, i1, i1, i1}}$ %fcsr_d, %fcsr_q.prb, %1
+    %2 = extf {i1, i1, i1, i1, i1}$, {i3, {i1, i1, i1, i1, i1}}$ %fcsr_d, 1
+    %3 = const i5 0
+    %4 = extf {i1, i1, i1, i1, i1}, {i3, {i1, i1, i1, i1, i1}} %fcsr_q.prb, 1
+    %5 = extf i1, {i1, i1, i1, i1, i1} %4, 4
+    %6 = inss i5 %3, i1 %5, 0, 1
+    %7 = extf i1, {i1, i1, i1, i1, i1} %4, 3
+    %8 = inss i5 %6, i1 %7, 1, 1
+    %9 = extf i1, {i1, i1, i1, i1, i1} %4, 2
+    %10 = inss i5 %8, i1 %9, 2, 1
+    %11 = extf i1, {i1, i1, i1, i1, i1} %4, 1
+    %12 = inss i5 %10, i1 %11, 3, 1
+    %13 = extf i1, {i1, i1, i1, i1, i1} %4, 0
+    %concat = inss i5 %12, i1 %13, 4, 1
+    %fpu_status_i.prb = prb {i1, i1, i1, i1, i1}$ %fpu_status_i
+    %14 = extf i1, {i1, i1, i1, i1, i1} %fpu_status_i.prb, 4
+    %15 = inss i5 %3, i1 %14, 0, 1
+    %16 = extf i1, {i1, i1, i1, i1, i1} %fpu_status_i.prb, 3
+    %17 = inss i5 %15, i1 %16, 1, 1
+    %18 = extf i1, {i1, i1, i1, i1, i1} %fpu_status_i.prb, 2
+    %19 = inss i5 %17, i1 %18, 2, 1
+    %20 = extf i1, {i1, i1, i1, i1, i1} %fpu_status_i.prb, 1
+    %21 = inss i5 %19, i1 %20, 3, 1
+    %22 = extf i1, {i1, i1, i1, i1, i1} %fpu_status_i.prb, 0
+    %concat1 = inss i5 %21, i1 %22, 4, 1
+    %23 = or i5 %concat, %concat1
+    %24 = exts i1, i5 %23, 0, 1
+    %25 = exts i4, i5 %23, 1, 4
+    %26 = inss i5 %3, i4 %25, 0, 4
+    %27 = exts i1, i5 %26, 0, 1
+    %28 = exts i3, i5 %23, 2, 3
+    %29 = inss i5 %3, i3 %28, 0, 3
+    %30 = exts i1, i5 %29, 0, 1
+    %31 = exts i2, i5 %23, 3, 2
+    %32 = inss i5 %3, i2 %31, 0, 2
+    %33 = exts i1, i5 %32, 0, 1
+    %34 = exts i1, i5 %23, 4, 1
+    %35 = inss i5 %3, i1 %34, 0, 1
+    %36 = exts i1, i5 %35, 0, 1
+    %37 = {i1 %24, i1 %27, i1 %30, i1 %33, i1 %36}
+    drv {i1, i1, i1, i1, i1}$ %2, %37, %1
+    %csr_en.prb = prb i1$ %csr_en
+    %38 = const i1 0
+    %39 = neq i1 %csr_en.prb, %38
+    br %39, %check, %if_true
+check:
+    wait %body, %hart_id_i, %inst_data_i, %fpu_status_i, %alu_result, %csr_en, %fcsr_q
+if_true:
+    %inst_data_i.prb = prb i32$ %inst_data_i
+    %40 = exts i12, i32 %inst_data_i.prb, 20, 12
+    %41 = inss i32 %0, i12 %40, 0, 12
+    %42 = exts i12, i32 %41, 0, 12
+    %43 = const i12 3860
+    %44 = eq i12 %42, %43
+    br %44, %45, %case_body
+case_body:
+    %hart_id_i.prb = prb i32$ %hart_id_i
+    drv i32$ %csr_rvalue, %hart_id_i.prb, %1
+    br %check
+45:
+    %46 = const i12 1
+    %47 = eq i12 %42, %46
+    %alu_result.prb = prb i32$ %alu_result
+    br %47, %48, %case_body1
+case_body1:
+    %49 = inss i32 %0, i5 %concat, 0, 5
+    %50 = const i27 0
+    %concat2 = inss i32 %49, i27 %50, 5, 27
+    drv i32$ %csr_rvalue, %concat2, %1
+    %51 = exts i5, i32 %alu_result.prb, 0, 5
+    %52 = exts i1, i5 %51, 0, 1
+    %53 = exts i4, i5 %51, 1, 4
+    %54 = inss i5 %3, i4 %53, 0, 4
+    %55 = exts i1, i5 %54, 0, 1
+    %56 = exts i3, i5 %51, 2, 3
+    %57 = inss i5 %3, i3 %56, 0, 3
+    %58 = exts i1, i5 %57, 0, 1
+    %59 = exts i2, i5 %51, 3, 2
+    %60 = inss i5 %3, i2 %59, 0, 2
+    %61 = exts i1, i5 %60, 0, 1
+    %62 = exts i1, i5 %51, 4, 1
+    %63 = inss i5 %3, i1 %62, 0, 1
+    %64 = exts i1, i5 %63, 0, 1
+    %65 = {i1 %52, i1 %55, i1 %58, i1 %61, i1 %64}
+    drv {i1, i1, i1, i1, i1}$ %2, %65, %1
+    br %check
+48:
+    %66 = const i12 2
+    %67 = eq i12 %42, %66
+    %68 = extf i3, {i3, {i1, i1, i1, i1, i1}} %fcsr_q.prb, 0
+    br %67, %69, %case_body2
+case_body2:
+    %70 = inss i32 %0, i3 %68, 0, 3
+    %71 = const i29 0
+    %concat3 = inss i32 %70, i29 %71, 3, 29
+    drv i32$ %csr_rvalue, %concat3, %1
+    %72 = extf i3$, {i3, {i1, i1, i1, i1, i1}}$ %fcsr_d, 0
+    %73 = exts i3, i32 %alu_result.prb, 0, 3
+    drv i3$ %72, %73, %1
+    br %check
+69:
+    %74 = const i12 3
+    %75 = eq i12 %42, %74
+    br %75, %76, %case_body3
+case_body3:
+    %77 = const i8 0
+    %78 = inss i8 %77, i5 %concat, 0, 5
+    %concat4 = inss i8 %78, i3 %68, 5, 3
+    %79 = inss i32 %0, i8 %concat4, 0, 8
+    %80 = const i24 0
+    %concat5 = inss i32 %79, i24 %80, 8, 24
+    drv i32$ %csr_rvalue, %concat5, %1
+    %81 = exts i8, i32 %alu_result.prb, 0, 8
+    %82 = exts i3, i8 %81, 0, 3
+    %83 = exts i5, i8 %81, 3, 5
+    %84 = inss i8 %77, i5 %83, 0, 5
+    %85 = exts i5, i8 %84, 0, 5
+    %86 = exts i1, i5 %85, 0, 1
+    %87 = exts i4, i5 %85, 1, 4
+    %88 = inss i5 %3, i4 %87, 0, 4
+    %89 = exts i1, i5 %88, 0, 1
+    %90 = exts i3, i5 %85, 2, 3
+    %91 = inss i5 %3, i3 %90, 0, 3
+    %92 = exts i1, i5 %91, 0, 1
+    %93 = exts i2, i5 %85, 3, 2
+    %94 = inss i5 %3, i2 %93, 0, 2
+    %95 = exts i1, i5 %94, 0, 1
+    %96 = exts i1, i5 %85, 4, 1
+    %97 = inss i5 %3, i1 %96, 0, 1
+    %98 = exts i1, i5 %97, 0, 1
+    %99 = {i1 %86, i1 %89, i1 %92, i1 %95, i1 %98}
+    %100 = {i3 %82, {i1, i1, i1, i1, i1} %99}
+    drv {i3, {i1, i1, i1, i1, i1}}$ %fcsr_d, %100, %1
+    br %check
+76:
+    drv i32$ %csr_rvalue, %0, %1
+    br %check
+}
+
+proc %snitch.param1.always_comb.23203.1 (i32$ %uimm, i32$ %jimm, i5$ %rs1, [2 x i32]$ %gpr_rdata, i4$ %opa_select) -> (i32$ %opa) {
+body:
+    %opa_select.prb = prb i4$ %opa_select
+    %0 = const i4 0
+    %1 = eq i4 %opa_select.prb, %0
+    %2 = const time 0s 1e
+    %3 = const i32 0
+    br %1, %4, %case_body
+check:
+    wait %body, %uimm, %jimm, %rs1, %gpr_rdata, %opa_select
+case_body:
+    drv i32$ %opa, %3, %2
+    br %check
+4:
+    %5 = const i4 1
+    %6 = eq i4 %opa_select.prb, %5
+    br %6, %7, %case_body1
+case_body1:
+    %gpr_rdata.prb = prb [2 x i32]$ %gpr_rdata
+    %8 = extf i32, [2 x i32] %gpr_rdata.prb, 0
+    drv i32$ %opa, %8, %2
+    br %check
+7:
+    %9 = const i4 3
+    %10 = eq i4 %opa_select.prb, %9
+    br %10, %11, %case_body2
+case_body2:
+    %uimm.prb = prb i32$ %uimm
+    drv i32$ %opa, %uimm.prb, %2
+    br %check
+11:
+    %12 = const i4 4
+    %13 = eq i4 %opa_select.prb, %12
+    br %13, %14, %case_body3
+case_body3:
+    %jimm.prb = prb i32$ %jimm
+    drv i32$ %opa, %jimm.prb, %2
+    br %check
+14:
+    %15 = const i4 9
+    %16 = eq i4 %opa_select.prb, %15
+    br %16, %17, %case_body4
+case_body4:
+    %rs1.prb = prb i5$ %rs1
+    %18 = inss i32 %3, i5 %rs1.prb, 0, 5
+    %19 = const i27 0
+    %concat = inss i32 %18, i27 %19, 5, 27
+    drv i32$ %opa, %concat, %2
+    br %check
+17:
+    drv i32$ %opa, %3, %2
+    br %check
+}
+
+proc %snitch.param1.always_comb.23314.1 (i32$ %pc_q, i32$ %iimm, i32$ %simm, [2 x i32]$ %gpr_rdata, i4$ %opb_select, i32$ %csr_rvalue) -> (i32$ %opb) {
+body:
+    %opb_select.prb = prb i4$ %opb_select
+    %0 = const i4 0
+    %1 = eq i4 %opb_select.prb, %0
+    %2 = const i32 0
+    %3 = const time 0s 1e
+    br %1, %4, %case_body
+check:
+    wait %body, %pc_q, %iimm, %simm, %gpr_rdata, %opb_select, %csr_rvalue
+case_body:
+    drv i32$ %opb, %2, %3
+    br %check
+4:
+    %5 = const i4 1
+    %6 = eq i4 %opb_select.prb, %5
+    br %6, %7, %case_body1
+case_body1:
+    %gpr_rdata.prb = prb [2 x i32]$ %gpr_rdata
+    %8 = [2 x i32 %2]
+    %9 = exts [1 x i32], [2 x i32] %8, 0, 1
+    %10 = exts [1 x i32], [2 x i32] %gpr_rdata.prb, 1, 1
+    %11 = inss [2 x i32] %8, [1 x i32] %9, 1, 1
+    %12 = inss [2 x i32] %11, [1 x i32] %10, 0, 1
+    %13 = extf i32, [2 x i32] %12, 0
+    drv i32$ %opb, %13, %3
+    br %check
+7:
+    %14 = const i4 2
+    %15 = eq i4 %opb_select.prb, %14
+    br %15, %16, %case_body2
+case_body2:
+    %iimm.prb = prb i32$ %iimm
+    drv i32$ %opb, %iimm.prb, %3
+    br %check
+16:
+    %17 = const i4 6
+    %18 = eq i4 %opb_select.prb, %17
+    %19 = const i4 5
+    %20 = eq i4 %opb_select.prb, %19
+    %21 = or i1 %18, %20
+    br %21, %22, %case_body3
+case_body3:
+    %simm.prb = prb i32$ %simm
+    drv i32$ %opb, %simm.prb, %3
+    br %check
+22:
+    %23 = const i4 7
+    %24 = eq i4 %opb_select.prb, %23
+    br %24, %25, %case_body4
+case_body4:
+    %pc_q.prb = prb i32$ %pc_q
+    drv i32$ %opb, %pc_q.prb, %3
+    br %check
+25:
+    %26 = const i4 8
+    %27 = eq i4 %opb_select.prb, %26
+    br %27, %28, %case_body5
+case_body5:
+    %csr_rvalue.prb = prb i32$ %csr_rvalue
+    drv i32$ %opb, %csr_rvalue.prb, %3
+    br %check
+28:
+    drv i32$ %opb, %2, %3
+    br %check
+}
+
+proc %snitch.param1.always_comb.24030.1 (i32$ %opa, i32$ %opb, i33$ %adder_result, i4$ %alu_op, i32$ %shift_right_result, i32$ %shift_left_result) -> (i32$ %alu_result, i1$ %shift_left, i1$ %shift_arithmetic, i33$ %alu_opa, i33$ %alu_opb) {
+body:
+    %opa.prb = prb i32$ %opa
+    %0 = exts i1, i32 %opa.prb, 31, 1
+    %1 = const i33 0
+    %2 = const i33 8589934591
+    %3 = [i33 %1, %2]
+    %4 = mux [2 x i33] %3, i1 %0
+    %sext = inss i33 %4, i32 %opa.prb, 0, 32
+    %5 = const time 0s 1e
+    drv i33$ %alu_opa, %sext, %5
+    %opb.prb = prb i32$ %opb
+    %6 = exts i1, i32 %opb.prb, 31, 1
+    %7 = mux [2 x i33] %3, i1 %6
+    %sext1 = inss i33 %7, i32 %opb.prb, 0, 32
+    drv i33$ %alu_opb, %sext1, %5
+    %adder_result.prb = prb i33$ %adder_result
+    %8 = exts i32, i33 %adder_result.prb, 0, 32
+    drv i32$ %alu_result, %8, %5
+    %9 = const i1 0
+    drv i1$ %shift_left, %9, %5
+    drv i1$ %shift_arithmetic, %9, %5
+    %alu_op.prb = prb i4$ %alu_op
+    %10 = const i4 1
+    %11 = eq i4 %alu_op.prb, %10
+    %12 = neg i33 %sext1
+    br %11, %13, %case_body
+check:
+    wait %body, %opa, %opb, %adder_result, %alu_op, %shift_right_result, %shift_left_result
+case_body:
+    drv i33$ %alu_opb, %12, %5
+    br %check
+13:
+    %14 = const i4 2
+    %15 = eq i4 %alu_op.prb, %14
+    %16 = const i32 0
+    %17 = const i31 0
+    %18 = exts i1, i33 %adder_result.prb, 32, 1
+    %19 = const i30 0
+    br %15, %20, %case_body1
+case_body1:
+    drv i33$ %alu_opb, %12, %5
+    %21 = inss i33 %1, i1 %18, 0, 1
+    %22 = exts i1, i33 %21, 0, 1
+    %23 = inss i31 %17, i1 %22, 0, 1
+    %concat = inss i31 %23, i30 %19, 1, 30
+    %zext = inss i32 %16, i31 %concat, 0, 31
+    drv i32$ %alu_result, %zext, %5
+    br %check
+20:
+    %24 = const i4 13
+    %25 = eq i4 %alu_op.prb, %24
+    %26 = inss i33 %1, i1 %18, 0, 1
+    br %25, %27, %case_body2
+case_body2:
+    drv i33$ %alu_opb, %12, %5
+    %28 = exts i1, i33 %26, 0, 1
+    %29 = not i1 %28
+    %30 = inss i31 %17, i1 %29, 0, 1
+    %concat1 = inss i31 %30, i30 %19, 1, 30
+    %zext1 = inss i32 %16, i31 %concat1, 0, 31
+    drv i32$ %alu_result, %zext1, %5
+    br %check
+27:
+    %31 = const i4 3
+    %32 = eq i4 %alu_op.prb, %31
+    %zext2 = inss i33 %1, i32 %opa.prb, 0, 32
+    %zext3 = inss i33 %1, i32 %opb.prb, 0, 32
+    %33 = exts i1, i33 %26, 0, 1
+    br %32, %34, %case_body3
+case_body3:
+    drv i33$ %alu_opa, %zext2, %5
+    %35 = neg i33 %zext3
+    drv i33$ %alu_opb, %35, %5
+    %36 = inss i31 %17, i1 %33, 0, 1
+    %concat2 = inss i31 %36, i30 %19, 1, 30
+    %zext4 = inss i32 %16, i31 %concat2, 0, 31
+    drv i32$ %alu_result, %zext4, %5
+    br %check
+34:
+    %37 = const i4 14
+    %38 = eq i4 %alu_op.prb, %37
+    br %38, %39, %case_body4
+case_body4:
+    drv i33$ %alu_opa, %zext2, %5
+    %40 = neg i33 %zext3
+    drv i33$ %alu_opb, %40, %5
+    %41 = not i1 %33
+    %42 = inss i31 %17, i1 %41, 0, 1
+    %concat3 = inss i31 %42, i30 %19, 1, 30
+    %zext5 = inss i32 %16, i31 %concat3, 0, 31
+    drv i32$ %alu_result, %zext5, %5
+    br %check
+39:
+    %43 = const i4 4
+    %44 = eq i4 %alu_op.prb, %43
+    %45 = const i1 1
+    br %44, %46, %case_body5
+case_body5:
+    drv i1$ %shift_left, %45, %5
+    %shift_left_result.prb = prb i32$ %shift_left_result
+    drv i32$ %alu_result, %shift_left_result.prb, %5
+    br %check
+46:
+    %47 = const i4 5
+    %48 = eq i4 %alu_op.prb, %47
+    %shift_right_result.prb = prb i32$ %shift_right_result
+    br %48, %49, %case_body6
+case_body6:
+    drv i32$ %alu_result, %shift_right_result.prb, %5
+    br %check
+49:
+    %50 = const i4 6
+    %51 = eq i4 %alu_op.prb, %50
+    br %51, %52, %case_body7
+case_body7:
+    drv i1$ %shift_arithmetic, %45, %5
+    drv i32$ %alu_result, %shift_right_result.prb, %5
+    br %check
+52:
+    %53 = const i4 7
+    %54 = eq i4 %alu_op.prb, %53
+    br %54, %55, %case_body8
+case_body8:
+    %56 = xor i32 %opa.prb, %opb.prb
+    drv i32$ %alu_result, %56, %5
+    br %check
+55:
+    %57 = const i4 9
+    %58 = eq i4 %alu_op.prb, %57
+    br %58, %59, %case_body9
+case_body9:
+    %60 = and i32 %opa.prb, %opb.prb
+    drv i32$ %alu_result, %60, %5
+    br %check
+59:
+    %61 = const i4 10
+    %62 = eq i4 %alu_op.prb, %61
+    br %62, %63, %case_body10
+case_body10:
+    %64 = not i32 %opa.prb
+    %65 = and i32 %64, %opb.prb
+    drv i32$ %alu_result, %65, %5
+    br %check
+63:
+    %66 = const i4 8
+    %67 = eq i4 %alu_op.prb, %66
+    br %67, %68, %case_body11
+case_body11:
+    %69 = or i32 %opa.prb, %opb.prb
+    drv i32$ %alu_result, %69, %5
+    br %check
+68:
+    %70 = const i4 11
+    %71 = eq i4 %alu_op.prb, %70
+    %72 = exts i1, i33 %adder_result.prb, 0, 1
+    %73 = exts i1, i33 %adder_result.prb, 1, 1
+    %74 = exts i1, i33 %adder_result.prb, 2, 1
+    %75 = exts i1, i33 %adder_result.prb, 3, 1
+    %76 = exts i1, i33 %adder_result.prb, 4, 1
+    %77 = exts i1, i33 %adder_result.prb, 5, 1
+    %78 = exts i1, i33 %adder_result.prb, 6, 1
+    %79 = exts i1, i33 %adder_result.prb, 7, 1
+    %80 = exts i1, i33 %adder_result.prb, 8, 1
+    %81 = exts i1, i33 %adder_result.prb, 9, 1
+    %82 = exts i1, i33 %adder_result.prb, 10, 1
+    %83 = exts i1, i33 %adder_result.prb, 11, 1
+    %84 = exts i1, i33 %adder_result.prb, 12, 1
+    %85 = exts i1, i33 %adder_result.prb, 13, 1
+    %86 = exts i1, i33 %adder_result.prb, 14, 1
+    %87 = exts i1, i33 %adder_result.prb, 15, 1
+    %88 = exts i1, i33 %adder_result.prb, 16, 1
+    %89 = exts i1, i33 %adder_result.prb, 17, 1
+    %90 = exts i1, i33 %adder_result.prb, 18, 1
+    %91 = exts i1, i33 %adder_result.prb, 19, 1
+    %92 = exts i1, i33 %adder_result.prb, 20, 1
+    %93 = exts i1, i33 %adder_result.prb, 21, 1
+    %94 = exts i1, i33 %adder_result.prb, 22, 1
+    %95 = exts i1, i33 %adder_result.prb, 23, 1
+    %96 = exts i1, i33 %adder_result.prb, 24, 1
+    %97 = exts i1, i33 %adder_result.prb, 25, 1
+    %98 = exts i1, i33 %adder_result.prb, 26, 1
+    %99 = exts i1, i33 %adder_result.prb, 27, 1
+    %100 = exts i1, i33 %adder_result.prb, 28, 1
+    %101 = exts i1, i33 %adder_result.prb, 29, 1
+    %102 = exts i1, i33 %adder_result.prb, 30, 1
+    %103 = exts i1, i33 %adder_result.prb, 31, 1
+    br %71, %104, %case_body12
+case_body12:
+    drv i33$ %alu_opb, %12, %5
+    %105 = or i1 %72, %73
+    %106 = or i1 %105, %74
+    %107 = or i1 %106, %75
+    %108 = or i1 %107, %76
+    %109 = or i1 %108, %77
+    %110 = or i1 %109, %78
+    %111 = or i1 %110, %79
+    %112 = or i1 %111, %80
+    %113 = or i1 %112, %81
+    %114 = or i1 %113, %82
+    %115 = or i1 %114, %83
+    %116 = or i1 %115, %84
+    %117 = or i1 %116, %85
+    %118 = or i1 %117, %86
+    %119 = or i1 %118, %87
+    %120 = or i1 %119, %88
+    %121 = or i1 %120, %89
+    %122 = or i1 %121, %90
+    %123 = or i1 %122, %91
+    %124 = or i1 %123, %92
+    %125 = or i1 %124, %93
+    %126 = or i1 %125, %94
+    %127 = or i1 %126, %95
+    %128 = or i1 %127, %96
+    %129 = or i1 %128, %97
+    %130 = or i1 %129, %98
+    %131 = or i1 %130, %99
+    %132 = or i1 %131, %100
+    %133 = or i1 %132, %101
+    %134 = or i1 %133, %102
+    %135 = or i1 %134, %103
+    %136 = or i1 %135, %18
+    %137 = not i1 %136
+    %zext6 = inss i32 %16, i1 %137, 0, 1
+    drv i32$ %alu_result, %zext6, %5
+    br %check
+104:
+    %138 = const i4 12
+    %139 = eq i4 %alu_op.prb, %138
+    br %139, %140, %case_body13
+case_body13:
+    drv i33$ %alu_opb, %12, %5
+    %141 = or i1 %72, %73
+    %142 = or i1 %141, %74
+    %143 = or i1 %142, %75
+    %144 = or i1 %143, %76
+    %145 = or i1 %144, %77
+    %146 = or i1 %145, %78
+    %147 = or i1 %146, %79
+    %148 = or i1 %147, %80
+    %149 = or i1 %148, %81
+    %150 = or i1 %149, %82
+    %151 = or i1 %150, %83
+    %152 = or i1 %151, %84
+    %153 = or i1 %152, %85
+    %154 = or i1 %153, %86
+    %155 = or i1 %154, %87
+    %156 = or i1 %155, %88
+    %157 = or i1 %156, %89
+    %158 = or i1 %157, %90
+    %159 = or i1 %158, %91
+    %160 = or i1 %159, %92
+    %161 = or i1 %160, %93
+    %162 = or i1 %161, %94
+    %163 = or i1 %162, %95
+    %164 = or i1 %163, %96
+    %165 = or i1 %164, %97
+    %166 = or i1 %165, %98
+    %167 = or i1 %166, %99
+    %168 = or i1 %167, %100
+    %169 = or i1 %168, %101
+    %170 = or i1 %169, %102
+    %171 = or i1 %170, %103
+    %172 = or i1 %171, %18
+    %zext7 = inss i32 %16, i1 %172, 0, 1
+    drv i32$ %alu_result, %zext7, %5
+    br %check
+140:
+    %173 = const i4 15
+    %174 = eq i4 %alu_op.prb, %173
+    br %174, %175, %case_body14
+case_body14:
+    drv i32$ %alu_result, %opa.prb, %5
+    br %check
+175:
+    drv i32$ %alu_result, %8, %5
+    br %check
+}
+
+proc %snitch.param1.always_comb.24258.1 (i32$ %consec_pc, i32$ %alu_result, i2$ %rd_select, i32$ %rd_bypass) -> (i32$ %alu_writeback) {
+body:
+    %rd_select.prb = prb i2$ %rd_select
+    %0 = const i2 0
+    %1 = eq i2 %rd_select.prb, %0
+    %2 = const time 0s 1e
+    %alu_result.prb = prb i32$ %alu_result
+    br %1, %3, %case_body
+check:
+    wait %body, %consec_pc, %alu_result, %rd_select, %rd_bypass
+case_body:
+    drv i32$ %alu_writeback, %alu_result.prb, %2
+    br %check
+3:
+    %4 = const i2 1
+    %5 = eq i2 %rd_select.prb, %4
+    br %5, %6, %case_body1
+case_body1:
+    %consec_pc.prb = prb i32$ %consec_pc
+    drv i32$ %alu_writeback, %consec_pc.prb, %2
+    br %check
+6:
+    %7 = const i2 2
+    %8 = eq i2 %rd_select.prb, %7
+    br %8, %9, %case_body2
+case_body2:
+    %rd_bypass.prb = prb i32$ %rd_bypass
+    drv i32$ %alu_writeback, %rd_bypass.prb, %2
+    br %check
+9:
+    drv i32$ %alu_writeback, %alu_result.prb, %2
+    br %check
+}
+
+proc %snitch.param1.always_comb.24550.1 (i64$ %acc_pdata_i, i5$ %acc_pid_i, i1$ %acc_pvalid_i, i5$ %rd, i64$ %ld_result, i1$ %lsu_pvalid, i5$ %lsu_rd, i1$ %retire_i, i32$ %alu_writeback) -> (i1$ %acc_pready_o, [1 x i5]$ %gpr_waddr, [1 x i32]$ %gpr_wdata, i1$ %gpr_we, i1$ %lsu_pready, i1$ %retire_load, i1$ %retire_acc) {
+body:
+    %0 = exts i1$, i1$ %gpr_we, 0, 1
+    %1 = const i1 0
+    %2 = const time 0s 1e
+    drv i1$ %0, %1, %2
+    %3 = extf i5$, [1 x i5]$ %gpr_waddr, 0
+    %rd.prb = prb i5$ %rd
+    drv i5$ %3, %rd.prb, %2
+    %4 = extf i32$, [1 x i32]$ %gpr_wdata, 0
+    %alu_writeback.prb = prb i32$ %alu_writeback
+    drv i32$ %4, %alu_writeback.prb, %2
+    drv i1$ %lsu_pready, %1, %2
+    drv i1$ %acc_pready_o, %1, %2
+    drv i1$ %retire_acc, %1, %2
+    drv i1$ %retire_load, %1, %2
+    %retire_i.prb = prb i1$ %retire_i
+    %5 = neq i1 %retire_i.prb, %1
+    %6 = const i1 1
+    br %5, %if_false, %if_true
+check:
+    wait %body, %acc_pdata_i, %acc_pid_i, %acc_pvalid_i, %rd, %ld_result, %lsu_pvalid, %lsu_rd, %retire_i, %alu_writeback
+if_true:
+    drv i1$ %0, %6, %2
+    br %check
+if_false:
+    %lsu_pvalid.prb = prb i1$ %lsu_pvalid
+    %7 = neq i1 %lsu_pvalid.prb, %1
+    br %7, %if_false1, %if_true1
+if_true1:
+    drv i1$ %retire_load, %6, %2
+    drv i1$ %0, %6, %2
+    %lsu_rd.prb = prb i5$ %lsu_rd
+    drv i5$ %3, %lsu_rd.prb, %2
+    %ld_result.prb = prb i64$ %ld_result
+    %8 = exts i32, i64 %ld_result.prb, 0, 32
+    drv i32$ %4, %8, %2
+    drv i1$ %lsu_pready, %6, %2
+    br %check
+if_false1:
+    %acc_pvalid_i.prb = prb i1$ %acc_pvalid_i
+    %9 = neq i1 %acc_pvalid_i.prb, %1
+    br %9, %check, %if_true2
+if_true2:
+    drv i1$ %retire_acc, %6, %2
+    drv i1$ %0, %6, %2
+    %acc_pid_i.prb = prb i5$ %acc_pid_i
+    drv i5$ %3, %acc_pid_i.prb, %2
+    %acc_pdata_i.prb = prb i64$ %acc_pdata_i
+    %10 = exts i32, i64 %acc_pdata_i.prb, 0, 32
+    drv i32$ %4, %10, %2
+    drv i1$ %acc_pready_o, %6, %2
+    br %check
+}
+
+entity @snitch.param1 (i1$ %clk_i, i1$ %rst_i, i32$ %hart_id_i, i32$ %inst_data_i, i1$ %inst_ready_i, i1$ %acc_qready_i, i64$ %acc_pdata_i, i5$ %acc_pid_i, i1$ %acc_perror_i, i1$ %acc_pvalid_i, i1$ %data_qready_i, i64$ %data_pdata_i, i1$ %data_perror_i, i1$ %data_pvalid_i, i1$ %wake_up_sync_i, {i1, i1, i1, i1, i1}$ %fpu_status_i) -> (i32$ %inst_addr_o, i1$ %inst_valid_o, i32$ %acc_qaddr_o, i5$ %acc_qid_o, i32$ %acc_qdata_op_o, i64$ %acc_qdata_arga_o, i64$ %acc_qdata_argb_o, i64$ %acc_qdata_argc_o, i1$ %acc_qvalid_o, i1$ %acc_pready_o, i32$ %data_qaddr_o, i1$ %data_qwrite_o, i4$ %data_qamo_o, i64$ %data_qdata_o, i8$ %data_qstrb_o, i1$ %data_qvalid_o, i1$ %data_pready_o, i3$ %fpu_rnd_mode_o, {i1, i1, i1, i1}$ %core_events_o) {
+    %0 = const i1 0
+    %illegal_inst = sig i1 %0
+    %zero_lsb = sig i1 %0
+    %1 = const i32 0
+    %pc_d = sig i32 %1
+    %pc_q = sig i32 %1
+    %wfi_d = sig i1 %0
+    %wfi_q = sig i1 %0
+    %consec_pc = sig i32 %1
+    %iimm = sig i32 %1
+    %uimm = sig i32 %1
+    %jimm = sig i32 %1
+    %bimm = sig i32 %1
+    %simm = sig i32 %1
+    %opa = sig i32 %1
+    %opb = sig i32 %1
+    %2 = const i33 0
+    %adder_result = sig i33 %2
+    %alu_result = sig i32 %1
+    %3 = const i5 0
+    %rd = sig i5 %3
+    %rs1 = sig i5 %3
+    %rs2 = sig i5 %3
+    %stall = sig i1 %0
+    %lsu_stall = sig i1 %0
+    %4 = [i5 %3, %3]
+    %gpr_raddr = sig [2 x i5] %4
+    %5 = [i32 %1, %1]
+    %gpr_rdata = sig [2 x i32] %5
+    %6 = [i5 %3]
+    %gpr_waddr = sig [1 x i5] %6
+    %7 = [i32 %1]
+    %gpr_wdata = sig [1 x i32] %7
+    %gpr_we = sig i1 %0
+    %sb_d = sig i32 %1
+    %sb_q = sig i32 %1
+    %is_load = sig i1 %0
+    %is_store = sig i1 %0
+    %is_signed = sig i1 %0
+    %8 = const i2 0
+    %ls_size = sig i2 %8
+    %9 = const i4 0
+    %ls_amo = sig i4 %9
+    %10 = const i64 0
+    %ld_result = sig i64 %10
+    %lsu_qready = sig i1 %0
+    %lsu_qvalid = sig i1 %0
+    %lsu_pvalid = sig i1 %0
+    %lsu_pready = sig i1 %0
+    %lsu_rd = sig i5 %3
+    %retire_load = sig i1 %0
+    %retire_i = sig i1 %0
+    %retire_acc = sig i1 %0
+    %acc_stall = sig i1 %0
+    %valid_instr = sig i1 %0
+    %alu_op = sig i4 %9
+    %opa_select = sig i4 %9
+    %opb_select = sig i4 %9
+    %write_rd = sig i1 %0
+    %uses_rd = sig i1 %0
+    %next_pc = sig i2 %8
+    %rd_select = sig i2 %8
+    %rd_bypass = sig i32 %1
+    %is_branch = sig i1 %0
+    %csr_rvalue = sig i32 %1
+    %csr_en = sig i1 %0
+    %11 = const i3 0
+    %12 = {i1 %0, i1 %0, i1 %0, i1 %0, i1 %0}
+    %13 = {i3 %11, {i1, i1, i1, i1, i1} %12}
+    %fcsr_d = sig {i3, {i1, i1, i1, i1, i1}} %13
+    %fcsr_q = sig {i3, {i1, i1, i1, i1, i1}} %13
+    %acc_register_rd = sig i1 %0
+    %operands_ready = sig i1 %0
+    %dst_ready = sig i1 %0
+    %opa_ready = sig i1 %0
+    %opb_ready = sig i1 %0
+    %shift_opa = sig i32 %1
+    %shift_opa_reversed = sig i32 %1
+    %shift_right_result = sig i32 %1
+    %shift_left_result = sig i32 %1
+    %shift_opa_ext = sig i33 %2
+    %shift_right_result_ext = sig i33 %2
+    %shift_left = sig i1 %0
+    %shift_arithmetic = sig i1 %0
+    %alu_opa = sig i33 %2
+    %alu_opb = sig i33 %2
+    %alu_writeback = sig i32 %1
+    %inst_data_i.prb = prb i32$ %inst_data_i
+    %14 = exts i12, i32 %inst_data_i.prb, 20, 12
+    %15 = inss i32 %1, i12 %14, 0, 12
+    %concat = exts i12, i32 %15, 0, 12
+    %16 = exts i1, i12 %concat, 11, 1
+    %17 = const i32 4294967295
+    %18 = [i32 %1, %17]
+    %19 = mux [2 x i32] %18, i1 %16
+    %sext = inss i32 %19, i12 %concat, 0, 12
+    %20 = const time 0s 1e
+    drv i32$ %iimm, %sext, %20
+    %21 = exts i20, i32 %inst_data_i.prb, 12, 20
+    %22 = inss i32 %1, i20 %21, 0, 20
+    %23 = exts i20, i32 %22, 0, 20
+    %concat1 = inss i32 %1, i20 %23, 12, 20
+    drv i32$ %uimm, %concat1, %20
+    %24 = const i21 0
+    %25 = exts i11, i32 %inst_data_i.prb, 21, 11
+    %26 = inss i32 %1, i11 %25, 0, 11
+    %27 = exts i10, i32 %26, 0, 10
+    %28 = inss i21 %24, i10 %27, 1, 10
+    %29 = exts i1, i32 %15, 0, 1
+    %30 = inss i21 %28, i1 %29, 11, 1
+    %31 = exts i8, i32 %22, 0, 8
+    %32 = inss i21 %30, i8 %31, 12, 8
+    %33 = exts i1, i32 %inst_data_i.prb, 31, 1
+    %34 = inss i32 %1, i1 %33, 0, 1
+    %35 = exts i1, i32 %34, 0, 1
+    %concat2 = inss i21 %32, i1 %35, 20, 1
+    %36 = exts i1, i21 %concat2, 20, 1
+    %37 = mux [2 x i32] %18, i1 %36
+    %sext1 = inss i32 %37, i21 %concat2, 0, 21
+    drv i32$ %jimm, %sext1, %20
+    %38 = const i13 0
+    %39 = exts i24, i32 %inst_data_i.prb, 8, 24
+    %40 = inss i32 %1, i24 %39, 0, 24
+    %41 = exts i4, i32 %40, 0, 4
+    %42 = inss i13 %38, i4 %41, 1, 4
+    %43 = exts i7, i32 %inst_data_i.prb, 25, 7
+    %44 = inss i32 %1, i7 %43, 0, 7
+    %45 = exts i6, i32 %44, 0, 6
+    %46 = inss i13 %42, i6 %45, 5, 6
+    %47 = exts i25, i32 %inst_data_i.prb, 7, 25
+    %48 = inss i32 %1, i25 %47, 0, 25
+    %49 = exts i1, i32 %48, 0, 1
+    %50 = inss i13 %46, i1 %49, 11, 1
+    %concat3 = inss i13 %50, i1 %35, 12, 1
+    %51 = exts i1, i13 %concat3, 12, 1
+    %52 = mux [2 x i32] %18, i1 %51
+    %sext2 = inss i32 %52, i13 %concat3, 0, 13
+    drv i32$ %bimm, %sext2, %20
+    %53 = const i12 0
+    %54 = exts i5, i32 %48, 0, 5
+    %55 = inss i12 %53, i5 %54, 0, 5
+    %56 = exts i7, i32 %44, 0, 7
+    %concat4 = inss i12 %55, i7 %56, 5, 7
+    %57 = exts i1, i12 %concat4, 11, 1
+    %58 = mux [2 x i32] %18, i1 %57
+    %sext3 = inss i32 %58, i12 %concat4, 0, 12
+    drv i32$ %simm, %sext3, %20
+    %fcsr_q.prb = prb {i3, {i1, i1, i1, i1, i1}}$ %fcsr_q
+    %59 = extf i3, {i3, {i1, i1, i1, i1, i1}} %fcsr_q.prb, 0
+    drv i3$ %fpu_rnd_mode_o, %59, %20
+    %hart_id_i.prb = prb i32$ %hart_id_i
+    drv i32$ %acc_qaddr_o, %hart_id_i.prb, %20
+    %rd.prb = prb i5$ %rd
+    drv i5$ %acc_qid_o, %rd.prb, %20
+    drv i32$ %acc_qdata_op_o, %inst_data_i.prb, %20
+    %gpr_rdata.prb = prb [2 x i32]$ %gpr_rdata
+    %60 = extf i32, [2 x i32] %gpr_rdata.prb, 0
+    %61 = inss i64 %10, i32 %60, 0, 32
+    %62 = exts i1, i32 %60, 31, 1
+    %63 = inss i32 %1, i1 %62, 0, 1
+    %concat5 = exts i1, i32 %63, 0, 1
+    %64 = inss i32 %1, i1 %concat5, 0, 1
+    %65 = inss i32 %64, i1 %concat5, 1, 1
+    %66 = inss i32 %65, i1 %concat5, 2, 1
+    %67 = inss i32 %66, i1 %concat5, 3, 1
+    %68 = inss i32 %67, i1 %concat5, 4, 1
+    %69 = inss i32 %68, i1 %concat5, 5, 1
+    %70 = inss i32 %69, i1 %concat5, 6, 1
+    %71 = inss i32 %70, i1 %concat5, 7, 1
+    %72 = inss i32 %71, i1 %concat5, 8, 1
+    %73 = inss i32 %72, i1 %concat5, 9, 1
+    %74 = inss i32 %73, i1 %concat5, 10, 1
+    %75 = inss i32 %74, i1 %concat5, 11, 1
+    %76 = inss i32 %75, i1 %concat5, 12, 1
+    %77 = inss i32 %76, i1 %concat5, 13, 1
+    %78 = inss i32 %77, i1 %concat5, 14, 1
+    %79 = inss i32 %78, i1 %concat5, 15, 1
+    %80 = inss i32 %79, i1 %concat5, 16, 1
+    %81 = inss i32 %80, i1 %concat5, 17, 1
+    %82 = inss i32 %81, i1 %concat5, 18, 1
+    %83 = inss i32 %82, i1 %concat5, 19, 1
+    %84 = inss i32 %83, i1 %concat5, 20, 1
+    %85 = inss i32 %84, i1 %concat5, 21, 1
+    %86 = inss i32 %85, i1 %concat5, 22, 1
+    %87 = inss i32 %86, i1 %concat5, 23, 1
+    %88 = inss i32 %87, i1 %concat5, 24, 1
+    %89 = inss i32 %88, i1 %concat5, 25, 1
+    %90 = inss i32 %89, i1 %concat5, 26, 1
+    %91 = inss i32 %90, i1 %concat5, 27, 1
+    %92 = inss i32 %91, i1 %concat5, 28, 1
+    %93 = inss i32 %92, i1 %concat5, 29, 1
+    %94 = inss i32 %93, i1 %concat5, 30, 1
+    %repeat = inss i32 %94, i1 %concat5, 31, 1
+    %concat6 = inss i64 %61, i32 %repeat, 32, 32
+    drv i64$ %acc_qdata_arga_o, %concat6, %20
+    %95 = [2 x i32 %1]
+    %96 = exts [1 x i32], [2 x i32] %95, 0, 1
+    %97 = exts [1 x i32], [2 x i32] %gpr_rdata.prb, 1, 1
+    %98 = inss [2 x i32] %95, [1 x i32] %96, 1, 1
+    %99 = inss [2 x i32] %98, [1 x i32] %97, 0, 1
+    %100 = extf i32, [2 x i32] %99, 0
+    %101 = inss i64 %10, i32 %100, 0, 32
+    %102 = exts i1, i32 %100, 31, 1
+    %103 = inss i32 %1, i1 %102, 0, 1
+    %concat7 = exts i1, i32 %103, 0, 1
+    %104 = inss i32 %1, i1 %concat7, 0, 1
+    %105 = inss i32 %104, i1 %concat7, 1, 1
+    %106 = inss i32 %105, i1 %concat7, 2, 1
+    %107 = inss i32 %106, i1 %concat7, 3, 1
+    %108 = inss i32 %107, i1 %concat7, 4, 1
+    %109 = inss i32 %108, i1 %concat7, 5, 1
+    %110 = inss i32 %109, i1 %concat7, 6, 1
+    %111 = inss i32 %110, i1 %concat7, 7, 1
+    %112 = inss i32 %111, i1 %concat7, 8, 1
+    %113 = inss i32 %112, i1 %concat7, 9, 1
+    %114 = inss i32 %113, i1 %concat7, 10, 1
+    %115 = inss i32 %114, i1 %concat7, 11, 1
+    %116 = inss i32 %115, i1 %concat7, 12, 1
+    %117 = inss i32 %116, i1 %concat7, 13, 1
+    %118 = inss i32 %117, i1 %concat7, 14, 1
+    %119 = inss i32 %118, i1 %concat7, 15, 1
+    %120 = inss i32 %119, i1 %concat7, 16, 1
+    %121 = inss i32 %120, i1 %concat7, 17, 1
+    %122 = inss i32 %121, i1 %concat7, 18, 1
+    %123 = inss i32 %122, i1 %concat7, 19, 1
+    %124 = inss i32 %123, i1 %concat7, 20, 1
+    %125 = inss i32 %124, i1 %concat7, 21, 1
+    %126 = inss i32 %125, i1 %concat7, 22, 1
+    %127 = inss i32 %126, i1 %concat7, 23, 1
+    %128 = inss i32 %127, i1 %concat7, 24, 1
+    %129 = inss i32 %128, i1 %concat7, 25, 1
+    %130 = inss i32 %129, i1 %concat7, 26, 1
+    %131 = inss i32 %130, i1 %concat7, 27, 1
+    %132 = inss i32 %131, i1 %concat7, 28, 1
+    %133 = inss i32 %132, i1 %concat7, 29, 1
+    %134 = inss i32 %133, i1 %concat7, 30, 1
+    %repeat1 = inss i32 %134, i1 %concat7, 31, 1
+    %concat8 = inss i64 %101, i32 %repeat1, 32, 32
+    drv i64$ %acc_qdata_argb_o, %concat8, %20
+    %alu_result.prb = prb i32$ %alu_result
+    %135 = inss i64 %10, i32 %alu_result.prb, 0, 32
+    %concat9 = inss i64 %135, i32 %1, 32, 32
+    drv i64$ %acc_qdata_argc_o, %concat9, %20
+    %pc_q.prb = prb i32$ %pc_q
+    drv i32$ %inst_addr_o, %pc_q.prb, %20
+    %wfi_q.prb = prb i1$ %wfi_q
+    %136 = not i1 %wfi_q.prb
+    drv i1$ %inst_valid_o, %136, %20
+    %opa_select.prb = prb i4$ %opa_select
+    %137 = const i4 1
+    %138 = neq i4 %opa_select.prb, %137
+    %sb_q.prb = prb i32$ %sb_q
+    %rs1.prb = prb i5$ %rs1
+    %139 = shr i32 %sb_q.prb, i32 %1, i5 %rs1.prb
+    %140 = exts i1, i32 %139, 0, 1
+    %141 = not i1 %140
+    %142 = or i1 %138, %141
+    drv i1$ %opa_ready, %142, %20
+    %opb_select.prb = prb i4$ %opb_select
+    %143 = neq i4 %opb_select.prb, %137
+    %144 = const i4 5
+    %145 = neq i4 %opb_select.prb, %144
+    %146 = and i1 %143, %145
+    %rs2.prb = prb i5$ %rs2
+    %147 = shr i32 %sb_q.prb, i32 %1, i5 %rs2.prb
+    %148 = exts i1, i32 %147, 0, 1
+    %149 = not i1 %148
+    %150 = or i1 %146, %149
+    drv i1$ %opb_ready, %150, %20
+    %opa_ready.prb = prb i1$ %opa_ready
+    %opb_ready.prb = prb i1$ %opb_ready
+    %151 = and i1 %opa_ready.prb, %opb_ready.prb
+    drv i1$ %operands_ready, %151, %20
+    %uses_rd.prb = prb i1$ %uses_rd
+    %152 = shr i32 %sb_q.prb, i32 %1, i5 %rd.prb
+    %153 = exts i1, i32 %152, 0, 1
+    %154 = not i1 %153
+    %155 = and i1 %uses_rd.prb, %154
+    drv i1$ %dst_ready, %155, %20
+    %inst_ready_i.prb = prb i1$ %inst_ready_i
+    %inst_valid_o.prb = prb i1$ %inst_valid_o
+    %156 = and i1 %inst_ready_i.prb, %inst_valid_o.prb
+    %operands_ready.prb = prb i1$ %operands_ready
+    %157 = and i1 %156, %operands_ready.prb
+    %dst_ready.prb = prb i1$ %dst_ready
+    %158 = and i1 %157, %dst_ready.prb
+    drv i1$ %valid_instr, %158, %20
+    %acc_qvalid_o.prb = prb i1$ %acc_qvalid_o
+    %acc_qready_i.prb = prb i1$ %acc_qready_i
+    %159 = not i1 %acc_qready_i.prb
+    %160 = and i1 %acc_qvalid_o.prb, %159
+    drv i1$ %acc_stall, %160, %20
+    %lsu_qvalid.prb = prb i1$ %lsu_qvalid
+    %lsu_qready.prb = prb i1$ %lsu_qready
+    %161 = not i1 %lsu_qready.prb
+    %162 = and i1 %lsu_qvalid.prb, %161
+    drv i1$ %lsu_stall, %162, %20
+    %valid_instr.prb = prb i1$ %valid_instr
+    %163 = not i1 %valid_instr.prb
+    %lsu_stall.prb = prb i1$ %lsu_stall
+    %164 = or i1 %163, %lsu_stall.prb
+    %acc_stall.prb = prb i1$ %acc_stall
+    %165 = or i1 %164, %acc_stall.prb
+    drv i1$ %stall, %165, %20
+    %is_branch.prb = prb i1$ %is_branch
+    %166 = exts i1, i32 %alu_result.prb, 0, 1
+    %167 = and i1 %is_branch.prb, %166
+    %168 = neq i1 %167, %0
+    %bimm.prb = prb i32$ %bimm
+    %169 = const i32 4
+    %170 = [i32 %169, %bimm.prb]
+    %171 = mux [2 x i32] %170, i1 %168
+    %172 = add i32 %pc_q.prb, %171
+    drv i32$ %consec_pc, %172, %20
+    drv i5$ %rd, %54, %20
+    %173 = exts i17, i32 %inst_data_i.prb, 15, 17
+    %174 = inss i32 %1, i17 %173, 0, 17
+    %175 = exts i5, i32 %174, 0, 5
+    drv i5$ %rs1, %175, %20
+    %176 = exts i5, i32 %15, 0, 5
+    drv i5$ %rs2, %176, %20
+    %177 = extf i5$, [2 x i5]$ %gpr_raddr, 0
+    drv i5$ %177, %rs1.prb, %20
+    %178 = const i32 1
+    %179 = [2 x i5 %3]
+    %180 = sig [2 x i5] %179
+    %181 = shr [2 x i5]$ %gpr_raddr, [2 x i5]$ %180, i32 %178
+    %182 = extf i5$, [2 x i5]$ %181, 0
+    drv i5$ %182, %rs2.prb, %20
+    %shift_left.prb = prb i1$ %shift_left
+    %183 = neq i1 %shift_left.prb, %0
+    %shift_opa_reversed.prb = prb i32$ %shift_opa_reversed
+    %opa.prb = prb i32$ %opa
+    %184 = [i32 %opa.prb, %shift_opa_reversed.prb]
+    %185 = mux [2 x i32] %184, i1 %183
+    drv i32$ %shift_opa, %185, %20
+    %shift_opa.prb = prb i32$ %shift_opa
+    %186 = inss i33 %2, i32 %shift_opa.prb, 0, 32
+    %187 = exts i1, i32 %shift_opa.prb, 31, 1
+    %188 = inss i32 %1, i1 %187, 0, 1
+    %189 = exts i1, i32 %188, 0, 1
+    %shift_arithmetic.prb = prb i1$ %shift_arithmetic
+    %190 = and i1 %189, %shift_arithmetic.prb
+    %concat10 = inss i33 %186, i1 %190, 32, 1
+    drv i33$ %shift_opa_ext, %concat10, %20
+    %shift_opa_ext.prb = prb i33$ %shift_opa_ext
+    %opb.prb = prb i32$ %opb
+    %191 = exts i5, i32 %opb.prb, 0, 5
+    %192 = shr i33 %shift_opa_ext.prb, i33 %2, i5 %191
+    drv i33$ %shift_right_result_ext, %192, %20
+    %shift_right_result_ext.prb = prb i33$ %shift_right_result_ext
+    %193 = exts i32, i33 %shift_right_result_ext.prb, 0, 32
+    drv i32$ %shift_right_result, %193, %20
+    %alu_opa.prb = prb i33$ %alu_opa
+    %alu_opb.prb = prb i33$ %alu_opb
+    %194 = add i33 %alu_opa.prb, %alu_opb.prb
+    drv i33$ %adder_result, %194, %20
+    %is_load.prb = prb i1$ %is_load
+    %is_store.prb = prb i1$ %is_store
+    %195 = or i1 %is_load.prb, %is_store.prb
+    %196 = and i1 %valid_instr.prb, %195
+    drv i1$ %lsu_qvalid, %196, %20
+    %write_rd.prb = prb i1$ %write_rd
+    %197 = and i1 %write_rd.prb, %valid_instr.prb
+    %zext = inss i32 %1, i5 %rd.prb, 0, 5
+    %198 = neq i32 %zext, %1
+    %199 = and i1 %197, %198
+    drv i1$ %retire_i, %199, %20
+    inst @snitch_regfile.param2 (i1$ %clk_i, [2 x i5]$ %gpr_raddr, [1 x i5]$ %gpr_waddr, [1 x i32]$ %gpr_wdata, i1$ %gpr_we) -> ([2 x i32]$ %gpr_rdata)
+    %concat11 = inss i64 %101, i32 %1, 32, 32
+    %200 = sig i64 %10
+    %201 = const time 0s 1d
+    drv i64$ %200, %concat11, %201
+    %i_snitch_lsu.lsu_perror_o.default = sig i1 %0
+    inst @snitch_lsu.param3 (i1$ %clk_i, i1$ %rst_i, i5$ %rd, i1$ %is_store, i1$ %is_signed, i32$ %alu_result, i64$ %200, i2$ %ls_size, i4$ %ls_amo, i1$ %lsu_qvalid, i1$ %lsu_pready, i1$ %data_qready_i, i64$ %data_pdata_i, i1$ %data_perror_i, i1$ %data_pvalid_i) -> (i1$ %lsu_qready, i64$ %ld_result, i5$ %lsu_rd, i1$ %i_snitch_lsu.lsu_perror_o.default, i1$ %lsu_pvalid, i32$ %data_qaddr_o, i1$ %data_qwrite_o, i4$ %data_qamo_o, i64$ %data_qdata_o, i8$ %data_qstrb_o, i1$ %data_qvalid_o, i1$ %data_pready_o)
+    %202 = exts i1$, i32$ %shift_opa_reversed, 0, 1
+    %203 = exts i1, i32 %opa.prb, 31, 1
+    %204 = inss i32 %1, i1 %203, 0, 1
+    %205 = exts i1, i32 %204, 0, 1
+    drv i1$ %202, %205, %20
+    %206 = exts i1$, i32$ %shift_left_result, 0, 1
+    %shift_right_result.prb = prb i32$ %shift_right_result
+    %207 = exts i1, i32 %shift_right_result.prb, 31, 1
+    %208 = inss i32 %1, i1 %207, 0, 1
+    %209 = exts i1, i32 %208, 0, 1
+    drv i1$ %206, %209, %20
+    %210 = sig i32 %1
+    %211 = shr i32$ %shift_opa_reversed, i32$ %210, i32 %178
+    %212 = exts i1$, i32$ %211, 0, 1
+    %213 = exts i2, i32 %opa.prb, 30, 2
+    %214 = inss i32 %1, i2 %213, 0, 2
+    %215 = exts i1, i32 %214, 0, 1
+    drv i1$ %212, %215, %20
+    %216 = sig i32 %1
+    %217 = shr i32$ %shift_left_result, i32$ %216, i32 %178
+    %218 = exts i1$, i32$ %217, 0, 1
+    %219 = exts i2, i32 %shift_right_result.prb, 30, 2
+    %220 = inss i32 %1, i2 %219, 0, 2
+    %221 = exts i1, i32 %220, 0, 1
+    drv i1$ %218, %221, %20
+    %222 = const i32 2
+    %223 = sig i32 %1
+    %224 = shr i32$ %shift_opa_reversed, i32$ %223, i32 %222
+    %225 = exts i1$, i32$ %224, 0, 1
+    %226 = exts i3, i32 %opa.prb, 29, 3
+    %227 = inss i32 %1, i3 %226, 0, 3
+    %228 = exts i1, i32 %227, 0, 1
+    drv i1$ %225, %228, %20
+    %229 = sig i32 %1
+    %230 = shr i32$ %shift_left_result, i32$ %229, i32 %222
+    %231 = exts i1$, i32$ %230, 0, 1
+    %232 = exts i3, i32 %shift_right_result.prb, 29, 3
+    %233 = inss i32 %1, i3 %232, 0, 3
+    %234 = exts i1, i32 %233, 0, 1
+    drv i1$ %231, %234, %20
+    %235 = const i32 3
+    %236 = sig i32 %1
+    %237 = shr i32$ %shift_opa_reversed, i32$ %236, i32 %235
+    %238 = exts i1$, i32$ %237, 0, 1
+    %239 = exts i4, i32 %opa.prb, 28, 4
+    %240 = inss i32 %1, i4 %239, 0, 4
+    %241 = exts i1, i32 %240, 0, 1
+    drv i1$ %238, %241, %20
+    %242 = sig i32 %1
+    %243 = shr i32$ %shift_left_result, i32$ %242, i32 %235
+    %244 = exts i1$, i32$ %243, 0, 1
+    %245 = exts i4, i32 %shift_right_result.prb, 28, 4
+    %246 = inss i32 %1, i4 %245, 0, 4
+    %247 = exts i1, i32 %246, 0, 1
+    drv i1$ %244, %247, %20
+    %248 = sig i32 %1
+    %249 = shr i32$ %shift_opa_reversed, i32$ %248, i32 %169
+    %250 = exts i1$, i32$ %249, 0, 1
+    %251 = exts i5, i32 %opa.prb, 27, 5
+    %252 = inss i32 %1, i5 %251, 0, 5
+    %253 = exts i1, i32 %252, 0, 1
+    drv i1$ %250, %253, %20
+    %254 = sig i32 %1
+    %255 = shr i32$ %shift_left_result, i32$ %254, i32 %169
+    %256 = exts i1$, i32$ %255, 0, 1
+    %257 = exts i5, i32 %shift_right_result.prb, 27, 5
+    %258 = inss i32 %1, i5 %257, 0, 5
+    %259 = exts i1, i32 %258, 0, 1
+    drv i1$ %256, %259, %20
+    %260 = const i32 5
+    %261 = sig i32 %1
+    %262 = shr i32$ %shift_opa_reversed, i32$ %261, i32 %260
+    %263 = exts i1$, i32$ %262, 0, 1
+    %264 = exts i6, i32 %opa.prb, 26, 6
+    %265 = inss i32 %1, i6 %264, 0, 6
+    %266 = exts i1, i32 %265, 0, 1
+    drv i1$ %263, %266, %20
+    %267 = sig i32 %1
+    %268 = shr i32$ %shift_left_result, i32$ %267, i32 %260
+    %269 = exts i1$, i32$ %268, 0, 1
+    %270 = exts i6, i32 %shift_right_result.prb, 26, 6
+    %271 = inss i32 %1, i6 %270, 0, 6
+    %272 = exts i1, i32 %271, 0, 1
+    drv i1$ %269, %272, %20
+    %273 = const i32 6
+    %274 = sig i32 %1
+    %275 = shr i32$ %shift_opa_reversed, i32$ %274, i32 %273
+    %276 = exts i1$, i32$ %275, 0, 1
+    %277 = exts i7, i32 %opa.prb, 25, 7
+    %278 = inss i32 %1, i7 %277, 0, 7
+    %279 = exts i1, i32 %278, 0, 1
+    drv i1$ %276, %279, %20
+    %280 = sig i32 %1
+    %281 = shr i32$ %shift_left_result, i32$ %280, i32 %273
+    %282 = exts i1$, i32$ %281, 0, 1
+    %283 = exts i7, i32 %shift_right_result.prb, 25, 7
+    %284 = inss i32 %1, i7 %283, 0, 7
+    %285 = exts i1, i32 %284, 0, 1
+    drv i1$ %282, %285, %20
+    %286 = const i32 7
+    %287 = sig i32 %1
+    %288 = shr i32$ %shift_opa_reversed, i32$ %287, i32 %286
+    %289 = exts i1$, i32$ %288, 0, 1
+    %290 = exts i8, i32 %opa.prb, 24, 8
+    %291 = inss i32 %1, i8 %290, 0, 8
+    %292 = exts i1, i32 %291, 0, 1
+    drv i1$ %289, %292, %20
+    %293 = sig i32 %1
+    %294 = shr i32$ %shift_left_result, i32$ %293, i32 %286
+    %295 = exts i1$, i32$ %294, 0, 1
+    %296 = exts i8, i32 %shift_right_result.prb, 24, 8
+    %297 = inss i32 %1, i8 %296, 0, 8
+    %298 = exts i1, i32 %297, 0, 1
+    drv i1$ %295, %298, %20
+    %299 = const i32 8
+    %300 = sig i32 %1
+    %301 = shr i32$ %shift_opa_reversed, i32$ %300, i32 %299
+    %302 = exts i1$, i32$ %301, 0, 1
+    %303 = exts i9, i32 %opa.prb, 23, 9
+    %304 = inss i32 %1, i9 %303, 0, 9
+    %305 = exts i1, i32 %304, 0, 1
+    drv i1$ %302, %305, %20
+    %306 = sig i32 %1
+    %307 = shr i32$ %shift_left_result, i32$ %306, i32 %299
+    %308 = exts i1$, i32$ %307, 0, 1
+    %309 = exts i9, i32 %shift_right_result.prb, 23, 9
+    %310 = inss i32 %1, i9 %309, 0, 9
+    %311 = exts i1, i32 %310, 0, 1
+    drv i1$ %308, %311, %20
+    %312 = const i32 9
+    %313 = sig i32 %1
+    %314 = shr i32$ %shift_opa_reversed, i32$ %313, i32 %312
+    %315 = exts i1$, i32$ %314, 0, 1
+    %316 = exts i10, i32 %opa.prb, 22, 10
+    %317 = inss i32 %1, i10 %316, 0, 10
+    %318 = exts i1, i32 %317, 0, 1
+    drv i1$ %315, %318, %20
+    %319 = sig i32 %1
+    %320 = shr i32$ %shift_left_result, i32$ %319, i32 %312
+    %321 = exts i1$, i32$ %320, 0, 1
+    %322 = exts i10, i32 %shift_right_result.prb, 22, 10
+    %323 = inss i32 %1, i10 %322, 0, 10
+    %324 = exts i1, i32 %323, 0, 1
+    drv i1$ %321, %324, %20
+    %325 = const i32 10
+    %326 = sig i32 %1
+    %327 = shr i32$ %shift_opa_reversed, i32$ %326, i32 %325
+    %328 = exts i1$, i32$ %327, 0, 1
+    %329 = exts i11, i32 %opa.prb, 21, 11
+    %330 = inss i32 %1, i11 %329, 0, 11
+    %331 = exts i1, i32 %330, 0, 1
+    drv i1$ %328, %331, %20
+    %332 = sig i32 %1
+    %333 = shr i32$ %shift_left_result, i32$ %332, i32 %325
+    %334 = exts i1$, i32$ %333, 0, 1
+    %335 = exts i11, i32 %shift_right_result.prb, 21, 11
+    %336 = inss i32 %1, i11 %335, 0, 11
+    %337 = exts i1, i32 %336, 0, 1
+    drv i1$ %334, %337, %20
+    %338 = const i32 11
+    %339 = sig i32 %1
+    %340 = shr i32$ %shift_opa_reversed, i32$ %339, i32 %338
+    %341 = exts i1$, i32$ %340, 0, 1
+    %342 = exts i12, i32 %opa.prb, 20, 12
+    %343 = inss i32 %1, i12 %342, 0, 12
+    %344 = exts i1, i32 %343, 0, 1
+    drv i1$ %341, %344, %20
+    %345 = sig i32 %1
+    %346 = shr i32$ %shift_left_result, i32$ %345, i32 %338
+    %347 = exts i1$, i32$ %346, 0, 1
+    %348 = exts i12, i32 %shift_right_result.prb, 20, 12
+    %349 = inss i32 %1, i12 %348, 0, 12
+    %350 = exts i1, i32 %349, 0, 1
+    drv i1$ %347, %350, %20
+    %351 = const i32 12
+    %352 = sig i32 %1
+    %353 = shr i32$ %shift_opa_reversed, i32$ %352, i32 %351
+    %354 = exts i1$, i32$ %353, 0, 1
+    %355 = exts i13, i32 %opa.prb, 19, 13
+    %356 = inss i32 %1, i13 %355, 0, 13
+    %357 = exts i1, i32 %356, 0, 1
+    drv i1$ %354, %357, %20
+    %358 = sig i32 %1
+    %359 = shr i32$ %shift_left_result, i32$ %358, i32 %351
+    %360 = exts i1$, i32$ %359, 0, 1
+    %361 = exts i13, i32 %shift_right_result.prb, 19, 13
+    %362 = inss i32 %1, i13 %361, 0, 13
+    %363 = exts i1, i32 %362, 0, 1
+    drv i1$ %360, %363, %20
+    %364 = const i32 13
+    %365 = sig i32 %1
+    %366 = shr i32$ %shift_opa_reversed, i32$ %365, i32 %364
+    %367 = exts i1$, i32$ %366, 0, 1
+    %368 = exts i14, i32 %opa.prb, 18, 14
+    %369 = inss i32 %1, i14 %368, 0, 14
+    %370 = exts i1, i32 %369, 0, 1
+    drv i1$ %367, %370, %20
+    %371 = sig i32 %1
+    %372 = shr i32$ %shift_left_result, i32$ %371, i32 %364
+    %373 = exts i1$, i32$ %372, 0, 1
+    %374 = exts i14, i32 %shift_right_result.prb, 18, 14
+    %375 = inss i32 %1, i14 %374, 0, 14
+    %376 = exts i1, i32 %375, 0, 1
+    drv i1$ %373, %376, %20
+    %377 = const i32 14
+    %378 = sig i32 %1
+    %379 = shr i32$ %shift_opa_reversed, i32$ %378, i32 %377
+    %380 = exts i1$, i32$ %379, 0, 1
+    %381 = exts i15, i32 %opa.prb, 17, 15
+    %382 = inss i32 %1, i15 %381, 0, 15
+    %383 = exts i1, i32 %382, 0, 1
+    drv i1$ %380, %383, %20
+    %384 = sig i32 %1
+    %385 = shr i32$ %shift_left_result, i32$ %384, i32 %377
+    %386 = exts i1$, i32$ %385, 0, 1
+    %387 = exts i15, i32 %shift_right_result.prb, 17, 15
+    %388 = inss i32 %1, i15 %387, 0, 15
+    %389 = exts i1, i32 %388, 0, 1
+    drv i1$ %386, %389, %20
+    %390 = const i32 15
+    %391 = sig i32 %1
+    %392 = shr i32$ %shift_opa_reversed, i32$ %391, i32 %390
+    %393 = exts i1$, i32$ %392, 0, 1
+    %394 = exts i16, i32 %opa.prb, 16, 16
+    %395 = inss i32 %1, i16 %394, 0, 16
+    %396 = exts i1, i32 %395, 0, 1
+    drv i1$ %393, %396, %20
+    %397 = sig i32 %1
+    %398 = shr i32$ %shift_left_result, i32$ %397, i32 %390
+    %399 = exts i1$, i32$ %398, 0, 1
+    %400 = exts i16, i32 %shift_right_result.prb, 16, 16
+    %401 = inss i32 %1, i16 %400, 0, 16
+    %402 = exts i1, i32 %401, 0, 1
+    drv i1$ %399, %402, %20
+    %403 = const i32 16
+    %404 = sig i32 %1
+    %405 = shr i32$ %shift_opa_reversed, i32$ %404, i32 %403
+    %406 = exts i1$, i32$ %405, 0, 1
+    %407 = exts i17, i32 %opa.prb, 15, 17
+    %408 = inss i32 %1, i17 %407, 0, 17
+    %409 = exts i1, i32 %408, 0, 1
+    drv i1$ %406, %409, %20
+    %410 = sig i32 %1
+    %411 = shr i32$ %shift_left_result, i32$ %410, i32 %403
+    %412 = exts i1$, i32$ %411, 0, 1
+    %413 = exts i17, i32 %shift_right_result.prb, 15, 17
+    %414 = inss i32 %1, i17 %413, 0, 17
+    %415 = exts i1, i32 %414, 0, 1
+    drv i1$ %412, %415, %20
+    %416 = const i32 17
+    %417 = sig i32 %1
+    %418 = shr i32$ %shift_opa_reversed, i32$ %417, i32 %416
+    %419 = exts i1$, i32$ %418, 0, 1
+    %420 = exts i18, i32 %opa.prb, 14, 18
+    %421 = inss i32 %1, i18 %420, 0, 18
+    %422 = exts i1, i32 %421, 0, 1
+    drv i1$ %419, %422, %20
+    %423 = sig i32 %1
+    %424 = shr i32$ %shift_left_result, i32$ %423, i32 %416
+    %425 = exts i1$, i32$ %424, 0, 1
+    %426 = exts i18, i32 %shift_right_result.prb, 14, 18
+    %427 = inss i32 %1, i18 %426, 0, 18
+    %428 = exts i1, i32 %427, 0, 1
+    drv i1$ %425, %428, %20
+    %429 = const i32 18
+    %430 = sig i32 %1
+    %431 = shr i32$ %shift_opa_reversed, i32$ %430, i32 %429
+    %432 = exts i1$, i32$ %431, 0, 1
+    %433 = exts i19, i32 %opa.prb, 13, 19
+    %434 = inss i32 %1, i19 %433, 0, 19
+    %435 = exts i1, i32 %434, 0, 1
+    drv i1$ %432, %435, %20
+    %436 = sig i32 %1
+    %437 = shr i32$ %shift_left_result, i32$ %436, i32 %429
+    %438 = exts i1$, i32$ %437, 0, 1
+    %439 = exts i19, i32 %shift_right_result.prb, 13, 19
+    %440 = inss i32 %1, i19 %439, 0, 19
+    %441 = exts i1, i32 %440, 0, 1
+    drv i1$ %438, %441, %20
+    %442 = const i32 19
+    %443 = sig i32 %1
+    %444 = shr i32$ %shift_opa_reversed, i32$ %443, i32 %442
+    %445 = exts i1$, i32$ %444, 0, 1
+    %446 = exts i20, i32 %opa.prb, 12, 20
+    %447 = inss i32 %1, i20 %446, 0, 20
+    %448 = exts i1, i32 %447, 0, 1
+    drv i1$ %445, %448, %20
+    %449 = sig i32 %1
+    %450 = shr i32$ %shift_left_result, i32$ %449, i32 %442
+    %451 = exts i1$, i32$ %450, 0, 1
+    %452 = exts i20, i32 %shift_right_result.prb, 12, 20
+    %453 = inss i32 %1, i20 %452, 0, 20
+    %454 = exts i1, i32 %453, 0, 1
+    drv i1$ %451, %454, %20
+    %455 = const i32 20
+    %456 = sig i32 %1
+    %457 = shr i32$ %shift_opa_reversed, i32$ %456, i32 %455
+    %458 = exts i1$, i32$ %457, 0, 1
+    %459 = exts i21, i32 %opa.prb, 11, 21
+    %460 = inss i32 %1, i21 %459, 0, 21
+    %461 = exts i1, i32 %460, 0, 1
+    drv i1$ %458, %461, %20
+    %462 = sig i32 %1
+    %463 = shr i32$ %shift_left_result, i32$ %462, i32 %455
+    %464 = exts i1$, i32$ %463, 0, 1
+    %465 = exts i21, i32 %shift_right_result.prb, 11, 21
+    %466 = inss i32 %1, i21 %465, 0, 21
+    %467 = exts i1, i32 %466, 0, 1
+    drv i1$ %464, %467, %20
+    %468 = const i32 21
+    %469 = sig i32 %1
+    %470 = shr i32$ %shift_opa_reversed, i32$ %469, i32 %468
+    %471 = exts i1$, i32$ %470, 0, 1
+    %472 = exts i22, i32 %opa.prb, 10, 22
+    %473 = inss i32 %1, i22 %472, 0, 22
+    %474 = exts i1, i32 %473, 0, 1
+    drv i1$ %471, %474, %20
+    %475 = sig i32 %1
+    %476 = shr i32$ %shift_left_result, i32$ %475, i32 %468
+    %477 = exts i1$, i32$ %476, 0, 1
+    %478 = exts i22, i32 %shift_right_result.prb, 10, 22
+    %479 = inss i32 %1, i22 %478, 0, 22
+    %480 = exts i1, i32 %479, 0, 1
+    drv i1$ %477, %480, %20
+    %481 = const i32 22
+    %482 = sig i32 %1
+    %483 = shr i32$ %shift_opa_reversed, i32$ %482, i32 %481
+    %484 = exts i1$, i32$ %483, 0, 1
+    %485 = exts i23, i32 %opa.prb, 9, 23
+    %486 = inss i32 %1, i23 %485, 0, 23
+    %487 = exts i1, i32 %486, 0, 1
+    drv i1$ %484, %487, %20
+    %488 = sig i32 %1
+    %489 = shr i32$ %shift_left_result, i32$ %488, i32 %481
+    %490 = exts i1$, i32$ %489, 0, 1
+    %491 = exts i23, i32 %shift_right_result.prb, 9, 23
+    %492 = inss i32 %1, i23 %491, 0, 23
+    %493 = exts i1, i32 %492, 0, 1
+    drv i1$ %490, %493, %20
+    %494 = const i32 23
+    %495 = sig i32 %1
+    %496 = shr i32$ %shift_opa_reversed, i32$ %495, i32 %494
+    %497 = exts i1$, i32$ %496, 0, 1
+    %498 = exts i24, i32 %opa.prb, 8, 24
+    %499 = inss i32 %1, i24 %498, 0, 24
+    %500 = exts i1, i32 %499, 0, 1
+    drv i1$ %497, %500, %20
+    %501 = sig i32 %1
+    %502 = shr i32$ %shift_left_result, i32$ %501, i32 %494
+    %503 = exts i1$, i32$ %502, 0, 1
+    %504 = exts i24, i32 %shift_right_result.prb, 8, 24
+    %505 = inss i32 %1, i24 %504, 0, 24
+    %506 = exts i1, i32 %505, 0, 1
+    drv i1$ %503, %506, %20
+    %507 = const i32 24
+    %508 = sig i32 %1
+    %509 = shr i32$ %shift_opa_reversed, i32$ %508, i32 %507
+    %510 = exts i1$, i32$ %509, 0, 1
+    %511 = exts i25, i32 %opa.prb, 7, 25
+    %512 = inss i32 %1, i25 %511, 0, 25
+    %513 = exts i1, i32 %512, 0, 1
+    drv i1$ %510, %513, %20
+    %514 = sig i32 %1
+    %515 = shr i32$ %shift_left_result, i32$ %514, i32 %507
+    %516 = exts i1$, i32$ %515, 0, 1
+    %517 = exts i25, i32 %shift_right_result.prb, 7, 25
+    %518 = inss i32 %1, i25 %517, 0, 25
+    %519 = exts i1, i32 %518, 0, 1
+    drv i1$ %516, %519, %20
+    %520 = const i32 25
+    %521 = sig i32 %1
+    %522 = shr i32$ %shift_opa_reversed, i32$ %521, i32 %520
+    %523 = exts i1$, i32$ %522, 0, 1
+    %524 = exts i26, i32 %opa.prb, 6, 26
+    %525 = inss i32 %1, i26 %524, 0, 26
+    %526 = exts i1, i32 %525, 0, 1
+    drv i1$ %523, %526, %20
+    %527 = sig i32 %1
+    %528 = shr i32$ %shift_left_result, i32$ %527, i32 %520
+    %529 = exts i1$, i32$ %528, 0, 1
+    %530 = exts i26, i32 %shift_right_result.prb, 6, 26
+    %531 = inss i32 %1, i26 %530, 0, 26
+    %532 = exts i1, i32 %531, 0, 1
+    drv i1$ %529, %532, %20
+    %533 = const i32 26
+    %534 = sig i32 %1
+    %535 = shr i32$ %shift_opa_reversed, i32$ %534, i32 %533
+    %536 = exts i1$, i32$ %535, 0, 1
+    %537 = exts i27, i32 %opa.prb, 5, 27
+    %538 = inss i32 %1, i27 %537, 0, 27
+    %539 = exts i1, i32 %538, 0, 1
+    drv i1$ %536, %539, %20
+    %540 = sig i32 %1
+    %541 = shr i32$ %shift_left_result, i32$ %540, i32 %533
+    %542 = exts i1$, i32$ %541, 0, 1
+    %543 = exts i27, i32 %shift_right_result.prb, 5, 27
+    %544 = inss i32 %1, i27 %543, 0, 27
+    %545 = exts i1, i32 %544, 0, 1
+    drv i1$ %542, %545, %20
+    %546 = const i32 27
+    %547 = sig i32 %1
+    %548 = shr i32$ %shift_opa_reversed, i32$ %547, i32 %546
+    %549 = exts i1$, i32$ %548, 0, 1
+    %550 = exts i28, i32 %opa.prb, 4, 28
+    %551 = inss i32 %1, i28 %550, 0, 28
+    %552 = exts i1, i32 %551, 0, 1
+    drv i1$ %549, %552, %20
+    %553 = sig i32 %1
+    %554 = shr i32$ %shift_left_result, i32$ %553, i32 %546
+    %555 = exts i1$, i32$ %554, 0, 1
+    %556 = exts i28, i32 %shift_right_result.prb, 4, 28
+    %557 = inss i32 %1, i28 %556, 0, 28
+    %558 = exts i1, i32 %557, 0, 1
+    drv i1$ %555, %558, %20
+    %559 = const i32 28
+    %560 = sig i32 %1
+    %561 = shr i32$ %shift_opa_reversed, i32$ %560, i32 %559
+    %562 = exts i1$, i32$ %561, 0, 1
+    %563 = exts i29, i32 %opa.prb, 3, 29
+    %564 = inss i32 %1, i29 %563, 0, 29
+    %565 = exts i1, i32 %564, 0, 1
+    drv i1$ %562, %565, %20
+    %566 = sig i32 %1
+    %567 = shr i32$ %shift_left_result, i32$ %566, i32 %559
+    %568 = exts i1$, i32$ %567, 0, 1
+    %569 = exts i29, i32 %shift_right_result.prb, 3, 29
+    %570 = inss i32 %1, i29 %569, 0, 29
+    %571 = exts i1, i32 %570, 0, 1
+    drv i1$ %568, %571, %20
+    %572 = const i32 29
+    %573 = sig i32 %1
+    %574 = shr i32$ %shift_opa_reversed, i32$ %573, i32 %572
+    %575 = exts i1$, i32$ %574, 0, 1
+    %576 = exts i30, i32 %opa.prb, 2, 30
+    %577 = inss i32 %1, i30 %576, 0, 30
+    %578 = exts i1, i32 %577, 0, 1
+    drv i1$ %575, %578, %20
+    %579 = sig i32 %1
+    %580 = shr i32$ %shift_left_result, i32$ %579, i32 %572
+    %581 = exts i1$, i32$ %580, 0, 1
+    %582 = exts i30, i32 %shift_right_result.prb, 2, 30
+    %583 = inss i32 %1, i30 %582, 0, 30
+    %584 = exts i1, i32 %583, 0, 1
+    drv i1$ %581, %584, %20
+    %585 = const i32 30
+    %586 = sig i32 %1
+    %587 = shr i32$ %shift_opa_reversed, i32$ %586, i32 %585
+    %588 = exts i1$, i32$ %587, 0, 1
+    %589 = exts i31, i32 %opa.prb, 1, 31
+    %590 = inss i32 %1, i31 %589, 0, 31
+    %591 = exts i1, i32 %590, 0, 1
+    drv i1$ %588, %591, %20
+    %592 = sig i32 %1
+    %593 = shr i32$ %shift_left_result, i32$ %592, i32 %585
+    %594 = exts i1$, i32$ %593, 0, 1
+    %595 = exts i31, i32 %shift_right_result.prb, 1, 31
+    %596 = inss i32 %1, i31 %595, 0, 31
+    %597 = exts i1, i32 %596, 0, 1
+    drv i1$ %594, %597, %20
+    %598 = const i32 31
+    %599 = sig i32 %1
+    %600 = shr i32$ %shift_opa_reversed, i32$ %599, i32 %598
+    %601 = exts i1$, i32$ %600, 0, 1
+    %602 = exts i1, i32 %opa.prb, 0, 1
+    drv i1$ %601, %602, %20
+    %603 = sig i32 %1
+    %604 = shr i32$ %shift_left_result, i32$ %603, i32 %598
+    %605 = exts i1$, i32$ %604, 0, 1
+    %606 = exts i1, i32 %shift_right_result.prb, 0, 1
+    drv i1$ %605, %606, %20
+    inst %snitch.param1.always_ff.12501.1 (i1$ %clk_i, i1$ %rst_i, i32$ %pc_d) -> (i32$ %pc_q)
+    inst %snitch.param1.always_ff.12525.1 (i1$ %clk_i, i1$ %rst_i, i1$ %wfi_d) -> (i1$ %wfi_q)
+    inst %snitch.param1.always_ff.12549.1 (i1$ %clk_i, i1$ %rst_i, i32$ %sb_d) -> (i32$ %sb_q)
+    inst %snitch.param1.always_ff.12573.1 (i1$ %clk_i, i1$ %rst_i, {i3, {i1, i1, i1, i1, i1}}$ %fcsr_d) -> ({i3, {i1, i1, i1, i1, i1}}$ %fcsr_q)
+    inst %snitch.param1.always_comb.12607.1 (i1$ %stall) -> ({i1, i1, i1, i1}$ %core_events_o)
+    inst %snitch.param1.always_comb.12929.1 (i5$ %acc_pid_i, i5$ %rd, i1$ %stall, i32$ %sb_q, i1$ %is_load, i5$ %lsu_rd, i1$ %retire_load, i1$ %retire_acc, i1$ %acc_register_rd) -> (i32$ %sb_d)
+    inst %snitch.param1.always_comb.13188.1 (i1$ %zero_lsb, i32$ %pc_q, i1$ %wfi_q, i32$ %consec_pc, i32$ %alu_result, i1$ %stall, i2$ %next_pc) -> (i32$ %pc_d)
+    inst %snitch.param1.always_comb.22810.1 (i32$ %inst_data_i, i1$ %wake_up_sync_i, i1$ %wfi_q, i32$ %uimm, i1$ %valid_instr, i32$ %csr_rvalue) -> (i1$ %acc_qvalid_o, i1$ %illegal_inst, i1$ %zero_lsb, i1$ %wfi_d, i1$ %is_load, i1$ %is_store, i1$ %is_signed, i2$ %ls_size, i4$ %ls_amo, i4$ %alu_op, i4$ %opa_select, i4$ %opb_select, i1$ %write_rd, i1$ %uses_rd, i2$ %next_pc, i2$ %rd_select, i32$ %rd_bypass, i1$ %is_branch, i1$ %csr_en, i1$ %acc_register_rd)
+    inst %snitch.param1.always_comb.23058.1 (i32$ %hart_id_i, i32$ %inst_data_i, {i1, i1, i1, i1, i1}$ %fpu_status_i, i32$ %alu_result, i1$ %csr_en, {i3, {i1, i1, i1, i1, i1}}$ %fcsr_q) -> (i32$ %csr_rvalue, {i3, {i1, i1, i1, i1, i1}}$ %fcsr_d)
+    inst %snitch.param1.always_comb.23203.1 (i32$ %uimm, i32$ %jimm, i5$ %rs1, [2 x i32]$ %gpr_rdata, i4$ %opa_select) -> (i32$ %opa)
+    inst %snitch.param1.always_comb.23314.1 (i32$ %pc_q, i32$ %iimm, i32$ %simm, [2 x i32]$ %gpr_rdata, i4$ %opb_select, i32$ %csr_rvalue) -> (i32$ %opb)
+    inst %snitch.param1.always_comb.24030.1 (i32$ %opa, i32$ %opb, i33$ %adder_result, i4$ %alu_op, i32$ %shift_right_result, i32$ %shift_left_result) -> (i32$ %alu_result, i1$ %shift_left, i1$ %shift_arithmetic, i33$ %alu_opa, i33$ %alu_opb)
+    inst %snitch.param1.always_comb.24258.1 (i32$ %consec_pc, i32$ %alu_result, i2$ %rd_select, i32$ %rd_bypass) -> (i32$ %alu_writeback)
+    inst %snitch.param1.always_comb.24550.1 (i64$ %acc_pdata_i, i5$ %acc_pid_i, i1$ %acc_pvalid_i, i5$ %rd, i64$ %ld_result, i1$ %lsu_pvalid, i5$ %lsu_rd, i1$ %retire_i, i32$ %alu_writeback) -> (i1$ %acc_pready_o, [1 x i5]$ %gpr_waddr, [1 x i32]$ %gpr_wdata, i1$ %gpr_we, i1$ %lsu_pready, i1$ %retire_load, i1$ %retire_acc)
+}
+
+proc %snitch_tb.always.27127.0 (i1$ %clk_i, i1$ %data_qvalid_o, i1$ %data_qready_i, i1$ %data_pvalid_i, i1$ %data_pready_o) -> (i32$ %data_resp_pending) {
+0:
+    %1 = prb i32$ %data_resp_pending
+    %data_resp_pending.shadow = var i32 %1
+    br %init
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    wait %check, %clk_i
+check:
+    %2 = prb i32$ %data_resp_pending
+    st i32* %data_resp_pending.shadow, %2
+    %clk_i.prb1 = prb i1$ %clk_i
+    %3 = const i1 0
+    %4 = eq i1 %clk_i.prb, %3
+    %5 = neq i1 %clk_i.prb1, %3
+    %posedge = and i1 %4, %5
+    br %posedge, %init, %event
+event:
+    %data_pvalid_i.prb = prb i1$ %data_pvalid_i
+    %6 = neq i1 %data_pvalid_i.prb, %3
+    %data_pready_o.prb = prb i1$ %data_pready_o
+    %7 = neq i1 %data_pready_o.prb, %3
+    %8 = and i1 %6, %7
+    %9 = neq i1 %8, %3
+    %10 = const i32 1
+    %11 = const time 0s 1e
+    br %9, %if_exit, %if_true
+if_true:
+    %data_resp_pending.shadow.ld = ld i32* %data_resp_pending.shadow
+    %12 = sub i32 %data_resp_pending.shadow.ld, %10
+    drv i32$ %data_resp_pending, %12, %11
+    st i32* %data_resp_pending.shadow, %12
+    br %if_exit
+if_exit:
+    %data_qvalid_o.prb = prb i1$ %data_qvalid_o
+    %13 = neq i1 %data_qvalid_o.prb, %3
+    %data_qready_i.prb = prb i1$ %data_qready_i
+    %14 = neq i1 %data_qready_i.prb, %3
+    %15 = and i1 %13, %14
+    %16 = neq i1 %15, %3
+    br %16, %0, %if_true1
+if_true1:
+    %data_resp_pending.shadow.ld1 = ld i32* %data_resp_pending.shadow
+    %17 = add i32 %data_resp_pending.shadow.ld1, %10
+    drv i32$ %data_resp_pending, %17, %11
+    st i32* %data_resp_pending.shadow, %17
+    br %0
+}
+
+proc %snitch_tb.initial.27237.0 () -> (i1$ %clk_i, i1$ %rst_i) {
+0:
+    %1 = const i1 1
+    %2 = const time 1ns
+    drv i1$ %rst_i, %1, %2
+    %3 = const time 2ns
+    drv i1$ %clk_i, %1, %3
+    %4 = const i1 0
+    %5 = const time 3ns
+    drv i1$ %clk_i, %4, %5
+    %6 = const time 4ns
+    drv i1$ %rst_i, %4, %6
+    %7 = const time 5ns
+    wait %8 for %7
+8:
+    %9 = const i32 1000000
+    %loop_count = var i32 %9
+    br %loop_body
+loop_body:
+    %10 = ld i32* %loop_count
+    %11 = const i32 0
+    %12 = neq i32 %10, %11
+    %13 = const time 1ns
+    br %12, %loop_exit, %loop_continue
+loop_exit:
+    wait %14 for %13
+loop_continue:
+    %15 = const i1 1
+    %16 = const time 0s 1e
+    drv i1$ %clk_i, %15, %16
+    wait %17 for %13
+17:
+    %18 = const i1 0
+    %19 = const time 0s 1e
+    drv i1$ %clk_i, %18, %19
+    %20 = const time 1ns
+    wait %21 for %20
+21:
+    %22 = ld i32* %loop_count
+    st i32* %loop_count, %22
+    br %loop_body
+14:
+    halt
+}
+
+entity @snitch_tb () -> () {
+    %0 = const i1 0
+    %clk_i = sig i1 %0
+    %rst_i = sig i1 %0
+    %1 = const i32 0
+    %inst_addr_o = sig i32 %1
+    %inst_data_i = sig i32 %1
+    %inst_valid_o = sig i1 %0
+    %inst_ready_i = sig i1 %0
+    %data_qaddr_o = sig i32 %1
+    %data_qwrite_o = sig i1 %0
+    %2 = const i4 0
+    %data_qamo_o = sig i4 %2
+    %3 = const i64 0
+    %data_qdata_o = sig i64 %3
+    %4 = const i8 0
+    %data_qstrb_o = sig i8 %4
+    %data_qvalid_o = sig i1 %0
+    %data_qready_i = sig i1 %0
+    %data_pdata_i = sig i64 %3
+    %data_perror_i = sig i1 %0
+    %data_pvalid_i = sig i1 %0
+    %data_pready_o = sig i1 %0
+    %5 = [i32 %1, %1, %1, %1, %1, %1, %1, %1, %1, %1, %1, %1, %1, %1, %1, %1]
+    %PROGRAM = sig [16 x i32] %5
+    %data_resp_pending = sig i32 %1
+    %6 = const i32 1048577811
+    %7 = const i32 1050515
+    %8 = const i32 1555
+    %9 = const i32 3405649335
+    %10 = const i32 16123571
+    %11 = const i32 14000163
+    %12 = const i32 4294379283
+    %13 = const i32 493075
+    %14 = const i32 427923
+    %15 = const i32 4261877475
+    %16 = const i32 273678451
+    %17 = const i32 4292866159
+    %18 = const i32 32871
+    %19 = [i32 %6, %7, %8, %9, %10, %11, %12, %13, %14, %15, %16, %17, %18, %1, %1, %1]
+    %20 = const time 0s 1e
+    drv [16 x i32]$ %PROGRAM, %19, %20
+    %PROGRAM.prb = prb [16 x i32]$ %PROGRAM
+    %inst_addr_o.prb = prb i32$ %inst_addr_o
+    %21 = const i32 65536
+    %22 = sub i32 %inst_addr_o.prb, %21
+    %23 = const i32 4
+    %24 = udiv i32 %22, %23
+    %25 = [16 x i32 %1]
+    %26 = shr [16 x i32] %PROGRAM.prb, [16 x i32] %25, i32 %24
+    %27 = extf i32, [16 x i32] %26, 0
+    drv i32$ %inst_data_i, %27, %20
+    %28 = const i1 1
+    drv i1$ %inst_ready_i, %28, %20
+    drv i1$ %data_qready_i, %28, %20
+    %29 = const i64 3735931568
+    drv i64$ %data_pdata_i, %29, %20
+    drv i1$ %data_perror_i, %0, %20
+    %data_resp_pending.prb = prb i32$ %data_resp_pending
+    %30 = sgt i32 %data_resp_pending.prb, %1
+    drv i1$ %data_pvalid_i, %30, %20
+    %31 = const i32 66
+    %32 = sig i32 %1
+    %33 = const time 0s 1d
+    drv i32$ %32, %31, %33
+    %i_snitch.acc_qready_i.default = sig i1 %0
+    %i_snitch.acc_pdata_i.default = sig i64 %3
+    %34 = const i5 0
+    %i_snitch.acc_pid_i.default = sig i5 %34
+    %i_snitch.acc_perror_i.default = sig i1 %0
+    %i_snitch.acc_pvalid_i.default = sig i1 %0
+    %i_snitch.wake_up_sync_i.default = sig i1 %0
+    %35 = {i1 %0, i1 %0, i1 %0, i1 %0, i1 %0}
+    %i_snitch.fpu_status_i.default = sig {i1, i1, i1, i1, i1} %35
+    %i_snitch.acc_qaddr_o.default = sig i32 %1
+    %i_snitch.acc_qid_o.default = sig i5 %34
+    %i_snitch.acc_qdata_op_o.default = sig i32 %1
+    %i_snitch.acc_qdata_arga_o.default = sig i64 %3
+    %i_snitch.acc_qdata_argb_o.default = sig i64 %3
+    %i_snitch.acc_qdata_argc_o.default = sig i64 %3
+    %i_snitch.acc_qvalid_o.default = sig i1 %0
+    %i_snitch.acc_pready_o.default = sig i1 %0
+    %36 = const i3 0
+    %i_snitch.fpu_rnd_mode_o.default = sig i3 %36
+    %37 = {i1 %0, i1 %0, i1 %0, i1 %0}
+    %i_snitch.core_events_o.default = sig {i1, i1, i1, i1} %37
+    inst @snitch.param1 (i1$ %clk_i, i1$ %rst_i, i32$ %32, i32$ %inst_data_i, i1$ %inst_ready_i, i1$ %i_snitch.acc_qready_i.default, i64$ %i_snitch.acc_pdata_i.default, i5$ %i_snitch.acc_pid_i.default, i1$ %i_snitch.acc_perror_i.default, i1$ %i_snitch.acc_pvalid_i.default, i1$ %data_qready_i, i64$ %data_pdata_i, i1$ %data_perror_i, i1$ %data_pvalid_i, i1$ %i_snitch.wake_up_sync_i.default, {i1, i1, i1, i1, i1}$ %i_snitch.fpu_status_i.default) -> (i32$ %inst_addr_o, i1$ %inst_valid_o, i32$ %i_snitch.acc_qaddr_o.default, i5$ %i_snitch.acc_qid_o.default, i32$ %i_snitch.acc_qdata_op_o.default, i64$ %i_snitch.acc_qdata_arga_o.default, i64$ %i_snitch.acc_qdata_argb_o.default, i64$ %i_snitch.acc_qdata_argc_o.default, i1$ %i_snitch.acc_qvalid_o.default, i1$ %i_snitch.acc_pready_o.default, i32$ %data_qaddr_o, i1$ %data_qwrite_o, i4$ %data_qamo_o, i64$ %data_qdata_o, i8$ %data_qstrb_o, i1$ %data_qvalid_o, i1$ %data_pready_o, i3$ %i_snitch.fpu_rnd_mode_o.default, {i1, i1, i1, i1}$ %i_snitch.core_events_o.default)
+    inst %snitch_tb.always.27127.0 (i1$ %clk_i, i1$ %data_qvalid_o, i1$ %data_qready_i, i1$ %data_pvalid_i, i1$ %data_pready_o) -> (i32$ %data_resp_pending)
+    inst %snitch_tb.initial.27237.0 () -> (i1$ %clk_i, i1$ %rst_i)
+}

@@ -1,0 +1,135 @@
+proc %lfsr_16bit.param1.always_comb.155.1 (i1$ %en_i, i16$ %shift_q) -> (i16$ %out_o, i16$ %shift_d) {
+body:
+    %0 = const i1 0
+    %shift_in = var i1 %0
+    %shift_q.prb = prb i16$ %shift_q
+    %1 = exts i1, i16 %shift_q.prb, 15, 1
+    %2 = const i16 0
+    %3 = inss i16 %2, i1 %1, 0, 1
+    %4 = exts i1, i16 %3, 0, 1
+    %5 = exts i4, i16 %shift_q.prb, 12, 4
+    %6 = inss i16 %2, i4 %5, 0, 4
+    %7 = exts i1, i16 %6, 0, 1
+    %8 = xor i1 %4, %7
+    %9 = exts i11, i16 %shift_q.prb, 5, 11
+    %10 = inss i16 %2, i11 %9, 0, 11
+    %11 = exts i1, i16 %10, 0, 1
+    %12 = xor i1 %8, %11
+    %13 = exts i15, i16 %shift_q.prb, 1, 15
+    %14 = inss i16 %2, i15 %13, 0, 15
+    %15 = exts i1, i16 %14, 0, 1
+    %16 = xor i1 %12, %15
+    %17 = neq i1 %16, %0
+    %18 = not i1 %17
+    st i1* %shift_in, %18
+    %19 = const time 0s 1e
+    drv i16$ %shift_d, %shift_q.prb, %19
+    %en_i.prb = prb i1$ %en_i
+    %20 = neq i1 %en_i.prb, %0
+    br %20, %if_exit, %if_true
+if_true:
+    %shift_in.ld = ld i1* %shift_in
+    %21 = inss i16 %2, i1 %shift_in.ld, 0, 1
+    %22 = exts i15, i16 %shift_q.prb, 0, 15
+    %concat = inss i16 %21, i15 %22, 1, 15
+    drv i16$ %shift_d, %concat, %19
+    br %if_exit
+if_exit:
+    drv i16$ %out_o, %shift_q.prb, %19
+    wait %body, %en_i, %shift_q
+}
+
+proc %lfsr_16bit.param1.always_ff.196.1 (i1$ %clk_i, i1$ %rst_ni, i16$ %shift_d) -> (i16$ %shift_q) {
+init:
+    %clk_i.prb = prb i1$ %clk_i
+    %rst_ni.prb = prb i1$ %rst_ni
+    wait %check, %clk_i, %rst_ni
+check:
+    %clk_i.prb1 = prb i1$ %clk_i
+    %0 = const i1 0
+    %1 = eq i1 %clk_i.prb, %0
+    %2 = neq i1 %clk_i.prb1, %0
+    %posedge = and i1 %1, %2
+    %rst_ni.prb1 = prb i1$ %rst_ni
+    %3 = neq i1 %rst_ni.prb, %0
+    %4 = eq i1 %rst_ni.prb1, %0
+    %negedge = and i1 %4, %3
+    %event_or = or i1 %posedge, %negedge
+    br %event_or, %init, %event
+event:
+    %5 = not i1 %rst_ni.prb1
+    %6 = neq i1 %5, %0
+    %7 = const time 0s 1d
+    br %6, %if_false, %if_true
+if_true:
+    %8 = const i16 1
+    drv i16$ %shift_q, %8, %7
+    br %init
+if_false:
+    %shift_d.prb = prb i16$ %shift_d
+    drv i16$ %shift_q, %shift_d.prb, %7
+    br %init
+}
+
+proc %lfsr_16bit.param1.initial.214.1 () -> () {
+0:
+    halt
+}
+
+entity @lfsr_16bit.param1 (i1$ %clk_i, i1$ %rst_ni, i1$ %en_i) -> (i16$ %out_o) {
+    %0 = const i16 0
+    %shift_d = sig i16 %0
+    %shift_q = sig i16 %0
+    inst %lfsr_16bit.param1.always_comb.155.1 (i1$ %en_i, i16$ %shift_q) -> (i16$ %out_o, i16$ %shift_d)
+    inst %lfsr_16bit.param1.always_ff.196.1 (i1$ %clk_i, i1$ %rst_ni, i16$ %shift_d) -> (i16$ %shift_q)
+    inst %lfsr_16bit.param1.initial.214.1 () -> ()
+}
+
+proc %lfsr_16bit_tb.initial.332.0 () -> (i1$ %clk_i, i1$ %rst_ni, i1$ %en_i) {
+0:
+    %1 = const i1 0
+    %2 = const time 1ns
+    drv i1$ %rst_ni, %1, %2
+    %3 = const i1 1
+    %4 = const time 2ns
+    drv i1$ %rst_ni, %3, %4
+    %5 = const time 4ns
+    wait %6 for %5
+6:
+    %7 = const i1 1
+    %8 = const time 0s 1d
+    drv i1$ %en_i, %7, %8
+    %9 = const i32 10000000
+    %loop_count = var i32 %9
+    br %loop_body
+loop_body:
+    %10 = ld i32* %loop_count
+    %11 = const i32 0
+    %12 = neq i32 %10, %11
+    br %12, %loop_exit, %loop_continue
+loop_exit:
+    halt
+loop_continue:
+    %13 = const time 1ns
+    drv i1$ %clk_i, %7, %13
+    %14 = const i1 0
+    %15 = const time 2ns
+    drv i1$ %clk_i, %14, %15
+    wait %16 for %15
+16:
+    %17 = ld i32* %loop_count
+    st i32* %loop_count, %17
+    br %loop_body
+}
+
+entity @lfsr_16bit_tb () -> () {
+    %0 = const i1 0
+    %clk_i = sig i1 %0
+    %1 = const i1 1
+    %rst_ni = sig i1 %1
+    %en_i = sig i1 %0
+    %2 = const i16 0
+    %out_o = sig i16 %2
+    inst @lfsr_16bit.param1 (i1$ %clk_i, i1$ %rst_ni, i1$ %en_i) -> (i16$ %out_o)
+    inst %lfsr_16bit_tb.initial.332.0 () -> (i1$ %clk_i, i1$ %rst_ni, i1$ %en_i)
+}
